@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق منظمة ميديكال فور يو - تسجيل الدخول</title>
+    
+    <!-- الخطوط والأيقونات -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========================================= */
+        /* المتغيرات (الهوية البصرية) */
+        /* ========================================= */
+        :root {
+            --main-blue: #004494;
+            --main-red: #d32f2f;
+            --light-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #888888;
+            --success-color: #27ae60;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body.dark-mode {
+            --light-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f4f7f6;
+            --text-muted: #aaaaaa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        html, body { overflow-x: hidden; width: 100%; height: 100%; }
+        
+        body { 
+            background: var(--light-bg); color: var(--text-main); 
+            display: flex; flex-direction: column; min-height: 100vh;
+            transition: background-color 0.4s ease;
+        }
+        a { text-decoration: none; transition: var(--transition); }
+
+        /* ========================================= */
+        /* الهيدر (شريط التنقل البسيط) */
+        /* ========================================= */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        body.dark-mode .navbar { background: rgba(30, 30, 30, 0.95); border-bottom: 1px solid #333; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900; color: var(--main-blue); }
+        body.dark-mode .logo { color: #66b2ff; }
+        .logo i { color: var(--main-red); font-size: 2rem; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .nav-actions { display: flex; gap: 15px; }
+        .nav-btn { background: rgba(211, 47, 47, 0.1); color: var(--main-red); border: 1px solid var(--main-red); padding: 8px 18px; border-radius: 10px; font-weight: 900; transition: 0.3s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .nav-btn:hover { background: var(--main-red); color: white; box-shadow: 0 4px 15px rgba(211,47,47,0.4); transform: translateY(-2px); }
+
+        /* ========================================= */
+        /* واجهة الدخول (الخلفية والبطاقة) */
+        /* ========================================= */
+        .auth-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; position: relative; overflow: hidden; background: linear-gradient(-45deg, rgba(0, 68, 148, 0.9), rgba(0, 34, 68, 0.95)), url('https://images.unsplash.com/photo-1551076805-e1869043e560?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; background-blend-mode: overlay; }
+        
+        .auth-card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 50px 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; z-index: 10; animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 8px solid var(--main-blue); }
+        body.dark-mode .auth-card { box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-color: #333; border-top-color: var(--main-blue); }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+
+        .auth-header { text-align: center; margin-bottom: 35px; }
+        .auth-header h2 { color: var(--main-blue); font-size: 2rem; font-weight: 900; margin-bottom: 5px; }
+        body.dark-mode .auth-header h2 { color: #66b2ff; }
+        .auth-header p { color: var(--text-muted); font-weight: 600; font-size: 1.1rem; }
+
+        /* ========================================= */
+        /* حقول الإدخال الاحترافية (Floating Labels & Glow) */
+        /* ========================================= */
+        .floating-group { position: relative; margin-bottom: 25px; }
+        
+        .floating-group input, .floating-group select { width: 100%; padding: 18px 20px; border: 2px solid var(--light-bg); border-radius: 12px; background: transparent; font-size: 1.1rem; color: var(--text-main); font-family: 'Cairo'; transition: all 0.3s ease; outline: none; }
+        body.dark-mode .floating-group input, body.dark-mode .floating-group select { border-color: #333; }
+        
+        .floating-group label { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; pointer-events: none; background: var(--card-bg); padding: 0 5px; }
+        
+        .floating-group input:focus, .floating-group input:valid, .floating-group select:focus, .floating-group select:valid { border-color: var(--main-blue); box-shadow: 0 0 15px rgba(0, 68, 148, 0.2); }
+        .floating-group input:focus ~ label, .floating-group input:valid ~ label, .floating-group select:focus ~ label, .floating-group select:valid ~ label { top: 0; font-size: 0.9rem; color: var(--main-blue); font-weight: 900; }
+
+        select option { color: #000000; background-color: #ffffff; font-weight: bold; }
+        body.dark-mode select option { color: #ffffff; background-color: #1e1e1e; }
+
+        .password-toggle { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; font-size: 1.2rem; transition: 0.3s; z-index: 10; }
+        .password-toggle:hover { color: var(--main-blue); }
+
+        /* ========================================= */
+        /* الأزرار والروابط */
+        /* ========================================= */
+        .btn-submit { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; border-radius: 50px; font-weight: 900; cursor: pointer; transition: 0.3s; border: none; font-size: 1.2rem; background: linear-gradient(135deg, var(--main-blue), #0066cc); color: white; box-shadow: 0 8px 25px rgba(0, 68, 148, 0.4); position: relative; overflow: hidden; animation: buttonPulse 2s infinite alternate; margin-top: 10px; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 68, 148, 0.6); background: var(--main-red); }
+        .btn-submit::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: shine 3.5s infinite; }
+        
+        .auth-footer { margin-top: 25px; text-align: center; display: flex; flex-direction: column; gap: 15px; }
+        .auth-link { color: var(--text-muted); font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: 0.3s; }
+        .auth-link:hover { color: var(--main-red); }
+        .auth-link strong { color: var(--main-blue); }
+        body.dark-mode .auth-link strong { color: #66b2ff; }
+
+        .remember-me-group { display: flex; align-items: center; justify-content: flex-start; gap: 10px; margin-bottom: 20px; color: var(--text-muted); font-weight: bold; cursor: pointer; }
+        .remember-me-group input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--main-blue); }
+
+        /* ========================================= */
+        /* النوافذ المنبثقة (Modals) */
+        /* ========================================= */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease; justify-content: center; align-items: center; z-index: 200000; display: none; }
+        .modal-overlay.show-modal { display: flex; opacity: 1; }
+        
+        .modal-content { background: var(--card-bg); width: 50vw; max-width: 600px; padding: 40px; border-radius: 25px; position: relative; border-bottom: 8px solid var(--main-red); box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); transition: var(--transition); max-height: 90vh; overflow-y: auto; }
+        @media (max-width: 768px) { .modal-content { width: 95vw; padding: 25px; } }
+        .modal-overlay.show-modal .modal-content { transform: translateY(0); }
+        
+        .close-modal { position: absolute; left: 25px; top: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .close-modal:hover { color: var(--main-red); transform: rotate(90deg) scale(1.2); }
+
+        .modal-header { text-align: center; margin-bottom: 30px; }
+        .modal-header h3 { color: var(--main-red); font-weight: 900; font-size: 1.8rem; }
+        .modal-header p { color: var(--text-muted); font-weight: 600; }
+
+        .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .reg-grid { grid-template-columns: 1fr; } }
+        .reg-group { grid-column: span 1; }
+        .reg-group.full { grid-column: 1 / -1; }
+
+        /* الإشعارات الذكية (Toasts) */
+        .toast-container { position: fixed; bottom: 30px; left: 30px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--card-bg); color: var(--text-main); border-right: 5px solid var(--success-color); padding: 18px 25px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 15px; font-weight: bold; font-size: 1.1rem; animation: slideUpToast 0.5s ease-out forwards; border: 1px solid var(--light-bg); }
+        body.dark-mode .toast { border-color: #333; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .toast.error { border-right-color: var(--main-red); }
+        .toast i { color: var(--success-color); font-size: 1.8rem; }
+        .toast.error i { color: var(--main-red); }
+        @keyframes slideUpToast { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* الفوتر */
+        footer { background: #111; color: #aaa; text-align: center; padding: 25px 20px; border-top: 5px solid var(--main-blue); width: 100%; z-index: 1000; }
+        .dev-btn-footer { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 15px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-family: 'Cairo'; }
+        .dev-btn-footer:hover { background: var(--main-blue); border-color: var(--main-blue); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
+
+        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); margin-left: auto; margin-right: auto;}
+        .dev-contact-info { text-align: right; margin-top: 20px; background: rgba(0,68,148,0.05); padding: 20px; border-radius: 15px; border: 2px dashed var(--main-blue); }
+        .dev-contact-info p { margin: 10px 0; font-weight: bold; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
+        .dev-contact-info a { color: var(--main-blue); }
+
+        .btn-submit:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
+    </style>
+
+    <!-- دمج Firebase SDK وربطه كـ Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        // تمت إضافة doc و updateDoc لتفعيل ميزة تغيير البيانات الإجبارية
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a",
+            measurementId: "G-PBYW0QL67G"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // إتاحة أدوات قاعدة البيانات في الـ window
+        window.db = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+        window.query = query;
+        window.where = where;
+        window.getDocs = getDocs;
+        window.doc = doc;
+        window.updateDoc = updateDoc;
+    </script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-heartbeat"></i> ميديكال <span>فور يو</span></div>
+        <div class="nav-actions">
+            <button class="nav-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i> داكن</button>
+            <button class="nav-btn" onclick="openModal('devModal')"><i class="fas fa-code"></i> المطور</button>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>تسجيل الدخول</h2>
+                <p>مرحباً بعودتك إلى المنصة</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="floating-group">
+                    <input type="text" id="loginId" required>
+                    <label>رقم الهاتف أو البريد الإلكتروني</label>
+                </div>
+
+                <div class="floating-group">
+                    <input type="password" id="loginPass" required>
+                    <label>كلمة المرور</label>
+                    <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('loginPass', this)"></i>
+                </div>
+
+                <!-- خيار تذكر كلمة المرور -->
+                <div class="remember-me-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">تذكر بيانات الدخول</label>
+                </div>
+
+                <button type="submit" class="btn-submit">دخول آمن <i class="fas fa-sign-in-alt"></i></button>
+
+                <div class="auth-footer">
+                    <a class="auth-link" onclick="openModal('forgotPasswordModal')">هل نسيت كلمة المرور؟</a>
+                    <a class="auth-link" onclick="openModal('registerModal')">ليس لديك حساب؟ <strong>سجل طلب انضمام</strong></a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p style="font-size: 1.1rem; font-weight: 900; color: white; margin:0;">جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
+        <button class="dev-btn-footer" onclick="openModal('devModal')"><i class="fas fa-code"></i> التطوير بواسطة CLOUD ART</button>
+    </footer>
+
+    <!-- ========================================= -->
+    <!-- النوافذ المنبثقة التفاعلية (Modals) -->
+    <!-- ========================================= -->
+
+    <!-- نافذة تحديث البيانات الإجبارية (للأعضاء المضافين يدوياً من الأدمن) -->
+    <div id="forceUpdateModal" class="modal-overlay" onclick="closeModalOutside(event, 'forceUpdateModal')">
+        <div class="modal-content" style="max-width: 450px; text-align: center; border-bottom-color: var(--main-blue);">
+            <div class="modal-header" style="margin-bottom: 20px;">
+                <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--main-blue); margin-bottom:15px;"></i>
+                <h3 style="color: var(--main-blue);">تأمين الحساب (لأول مرة)</h3>
+                <p>تمت إضافتك من قِبل الإدارة. لضمان خصوصيتك، يرجى تغيير بيانات الدخول الافتراضية الخاصة بك الآن.</p>
+            </div>
+            
+            <form onsubmit="handleForceUpdate(event)">
+                <div class="floating-group">
+                    <input type="text" id="newLoginId" required>
+                    <label>رقم الهاتف أو البريد الإلكتروني الجديد</label>
+                </div>
+                <div class="floating-group">
+                    <input type="password" id="newLoginPass" required>
+                    <label>كلمة المرور الجديدة</label>
+                    <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('newLoginPass', this)"></i>
+                </div>
+                <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, var(--main-blue), #0066cc);">حفظ البيانات ودخول <i class="fas fa-shield-alt"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 1. نافذة استمارة الانضمام -->
+    <div id="registerModal" class="modal-overlay" onclick="closeModalOutside(event, 'registerModal')">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
+            <div class="modal-header">
+                <h3>طلب انضمام جديد</h3>
+                <p>أكمل بياناتك المبدئية لفتح ملفك بالمنظمة</p>
+            </div>
+            
+            <form id="registerForm" onsubmit="handleRegistration(event)">
+                <div class="reg-grid">
+                    <div class="floating-group reg-group full">
+                        <input type="text" id="regName" required>
+                        <label>الاسم الرباعي</label>
+                    </div>
+                    
+                    <div class="floating-group reg-group">
+                        <input type="tel" id="regPhone" required>
+                        <label>رقم الهاتف (واتساب)</label>
+                    </div>
+                    
+                    <div class="floating-group reg-group">
+                        <input type="email" id="regEmail" required>
+                        <label>البريد الإلكتروني</label>
+                    </div>
+                    
+                    <div class="floating-group reg-group full">
+                        <input type="text" id="regProfession" placeholder="طبيب، ممرض، تقني..." required>
+                        <label style="top:0; font-size:0.9rem; color:var(--main-blue); font-weight:900;">التخصص / المهنة</label>
+                    </div>
+
+                    <div class="floating-group reg-group full">
+                        <select id="regType" required>
+                            <option value="" disabled selected></option>
+                            <option value="عضو_عادي">عضو عادي</option>
+                            <option value="عضو_فخري">عضو فخري</option>
+                            <option value="عضو_منتسب">عضو منتسب</option>
+                            <option value="مكتب_الامانة_العامة">مكتب الأمانة العامة</option>
+                            <option value="المكتب_الاعلامي">المكتب الإعلامي</option>
+                            <option value="المكتب_المالي">المكتب المالي</option>
+                            <option value="مكتب_البرامج_والمشاريع">مكتب البرامج والمشاريع</option>
+                            <option value="مكتب_شؤون_العضوية">مكتب شؤون العضوية</option>
+                            <option value="مكتب_التقييم_والمتابعة">مكتب التقييم والمتابعة</option>
+                            <option value="المكتب_الاجتماعي">المكتب الاجتماعي</option>
+                            <option value="مكتب_الموارد_البشرية">مكتب الموارد البشرية</option>
+                            <option value="الجمعية_العمومية">الجمعية العمومية</option>
+                        </select>
+                        <label style="top:0; font-size:0.9rem; color:var(--main-blue); font-weight:900;">نوع الانضمام / العضوية</label>
+                    </div>
+
+                    <div class="floating-group reg-group">
+                        <input type="password" id="regPass" required>
+                        <label>كلمة المرور</label>
+                        <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('regPass', this)"></i>
+                    </div>
+                    
+                    <div class="floating-group reg-group">
+                        <input type="password" id="regPassConfirm" required>
+                        <label>تأكيد كلمة المرور</label>
+                        <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('regPassConfirm', this)"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, var(--main-red), #900000); box-shadow: 0 8px 25px rgba(211,47,47,0.4);">
+                    إرسال الطلب للإدارة <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. استعادة كلمة المرور -->
+    <div id="forgotPasswordModal" class="modal-overlay" onclick="closeModalOutside(event, 'forgotPasswordModal')">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <span class="close-modal" onclick="closeModal('forgotPasswordModal')">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-lock" style="font-size: 3rem; color: var(--main-blue); margin-bottom:15px;"></i>
+                <h3 style="color: var(--main-blue);">استعادة كلمة المرور</h3>
+                <p>أدخل بريدك أو رقمك وسنرسل لك رمز التفعيل</p>
+            </div>
+            <form onsubmit="handlePasswordReset(event)">
+                <div class="floating-group">
+                    <input type="text" required>
+                    <label>البريد الإلكتروني أو الهاتف</label>
+                </div>
+                <button type="submit" class="btn-submit">إرسال الرمز <i class="fas fa-envelope"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. نافذة المطور -->
+    <div id="devModal" class="modal-overlay" onclick="closeModalOutside(event, 'devModal')">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <span class="close-modal" onclick="closeModal('devModal')">&times;</span>
+            <div class="dev-img">Cloud<br>Art</div>
+            <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تصميم وتطوير: CLOUD ART</h3>
+            <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: bold;">حلول برمجية متطورة للأنظمة الطبية</p>
+            <div class="dev-contact-info">
+                <p><i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i> واتساب: <a href="https://wa.me/249127825486" style="direction: ltr; font-weight: bold;">0127825486</a></p>
+                <p><i class="fas fa-phone-alt" style="color: var(--main-blue); font-size: 1.3rem;"></i> مكالمات: <a href="tel:0964278052" style="direction: ltr; font-weight: bold;">0964278052</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- الإشعارات -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('medicalTheme', isDark ? 'dark' : 'light');
+            document.querySelectorAll('.theme-toggle').forEach(btn => {
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
+            });
+        }
+
+        // جلب البيانات المحفوظة (التعبئة التلقائية عند التحميل)
+        window.onload = () => {
+            if(localStorage.getItem('medicalTheme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.theme-toggle').forEach(btn => { btn.innerHTML = '<i class="fas fa-sun"></i> فاتح'; });
+            }
+
+            const savedPhone = localStorage.getItem('savedPhone');
+            const savedPass = localStorage.getItem('savedPass');
+            const rememberMe = localStorage.getItem('rememberMe');
+
+            if (savedPhone) {
+                document.getElementById('loginId').value = savedPhone;
+            }
+            if (savedPass && rememberMe === 'true') {
+                document.getElementById('loginPass').value = savedPass;
+                document.getElementById('rememberMe').checked = true;
+            }
+        };
+
+        function openModal(modalId) { document.getElementById(modalId).classList.add('show-modal'); }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('show-modal'); }
+        function closeModalOutside(event, modalId) { if (event.target.id === modalId) closeModal(modalId); }
+
+        function togglePassword(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconElement.classList.remove('fa-eye-slash'); iconElement.classList.add('fa-eye');
+                iconElement.style.color = "var(--main-blue)";
+            } else {
+                input.type = "password";
+                iconElement.classList.remove('fa-eye'); iconElement.classList.add('fa-eye-slash');
+                iconElement.style.color = "var(--text-muted)";
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(100%)'; setTimeout(() => toast.remove(), 500); }, 4000);
+        }
+
+        // تفريغ الحقول في حالة الخطأ
+        function clearLoginFields() {
+            document.getElementById('loginId').value = '';
+            document.getElementById('loginPass').value = '';
+        }
+
+        // التوجيه وحفظ البيانات بعد الدخول الناجح
+        function handleSuccessfulLogin(phone, pass, remember, msg) {
+            localStorage.setItem('savedPhone', phone);
+            if (remember) {
+                localStorage.setItem('savedPass', pass);
+                localStorage.setItem('rememberMe', 'true');
+            } else {
+                localStorage.removeItem('savedPass');
+                localStorage.setItem('rememberMe', 'false');
+            }
+            showToast("كلمة المرور صحيحة، جاري المصادقة...", "success");
+            setTimeout(() => { showToast(msg, "success"); }, 800);
+            setTimeout(() => { window.location.href = 'home.html'; }, 3000);
+        }
+
+        // متغيرات للتحكم الإجباري بالبيانات للمستخدمين المضافين يدوياً
+        let currentUpdateDocId = null;
+        let originalRememberMe = false;
+
+        // معالجة تسجيل الدخول الأساسية
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const loginId = document.getElementById('loginId').value;
+            const loginPass = document.getElementById('loginPass').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                // 1. التحقق من هوية الأدمن
+                if (loginId === '0964278052' && loginPass === '096020') {
+                    handleSuccessfulLogin(loginId, loginPass, rememberMe, "مرحباً بك أيها المدير (CLOUD ART)! جاري تحويلك للشاشة الرئيسية...");
+                    return;
+                }
+
+                // 2. التحقق من الأعضاء
+                const q = window.query(window.collection(window.db, "joinRequests"), window.where("phone", "==", loginId), window.where("password", "==", loginPass));
+                const querySnapshot = await window.getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    let userDoc = null;
+                    let docId = null;
+                    querySnapshot.forEach((doc) => { 
+                        userDoc = doc.data(); 
+                        docId = doc.id; 
+                    });
+                    
+                    if (userDoc.status === 'approved') {
+                        // التحقق إذا كان مضاف يدوياً من الإدارة ويجب تغيير بياناته
+                        if (userDoc.isManuallyAdded === true) {
+                            currentUpdateDocId = docId;
+                            originalRememberMe = rememberMe;
+                            document.getElementById('newLoginId').value = loginId; // وضع الرقم الافتراضي لتسهيل التعديل
+                            
+                            openModal('forceUpdateModal');
+                            
+                            btn.innerHTML = originalContent;
+                            btn.style.pointerEvents = 'auto';
+                        } else {
+                            handleSuccessfulLogin(loginId, loginPass, rememberMe, `مرحباً بك ${userDoc.name}! جاري تحويلك للشاشة الرئيسية...`);
+                        }
+                    } else {
+                        showToast("حسابك ما زال قيد المراجعة من الإدارة.", "error");
+                        clearLoginFields();
+                        btn.innerHTML = originalContent;
+                        btn.style.pointerEvents = 'auto';
+                    }
+                } else {
+                    showToast("بيانات الدخول غير صحيحة.", "error");
+                    clearLoginFields();
+                    btn.innerHTML = originalContent;
+                    btn.style.pointerEvents = 'auto';
+                }
+            } catch (error) {
+                console.error("Login Error: ", error);
+                showToast("حدث خطأ أثناء الاتصال بقاعدة البيانات.", "error");
+                btn.innerHTML = originalContent;
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+
+        // تحديث البيانات الإجبارية للمضافين يدوياً
+        async function handleForceUpdate(event) {
+            event.preventDefault();
+            const newId = document.getElementById('newLoginId').value;
+            const newPass = document.getElementById('newLoginPass').value;
+            
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحديث...';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                const reqRef = window.doc(window.db, "joinRequests", currentUpdateDocId);
+                // تحديث البيانات وإزالة شرط (isManuallyAdded) حتى لا يسأله مرة أخرى
+                await window.updateDoc(reqRef, { 
+                    phone: newId, 
+                    password: newPass, 
+                    isManuallyAdded: false 
+                });
+
+                closeModal('forceUpdateModal');
+                showToast("تم تأمين حسابك بنجاح!");
+                
+                // تسجيل الدخول التلقائي بعد التحديث بنجاح
+                handleSuccessfulLogin(newId, newPass, originalRememberMe, "جاري تحويلك للشاشة الرئيسية...");
+
+            } catch (error) {
+                console.error("Update Error: ", error);
+                showToast("حدث خطأ أثناء التحديث.", "error");
+                btn.innerHTML = originalContent;
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+
+        // طلب الانضمام العادي
+        async function handleRegistration(event) {
+            event.preventDefault();
+            const pass1 = document.getElementById('regPass').value;
+            const pass2 = document.getElementById('regPassConfirm').value;
+            
+            if (pass1 !== pass2) { showToast("كلمتا المرور غير متطابقتين!", "error"); return; }
+
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                await window.addDoc(window.collection(window.db, "joinRequests"), {
+                    name: document.getElementById('regName').value,
+                    phone: document.getElementById('regPhone').value,
+                    email: document.getElementById('regEmail').value,
+                    profession: document.getElementById('regProfession').value,
+                    type: document.getElementById('regType').value,
+                    password: pass1, 
+                    status: 'pending',
+                    isManuallyAdded: false, // مسجل بنفسه
+                    timestamp: window.serverTimestamp()
+                });
+
+                closeModal('registerModal');
+                showToast("تم رفع طلب انضمامك بنجاح لقاعدة البيانات. يرجى انتظار موافقة الإدارة.");
+                document.getElementById('registerForm').reset();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                showToast("حدث خطأ أثناء الاتصال بقاعدة البيانات. تأكد من الإنترنت.", "error");
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+
+        function handlePasswordReset(event) {
+            event.preventDefault(); closeModal('forgotPasswordModal'); showToast("تم إرسال رابط استعادة كلمة المرور لبريدك بنجاح."); event.target.reset();
+        }
+    </script>
+</body>
+</html>

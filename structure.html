@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ميديكال فور يو | الهيكل الإداري</title>
+    <link rel="icon" href="logo.jpeg" type="image/png">
+    
+    <!-- الخطوط والأيقونات -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========================================= */
+        /* المتغيرات المشتركة مع الشاشة الرئيسية */
+        /* ========================================= */
+        :root {
+            --main-blue: #004494;
+            --main-blue-hover: #003377;
+            --main-red: #d32f2f;
+            --main-red-hover: #b71c1c;
+            --light-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --tree-line: #b3cde0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body.dark-mode {
+            --light-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f4f7f6;
+            --text-muted: #aaaaaa;
+            --tree-line: #444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        html, body { overflow-x: hidden; width: 100%; scroll-behavior: smooth; }
+        body { background-color: var(--light-bg); color: var(--text-main); line-height: 1.6; transition: background-color 0.4s ease; padding-bottom: 90px; }
+        a { text-decoration: none; transition: var(--transition); }
+
+        /* ========================================= */
+        /* الهيدر والقائمة (نفس الاحترافية) */
+        /* ========================================= */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        body.dark-mode .navbar { background: rgba(30, 30, 30, 0.95); border-bottom: 1px solid #333; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900; color: var(--main-blue); }
+        body.dark-mode .logo { color: #66b2ff; }
+        .logo i { color: var(--main-red); font-size: 2rem; }
+        .nav-links { list-style: none; display: flex; gap: 20px; align-items: center; }
+        .nav-links li a { color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 6px; font-size: 1.05rem; }
+        .nav-links li a:hover { color: var(--main-red); }
+
+        .nav-dev-btn { background: rgba(211, 47, 47, 0.1); color: var(--main-red) !important; border: 1px solid var(--main-red); padding: 8px 18px; border-radius: 10px; font-weight: 900; transition: 0.3s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .nav-dev-btn:hover { background: var(--main-red); color: white !important; box-shadow: 0 4px 15px rgba(211,47,47,0.4); transform: translateY(-2px); }
+
+        /* ========================================= */
+        /* الترويسة الداخلية (Page Header) */
+        /* ========================================= */
+        .page-header { background: linear-gradient(135deg, var(--main-blue), #002244); padding: 60px 20px; text-align: center; color: white; position: relative; overflow: hidden; }
+        .page-header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 20%); background-size: 20px 20px; opacity: 0.3; }
+        .page-header h1 { font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; z-index: 2; }
+        .page-header p { font-size: 1.2rem; font-weight: 600; opacity: 0.9; position: relative; z-index: 2; }
+
+        /* ========================================= */
+        /* تصميم الهيكل التنظيمي (Organizational Tree) */
+        /* ========================================= */
+        .org-container { max-width: 1200px; margin: 60px auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+        
+        /* البطاقة الرئيسية (الرئيس التنفيذي) */
+        .ceo-card { background: linear-gradient(135deg, var(--main-red), #900000); color: white; padding: 30px; border-radius: 20px; text-align: center; width: 350px; box-shadow: 0 15px 40px rgba(211,47,47,0.4); position: relative; animation: pulseCeo 2s infinite alternate; z-index: 2; }
+        @keyframes pulseCeo { 0% { box-shadow: 0 10px 30px rgba(211,47,47,0.4); transform: translateY(0); } 100% { box-shadow: 0 15px 50px rgba(211,47,47,0.6); transform: translateY(-5px); } }
+        .ceo-card .icon-wrapper { width: 80px; height: 80px; background: white; color: var(--main-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .ceo-card h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+        .ceo-card p { font-size: 1.1rem; font-weight: 600; opacity: 0.9; }
+
+        /* الشبكة المتفرعة (الأمناء) */
+        .org-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; position: relative; padding-top: 30px; }
+        
+        /* خطوط الربط (الشجرة) للكمبيوتر */
+        @media (min-width: 769px) {
+            .org-grid::before { content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 2px; height: 40px; background-color: var(--tree-line); }
+            .org-grid::after { content: ''; position: absolute; top: 30px; left: 10%; width: 80%; height: 2px; background-color: var(--tree-line); }
+            .org-card::before { content: ''; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 2px; height: 30px; background-color: var(--tree-line); }
+        }
+
+        /* تصميم بطاقة الأمين */
+        .org-card { background: var(--card-bg); border-radius: 15px; padding: 25px 20px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid var(--light-bg); border-top: 5px solid var(--main-blue); position: relative; transition: var(--transition); cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        body.dark-mode .org-card { border-color: #333; border-top-color: var(--main-blue); }
+        .org-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,68,148,0.2); border-top-color: var(--main-red); }
+        
+        .org-card .icon-wrapper { width: 65px; height: 65px; background: rgba(0,68,148,0.1); color: var(--main-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 15px; transition: 0.3s; }
+        .org-card:hover .icon-wrapper { background: var(--main-red); color: white; transform: rotateY(360deg); }
+        
+        .org-card h3 { color: var(--text-main); font-size: 1.4rem; font-weight: 900; margin-bottom: 10px; }
+        
+        /* قسم النائب داخل البطاقة */
+        .deputy-box { background: var(--light-bg); padding: 10px; border-radius: 8px; width: 100%; border: 1px dashed var(--main-blue); transition: 0.3s; }
+        .org-card:hover .deputy-box { border-color: var(--main-red); background: rgba(211,47,47,0.05); }
+        .deputy-box span { display: block; font-size: 0.9rem; color: var(--text-muted); font-weight: 700; margin-bottom: 3px; }
+        .deputy-box strong { color: var(--text-main); font-size: 1.1rem; }
+
+        /* المجالس العليا (بطاقتان في الأسفل) */
+        .councils-section { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; width: 100%; margin-top: 50px; border-top: 2px dashed var(--tree-line); padding-top: 50px; position: relative; }
+        .council-card { background: var(--card-bg); border-radius: 15px; padding: 30px; text-align: center; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-right: 8px solid #9b59b6; transition: var(--transition); }
+        body.dark-mode .council-card { border-color: #333; border-right-color: #9b59b6; }
+        .council-card:hover { transform: scale(1.03); box-shadow: 0 20px 40px rgba(155,89,182,0.3); }
+        .council-card i { font-size: 3rem; color: #9b59b6; margin-bottom: 15px; }
+        .council-card h3 { color: var(--text-main); font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; }
+        .council-card p { color: var(--text-muted); font-weight: 600; line-height: 1.6; }
+
+        .fade-element { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-element.visible { opacity: 1; transform: translateY(0); }
+
+        /* ========================================= */
+        /* النوافذ العائمة والمبرمج */
+        /* ========================================= */
+        /* الزر العائم */
+        .quick-access-btn { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: linear-gradient(135deg, var(--main-blue), #0066cc); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 68, 148, 0.5); z-index: 100000; transition: var(--transition); border: none; }
+        .quick-access-btn:hover, .quick-access-btn.active-btn { transform: scale(1.1) rotate(90deg); background: var(--main-red); box-shadow: 0 10px 30px rgba(211,47,47,0.5); }
+        
+        .scroll-btn { position: fixed; bottom: 30px; left: 30px; width: 50px; height: 50px; background: var(--card-bg); color: var(--main-blue); border: 2px solid var(--main-blue); border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; z-index: 99999; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .scroll-btn:hover { background: var(--main-blue); color: white; transform: translateY(-5px); }
+
+        /* قائمة التنقل */
+        .quick-menu { position: fixed; bottom: 110px; right: 30px; background: var(--card-bg); backdrop-filter: blur(15px); width: 280px; max-height: 75vh; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); z-index: 99999; border: 1px solid var(--light-bg); display: block !important; visibility: hidden; opacity: 0; pointer-events: none; transform: translateY(20px) scale(0.9); transition: var(--transition); overflow-y: auto; }
+        .quick-menu.active { visibility: visible !important; opacity: 1 !important; transform: translateY(0) scale(1) !important; pointer-events: auto !important; }
+        .quick-menu ul { list-style: none; padding: 10px 0; }
+        .quick-menu li { border-bottom: 1px solid var(--light-bg); }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 15px 25px; color: var(--text-main); font-weight: 800; transition: 0.3s; }
+        .quick-menu li a:hover { color: var(--main-red); padding-right: 35px; background: rgba(211,47,47,0.05); }
+        .quick-menu li a i { width: 25px; text-align: center; color: var(--main-blue); font-size: 1.3rem; transition: 0.3s; }
+
+        /* نافذة المبرمج (Dev Modal - 50%) */
+        .dev-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease; justify-content: center; align-items: center; }
+        .dev-modal.show-modal { display: flex; opacity: 1; }
+        .dev-content { background: var(--card-bg); width: 50vw; max-width: 450px; padding: 40px 30px; border-radius: 25px; text-align: center; position: relative; border-bottom: 8px solid var(--main-blue); box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); transition: var(--transition); }
+        @media (max-width: 768px) { .dev-content { width: 90vw; } }
+        .dev-modal.show-modal .dev-content { transform: translateY(0); }
+        .close-dev { position: absolute; left: 25px; top: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .close-dev:hover { color: var(--main-red); transform: rotate(90deg) scale(1.2); }
+        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); }
+        .dev-contact-info { text-align: right; margin-top: 20px; background: rgba(0,68,148,0.05); padding: 20px; border-radius: 15px; border: 2px dashed var(--main-blue); }
+        .dev-contact-info p { margin: 10px 0; font-weight: bold; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
+        .dev-contact-info a { color: var(--main-blue); }
+
+        /* الفوتر */
+        footer { background: #111; color: #aaa; text-align: center; padding: 40px 20px; border-top: 5px solid var(--main-blue); margin-top: 60px; }
+        .copyright-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .copyright-btn:hover { background: var(--main-blue); border-color: var(--main-blue); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
+
+        .btn:active, .org-card:active, .quick-access-btn:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
+
+        /* التجاوب مع الجوال */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; padding: 15px; }
+            .nav-links { overflow-x: auto; width: 100%; justify-content: flex-start; padding-bottom: 5px; flex-wrap: nowrap; }
+            .nav-links li { flex: 0 0 auto; }
+            .page-header h1 { font-size: 2.2rem; }
+            .ceo-card { width: 100%; max-width: 350px; }
+            .org-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } /* بطاقتين في الهاتف */
+            .org-card { padding: 15px 10px; }
+            .org-card .icon-wrapper { width: 50px; height: 50px; font-size: 1.5rem; }
+            .org-card h3 { font-size: 1rem; }
+            .deputy-box { padding: 8px; }
+            .deputy-box span { font-size: 0.8rem; }
+            .deputy-box strong { font-size: 0.9rem; }
+            .councils-section { flex-direction: column; align-items: center; gap: 20px; }
+            .council-card { width: 100%; padding: 20px; }
+            .quick-access-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; }
+            .quick-menu { bottom: 90px; right: 20px; width: calc(100vw - 40px); }
+            .scroll-btn { bottom: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            ميديكال <span>فور يو</span>
+        </div>
+        <ul class="nav-links">
+            <!-- الربط مع الشاشة الرئيسية التي أنشأناها مسبقاً -->
+            <li><a href="home.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="#" style="color: var(--main-red);"><i class="fas fa-sitemap"></i> الهيكل الإداري</a></li>
+            <li><a href="#"><i class="fas fa-handshake"></i> الأنشطة</a></li>
+            <li><a href="#"><i class="fas fa-id-card"></i> العضوية</a></li>
+            <li><button class="nav-dev-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
+            <li><button class="nav-dev-btn" onclick="openDevModal()"><i class="fas fa-code"></i> المطور</button></li>
+        </ul>
+    </nav>
+
+    <!-- الترويسة الداخلية -->
+    <header class="page-header">
+        <h1>الهيكل الإداري والتنظيمي</h1>
+        <p>تعرف على القيادات والكوادر التي تدير وتنظم عمل منظمة ميديكال فور يو وفق أعلى معايير الجودة.</p>
+    </header>
+
+    <!-- الهيكل الإداري -->
+    <div class="org-container">
+        
+        <!-- الرئيس التنفيذي -->
+        <div class="ceo-card fade-element">
+            <div class="icon-wrapper"><i class="fas fa-user-tie"></i></div>
+            <h2>الرئيس التنفيذي</h2>
+            <p>القيادة والإشراف العام</p>
+        </div>
+
+        <!-- شبكة الأمناء (البطاقات المتفرعة) -->
+        <div class="org-grid">
+            
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-user-shield"></i></div>
+                <h3>الأمين العام</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب الأمين العام</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-money-check-alt"></i></div>
+                <h3>الأمين المالي</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب الأمين المالي</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-bullhorn"></i></div>
+                <h3>الأمين الإعلامي</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب الأمين الإعلامي</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-users"></i></div>
+                <h3>الأمين الاجتماعي</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب الأمين الاجتماعي</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-project-diagram"></i></div>
+                <h3>أمين البرامج والمشاريع</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب أمين المشاريع</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-chart-line"></i></div>
+                <h3>أمين التقييم والمتابعة</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب أمين التقييم</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-id-badge"></i></div>
+                <h3>أمين شؤون العضوية</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب أمين العضوية</strong>
+                </div>
+            </div>
+
+            <div class="org-card fade-element">
+                <div class="icon-wrapper"><i class="fas fa-user-md"></i></div>
+                <h3>أمين الموارد البشرية</h3>
+                <div class="deputy-box">
+                    <span>ينوب عنه:</span>
+                    <strong>نائب الموارد البشرية</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- المجالس العليا والتأسيسية -->
+        <div class="councils-section">
+            
+            <div class="council-card fade-element">
+                <i class="fas fa-users-cog"></i>
+                <h3>المجلس الاستشاري</h3>
+                <p>يضم نخبة من كبار الأطباء والخبراء لتقديم الرؤى الاستراتيجية والنصح للمكتب التنفيذي.</p>
+            </div>
+
+            <div class="council-card fade-element" style="border-right-color: var(--main-blue);">
+                <i class="fas fa-globe" style="color: var(--main-blue);"></i>
+                <h3>الجمعية العمومية</h3>
+                <p>السلطة العليا بالمنظمة، تضم كافة الأعضاء المسجلين ولها حق انتخاب ومراقبة المكتب التنفيذي.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <p style="font-size: 1.2rem; font-weight: 900; color: white; letter-spacing: 1px;">جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
+            <button class="copyright-btn" onclick="openDevModal()">
+                <i class="fas fa-code"></i> التطوير بواسطة CLOUD ART
+            </button>
+        </div>
+    </footer>
+
+    <!-- نافذة المطور (Cloud Art Modal) -->
+    <div id="devModal" class="dev-modal" onclick="closeDevModal(event)">
+        <div class="dev-content" id="devContent">
+            <span class="close-dev" onclick="closeDevModal(event, true)">&times;</span>
+            
+            <div style="display: flex; justify-content: center;">
+                <div class="dev-img">Cloud<br>Art</div>
+            </div>
+            
+            <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تصميم وتطوير: CLOUD ART</h3>
+            <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: bold;">حلول برمجية متطورة للأنظمة الطبية</p>
+            
+            <div class="dev-contact-info">
+                <p><i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i> واتساب: <a href="https://wa.me/249127825486" style="direction: ltr; font-weight: bold;">0127825486</a></p>
+                <p><i class="fas fa-phone-alt" style="color: var(--main-blue); font-size: 1.3rem;"></i> مكالمات: <a href="tel:0964278052" style="direction: ltr; font-weight: bold;">0964278052</a></p>
+            </div>
+
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--light-bg);">
+            <p style="font-size: 0.95rem; color: var(--text-muted); font-weight: bold;">صُنع بكل فخر لدعم القطاع الصحي والمجتمعي</p>
+        </div>
+    </div>
+
+    <!-- الأزرار العائمة (Menu & Scroll) -->
+    <button class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات"><i class="fas fa-th-large" style="pointer-events: none;"></i></button>
+    <button class="scroll-btn" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="أعلى الصفحة"><i class="fas fa-chevron-up"></i></button>
+
+    <!-- القائمة العائمة السريعة -->
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <!-- الربط (Routing) مع الشاشة الرئيسية (home.html) -->
+            <li><a href="home.html"><i class="fas fa-home"></i> الشاشة الرئيسية</a></li>
+            <li><a href="structure.html" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-sitemap"></i> الهيكل الإداري</a></li>
+            <li><a href="#" onclick="alert('الشاشة القادمة: الأنشطة')"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
+            <li><a href="#" onclick="alert('الشاشة القادمة: الأكاديمية')"><i class="fas fa-graduation-cap"></i> الأكاديمية الطبية</a></li>
+            <li><a href="#" onclick="alert('الشاشة القادمة: العضوية')"><i class="fas fa-id-card"></i> استمارة العضوية</a></li>
+            <li><a href="#" onclick="alert('تسجيل الخروج')"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+        </ul>
+    </div>
+
+    <script>
+        // 1. نظام الوضع الليلي الذكي
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('medicalTheme', isDark ? 'dark' : 'light');
+            
+            document.querySelectorAll('.theme-toggle').forEach(btn => {
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
+            });
+        }
+
+        window.onload = () => {
+            if(localStorage.getItem('medicalTheme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.theme-toggle').forEach(btn => {
+                    btn.innerHTML = '<i class="fas fa-sun"></i> فاتح';
+                });
+            }
+        };
+
+        // 2. القائمة العائمة
+        const quickMenu = document.getElementById('quickMenu');
+        const quickToggleBtn = document.getElementById('quickToggleBtn');
+
+        quickToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            quickMenu.classList.toggle('active');
+            this.classList.toggle('active-btn');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (quickMenu.classList.contains('active') && !quickMenu.contains(e.target) && !quickToggleBtn.contains(e.target)) {
+                quickMenu.classList.remove('active');
+                quickToggleBtn.classList.remove('active-btn');
+            }
+        });
+
+        // 3. نافذة المطور
+        const devModal = document.getElementById('devModal');
+        function openDevModal() { devModal.classList.add('show-modal'); }
+        function closeDevModal(e, forceClose = false) {
+            if (forceClose || e.target === devModal) devModal.classList.remove('show-modal');
+        }
+
+        // 4. تأثيرات الظهور عند التمرير (Fade Animation)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.fade-element').forEach((el) => { observer.observe(el); });
+
+        // 5. زر الصعود
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) scrollTopBtn.style.display = 'flex';
+            else scrollTopBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
