@@ -5,18 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق منظمة ميديكال فور يو - تسجيل الدخول</title>
     
+    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { --main-blue: #004494; --main-red: #d32f2f; --light-bg: #f4f7f6; --card-bg: #ffffff; --text-main: #333333; --text-muted: #888888; --success-color: #27ae60; --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        body.dark-mode { --light-bg: #121212; --card-bg: #1e1e1e; --text-main: #f4f7f6; --text-muted: #aaaaaa; }
-        
+        /* ========================================= */
+        /* المتغيرات (الهوية البصرية) */
+        /* ========================================= */
+        :root {
+            --main-blue: #004494;
+            --main-red: #d32f2f;
+            --light-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #888888;
+            --success-color: #27ae60;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body.dark-mode {
+            --light-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f4f7f6;
+            --text-muted: #aaaaaa;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         html, body { overflow-x: hidden; width: 100%; height: 100%; }
-        body { background: var(--light-bg); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; transition: background-color 0.4s ease; }
+        
+        body { 
+            background: var(--light-bg); color: var(--text-main); 
+            display: flex; flex-direction: column; min-height: 100vh;
+            transition: background-color 0.4s ease;
+        }
         a { text-decoration: none; transition: var(--transition); }
 
+        /* ========================================= */
+        /* الهيدر (شريط التنقل البسيط) */
+        /* ========================================= */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         body.dark-mode .navbar { background: rgba(30, 30, 30, 0.95); border-bottom: 1px solid #333; }
         .logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 900; color: var(--main-blue); }
@@ -28,28 +55,86 @@
         .nav-btn { background: rgba(211, 47, 47, 0.1); color: var(--main-red); border: 1px solid var(--main-red); padding: 8px 18px; border-radius: 10px; font-weight: 900; transition: 0.3s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
         .nav-btn:hover { background: var(--main-red); color: white; box-shadow: 0 4px 15px rgba(211,47,47,0.4); transform: translateY(-2px); }
 
+        /* ========================================= */
+        /* واجهة الدخول (الخلفية والبطاقة) */
+        /* ========================================= */
         .auth-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; position: relative; overflow: hidden; background: linear-gradient(-45deg, rgba(0, 68, 148, 0.9), rgba(0, 34, 68, 0.95)), url('https://images.unsplash.com/photo-1551076805-e1869043e560?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; background-blend-mode: overlay; }
+        
         .auth-card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 50px 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; z-index: 10; animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 8px solid var(--main-blue); }
         body.dark-mode .auth-card { box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-color: #333; border-top-color: var(--main-blue); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
 
         .auth-header { text-align: center; margin-bottom: 35px; }
+        
+        /* ========================================= */
+        /* إضافات اللوجو والنص المتحرك للفخامة والتأثير */
+        /* ========================================= */
+        .auth-main-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            display: block;
+            border: 4px solid var(--main-blue);
+            box-shadow: 0 0 20px rgba(0, 68, 148, 0.6), 0 0 40px rgba(211, 47, 47, 0.4);
+            animation: logoHeartbeat 2.5s infinite ease-in-out;
+        }
+
+        @keyframes logoHeartbeat {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 68, 148, 0.6), 0 0 40px rgba(211, 47, 47, 0.4); }
+            15% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 68, 148, 0.9), 0 0 60px rgba(211, 47, 47, 0.7); }
+            30% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 68, 148, 0.6), 0 0 40px rgba(211, 47, 47, 0.4); }
+            45% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 68, 148, 0.9), 0 0 60px rgba(211, 47, 47, 0.7); }
+            60% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 68, 148, 0.6), 0 0 40px rgba(211, 47, 47, 0.4); }
+        }
+
+        .auth-main-title {
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--main-blue), var(--main-red), var(--main-blue));
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShine 3s linear infinite;
+            text-shadow: 0px 0px 10px rgba(0, 68, 148, 0.2);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
+        }
+
         .auth-header h2 { color: var(--main-blue); font-size: 2rem; font-weight: 900; margin-bottom: 5px; }
         body.dark-mode .auth-header h2 { color: #66b2ff; }
         .auth-header p { color: var(--text-muted); font-weight: 600; font-size: 1.1rem; }
 
+        /* ========================================= */
+        /* حقول الإدخال الاحترافية (Floating Labels & Glow) */
+        /* ========================================= */
         .floating-group { position: relative; margin-bottom: 25px; }
+        
         .floating-group input, .floating-group select { width: 100%; padding: 18px 20px; border: 2px solid var(--light-bg); border-radius: 12px; background: transparent; font-size: 1.1rem; color: var(--text-main); font-family: 'Cairo'; transition: all 0.3s ease; outline: none; }
         body.dark-mode .floating-group input, body.dark-mode .floating-group select { border-color: #333; }
+        
         .floating-group label { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; pointer-events: none; background: var(--card-bg); padding: 0 5px; }
+        
         .floating-group input:focus, .floating-group input:valid, .floating-group select:focus, .floating-group select:valid { border-color: var(--main-blue); box-shadow: 0 0 15px rgba(0, 68, 148, 0.2); }
         .floating-group input:focus ~ label, .floating-group input:valid ~ label, .floating-group select:focus ~ label, .floating-group select:valid ~ label { top: 0; font-size: 0.9rem; color: var(--main-blue); font-weight: 900; }
+
         select option { color: #000000; background-color: #ffffff; font-weight: bold; }
         body.dark-mode select option { color: #ffffff; background-color: #1e1e1e; }
 
         .password-toggle { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; font-size: 1.2rem; transition: 0.3s; z-index: 10; }
         .password-toggle:hover { color: var(--main-blue); }
 
+        /* ========================================= */
+        /* الأزرار والروابط */
+        /* ========================================= */
         .btn-submit { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; border-radius: 50px; font-weight: 900; cursor: pointer; transition: 0.3s; border: none; font-size: 1.2rem; background: linear-gradient(135deg, var(--main-blue), #0066cc); color: white; box-shadow: 0 8px 25px rgba(0, 68, 148, 0.4); position: relative; overflow: hidden; animation: buttonPulse 2s infinite alternate; margin-top: 10px; }
         .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 68, 148, 0.6); background: var(--main-red); }
         .btn-submit::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: shine 3.5s infinite; }
@@ -108,18 +193,22 @@
             .navbar { flex-direction: column; gap: 10px; padding: 10px; }
             .nav-actions { gap: 10px; }
             .auth-card { padding: 30px 20px; width: 95vw; margin: 15px; border-radius: 15px; }
-            .auth-header h2 { font-size: 1.6rem; }
+            .auth-header h2 { font-size: 1.4rem; }
+            .auth-main-title { font-size: 1.6rem; }
+            .auth-main-logo { width: 100px; height: 100px; }
             .floating-group { margin-bottom: 15px; }
             .floating-group input, .floating-group select { padding: 14px 15px; font-size: 1rem; }
             .floating-group label { font-size: 0.95rem; right: 15px; }
             .btn-submit { font-size: 1.1rem; padding: 14px; }
             
-            /* تعديل النوافذ المنبثقة لمنع التداخل والخروج من الشاشة */
-            .modal-overlay { padding: 15px; align-items: flex-start; overflow-y: auto; }
-            .modal-content { width: 100%; max-height: none; margin: auto; padding: 20px 15px; }
+            /* حل تداخل النافذة */
+            .modal-overlay { padding: 10px; align-items: flex-start; overflow-y: auto; }
+            .modal-content { width: 100%; padding: 20px 15px; max-height: none; margin: auto 0; }
+            .modal-header h3 { font-size: 1.4rem; }
+            .modal-header p { font-size: 0.9rem; }
             .reg-grid { grid-template-columns: 1fr; gap: 10px; }
             
-            .toast-container { bottom: 15px; left: 10px; right: 10px; align-items: center; }
+            .toast-container { bottom: 20px; left: 10px; right: 10px; align-items: center; }
             .toast { width: 100%; font-size: 0.95rem; padding: 12px 15px; }
         }
     </style>
@@ -129,19 +218,24 @@
     <nav class="navbar">
         <div class="logo"><i class="fas fa-heartbeat"></i> ميديكال <span>فور يو</span></div>
         <div class="nav-actions">
-            <button class="nav-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i> داكن</button>
-            <button class="nav-btn" onclick="openModal('devModal')"><i class="fas fa-code"></i> المطور</button>
+            <button class="nav-btn theme-toggle" onclick="window.toggleTheme()"><i class="fas fa-moon"></i> داكن</button>
+            <button class="nav-btn" onclick="window.openModal('devModal')"><i class="fas fa-code"></i> المطور</button>
         </div>
     </nav>
 
     <div class="auth-wrapper">
         <div class="auth-card">
             <div class="auth-header">
+                <!-- الإضافات الجديدة: اللوجو والاسم بالتأثيرات الفاخرة -->
+                <img src="WhatsApp Image 2026-06-29 at 11.10.31 AM.jpeg" alt="Medical For You Logo" class="auth-main-logo">
+                <h1 class="auth-main-title">Medical For You</h1>
+                
                 <h2>تسجيل الدخول</h2>
                 <p>مرحباً بعودتك إلى المنصة</p>
             </div>
 
-            <form id="loginForm" onsubmit="handleLogin(event)">
+            <!-- تم إضافة window. للدالة لتعمل بدون أخطاء -->
+            <form id="loginForm" onsubmit="window.handleLogin(event)">
                 <div class="floating-group">
                     <input type="text" id="loginId" required>
                     <label>رقم الهاتف أو البريد الإلكتروني</label>
@@ -150,7 +244,7 @@
                 <div class="floating-group">
                     <input type="password" id="loginPass" required>
                     <label>كلمة المرور</label>
-                    <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('loginPass', this)"></i>
+                    <i class="fas fa-eye-slash password-toggle" onclick="window.togglePassword('loginPass', this)"></i>
                 </div>
 
                 <div class="remember-me-group">
@@ -161,8 +255,8 @@
                 <button type="submit" class="btn-submit">دخول آمن <i class="fas fa-sign-in-alt"></i></button>
 
                 <div class="auth-footer">
-                    <a class="auth-link" onclick="openModal('forgotPasswordModal')">هل نسيت كلمة المرور؟</a>
-                    <a class="auth-link" onclick="openModal('registerModal')">ليس لديك حساب؟ <strong>سجل طلب انضمام</strong></a>
+                    <a class="auth-link" onclick="window.openModal('forgotPasswordModal')">هل نسيت كلمة المرور؟</a>
+                    <a class="auth-link" onclick="window.openModal('registerModal')">ليس لديك حساب؟ <strong>سجل طلب انضمام</strong></a>
                 </div>
             </form>
         </div>
@@ -170,18 +264,19 @@
 
     <footer>
         <p>جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
-        <button class="dev-btn-footer" onclick="openModal('devModal')"><i class="fas fa-code"></i> التطوير بواسطة CLOUD ART</button>
+        <button class="dev-btn-footer" onclick="window.openModal('devModal')"><i class="fas fa-code"></i> التطوير بواسطة CLOUD ART</button>
     </footer>
 
     <!-- نافذة تحديث البيانات الإجبارية -->
-    <div id="forceUpdateModal" class="modal-overlay" onclick="closeModalOutside(event, 'forceUpdateModal')">
+    <div id="forceUpdateModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'forceUpdateModal')">
         <div class="modal-content" style="max-width: 450px; text-align: center; border-bottom-color: var(--main-blue);">
             <div class="modal-header">
                 <i class="fas fa-user-shield" style="font-size: 2.5rem; color: var(--main-blue); margin-bottom:10px;"></i>
                 <h3 style="color: var(--main-blue);">تأمين الحساب (لأول مرة)</h3>
                 <p>تمت إضافتك من قِبل الإدارة. لضمان خصوصيتك، يرجى تغيير بيانات الدخول الافتراضية الخاصة بك الآن.</p>
             </div>
-            <form onsubmit="handleForceUpdate(event)">
+            <!-- تم إضافة window. -->
+            <form onsubmit="window.handleForceUpdate(event)">
                 <div class="floating-group">
                     <input type="text" id="newLoginId" required>
                     <label>رقم الهاتف أو البريد الإلكتروني الجديد</label>
@@ -189,7 +284,7 @@
                 <div class="floating-group">
                     <input type="password" id="newLoginPass" required>
                     <label>كلمة المرور الجديدة</label>
-                    <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('newLoginPass', this)"></i>
+                    <i class="fas fa-eye-slash password-toggle" onclick="window.togglePassword('newLoginPass', this)"></i>
                 </div>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, var(--main-blue), #0066cc);">حفظ البيانات ودخول <i class="fas fa-shield-alt"></i></button>
             </form>
@@ -197,15 +292,16 @@
     </div>
 
     <!-- نافذة استمارة الانضمام -->
-    <div id="registerModal" class="modal-overlay" onclick="closeModalOutside(event, 'registerModal')">
+    <div id="registerModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'registerModal')">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('registerModal')">&times;</span>
             <div class="modal-header">
                 <h3>طلب انضمام جديد</h3>
                 <p>أكمل بياناتك المبدئية لفتح ملفك بالمنظمة</p>
             </div>
             
-            <form id="registerForm" onsubmit="handleRegistration(event)">
+            <!-- تم إضافة window. للدالة لتجنب أي توقف للزر -->
+            <form id="registerForm" onsubmit="window.handleRegistration(event)">
                 <div class="reg-grid">
                     <div class="floating-group reg-group full">
                         <input type="text" id="regName" required>
@@ -244,12 +340,12 @@
                     <div class="floating-group reg-group">
                         <input type="password" id="regPass" required>
                         <label>كلمة المرور</label>
-                        <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('regPass', this)"></i>
+                        <i class="fas fa-eye-slash password-toggle" onclick="window.togglePassword('regPass', this)"></i>
                     </div>
                     <div class="floating-group reg-group">
                         <input type="password" id="regPassConfirm" required>
                         <label>تأكيد كلمة المرور</label>
-                        <i class="fas fa-eye-slash password-toggle" onclick="togglePassword('regPassConfirm', this)"></i>
+                        <i class="fas fa-eye-slash password-toggle" onclick="window.togglePassword('regPassConfirm', this)"></i>
                     </div>
                 </div>
                 <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, var(--main-red), #900000);">
@@ -260,15 +356,16 @@
     </div>
 
     <!-- استعادة كلمة المرور -->
-    <div id="forgotPasswordModal" class="modal-overlay" onclick="closeModalOutside(event, 'forgotPasswordModal')">
+    <div id="forgotPasswordModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'forgotPasswordModal')">
         <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <span class="close-modal" onclick="closeModal('forgotPasswordModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('forgotPasswordModal')">&times;</span>
             <div class="modal-header">
                 <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--main-blue); margin-bottom:10px;"></i>
                 <h3 style="color: var(--main-blue);">استعادة كلمة المرور</h3>
                 <p>أدخل بريدك أو رقمك وسنرسل لك رمز التفعيل</p>
             </div>
-            <form onsubmit="handlePasswordReset(event)">
+            <!-- تم إضافة window. -->
+            <form onsubmit="window.handlePasswordReset(event)">
                 <div class="floating-group">
                     <input type="text" required>
                     <label>البريد الإلكتروني أو الهاتف</label>
@@ -279,9 +376,9 @@
     </div>
 
     <!-- نافذة المطور -->
-    <div id="devModal" class="modal-overlay" onclick="closeModalOutside(event, 'devModal')">
+    <div id="devModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'devModal')">
         <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <span class="close-modal" onclick="closeModal('devModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('devModal')">&times;</span>
             <div class="dev-img">Cloud<br>Art</div>
             <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.5rem;">تصميم وتطوير: CLOUD ART</h3>
             <p style="color: var(--text-muted); font-size: 1rem; font-weight: bold;">حلول برمجية متطورة للأنظمة الطبية</p>
@@ -294,7 +391,7 @@
 
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- الحل الجذري: دمج استدعاء Firebase والدوال في Module واحد لضمان عمل الأزرار -->
+    <!-- السكربت المحمي كلياً في Module لضمان التوافق والأمان -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
@@ -312,7 +409,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // جعل الدوال عالمية ليراها الـ HTML بشكل مباشر بدون أخطاء
+        // جعل جميع الدوال متاحة للـ HTML مباشرة
         window.toggleTheme = function() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -320,6 +417,22 @@
             document.querySelectorAll('.theme-toggle').forEach(btn => {
                 btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
             });
+        };
+
+        window.onload = () => {
+            if(localStorage.getItem('medicalTheme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.theme-toggle').forEach(btn => { btn.innerHTML = '<i class="fas fa-sun"></i> فاتح'; });
+            }
+            const savedPhone = localStorage.getItem('savedPhone');
+            const savedPass = localStorage.getItem('savedPass');
+            const rememberMe = localStorage.getItem('rememberMe');
+
+            if (savedPhone) document.getElementById('loginId').value = savedPhone;
+            if (savedPass && rememberMe === 'true') {
+                document.getElementById('loginPass').value = savedPass;
+                document.getElementById('rememberMe').checked = true;
+            }
         };
 
         window.openModal = function(modalId) { document.getElementById(modalId).classList.add('show-modal'); };
@@ -356,6 +469,7 @@
 
         function handleSuccessfulLogin(phone, pass, remember, msg) {
             localStorage.setItem('savedPhone', phone);
+            
             if (remember) {
                 localStorage.setItem('savedPass', pass);
                 localStorage.setItem('rememberMe', 'true');
@@ -363,8 +477,10 @@
                 localStorage.removeItem('savedPass');
                 localStorage.setItem('rememberMe', 'false');
             }
+
             window.showToast("كلمة المرور صحيحة، جاري المصادقة...", "success");
             setTimeout(() => { window.showToast(msg, "success"); }, 800);
+            
             setTimeout(() => { window.location.href = 'home.html'; }, 3000);
         }
 
@@ -373,12 +489,14 @@
 
         window.handleLogin = async function(event) {
             event.preventDefault();
+            
             const loginId = document.getElementById('loginId').value;
             const loginPass = document.getElementById('loginPass').value;
             const rememberMe = document.getElementById('rememberMe').checked;
             
             const btn = event.target.querySelector('button[type="submit"]');
             const originalContent = btn.innerHTML;
+            
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
             btn.style.pointerEvents = 'none';
 
@@ -394,14 +512,16 @@
                 if (!querySnapshot.empty) {
                     let userDoc = null;
                     let docId = null;
-                    querySnapshot.forEach((docSnap) => { userDoc = docSnap.data(); docId = docSnap.id; });
+                    querySnapshot.forEach((doc) => { userDoc = doc.data(); docId = doc.id; });
                     
                     if (userDoc.status === 'approved') {
                         if (userDoc.isManuallyAdded === true) {
                             currentUpdateDocId = docId;
                             originalRememberMe = rememberMe;
-                            document.getElementById('newLoginId').value = loginId;
+                            document.getElementById('newLoginId').value = loginId; 
+                            
                             window.openModal('forceUpdateModal');
+                            
                             btn.innerHTML = originalContent;
                             btn.style.pointerEvents = 'auto';
                         } else {
@@ -420,7 +540,7 @@
                     btn.style.pointerEvents = 'auto';
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Login Error: ", error);
                 window.showToast("حدث خطأ أثناء الاتصال بقاعدة البيانات.", "error");
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'auto';
@@ -439,22 +559,31 @@
 
             try {
                 const reqRef = doc(db, "joinRequests", currentUpdateDocId);
-                await updateDoc(reqRef, { phone: newId, password: newPass, isManuallyAdded: false });
+                await updateDoc(reqRef, { 
+                    phone: newId, 
+                    password: newPass, 
+                    isManuallyAdded: false 
+                });
 
                 window.closeModal('forceUpdateModal');
                 window.showToast("تم تأمين حسابك بنجاح!");
+                
                 handleSuccessfulLogin(newId, newPass, originalRememberMe, "جاري تحويلك للشاشة الرئيسية...");
+
             } catch (error) {
+                console.error("Update Error: ", error);
                 window.showToast("حدث خطأ أثناء التحديث.", "error");
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'auto';
             }
         };
 
+        // الدالة التي تم ربطها بالـ window لتعمل بشكل سليم
         window.handleRegistration = async function(event) {
             event.preventDefault();
             const pass1 = document.getElementById('regPass').value;
             const pass2 = document.getElementById('regPassConfirm').value;
+            
             if (pass1 !== pass2) { window.showToast("كلمتا المرور غير متطابقتين!", "error"); return; }
 
             const btn = event.target.querySelector('button[type="submit"]');
@@ -471,7 +600,7 @@
                     type: document.getElementById('regType').value,
                     password: pass1, 
                     status: 'pending',
-                    isManuallyAdded: false,
+                    isManuallyAdded: false, 
                     timestamp: serverTimestamp()
                 });
 
@@ -479,6 +608,7 @@
                 window.showToast("تم رفع طلب انضمامك بنجاح لقاعدة البيانات.");
                 document.getElementById('registerForm').reset();
             } catch (error) {
+                console.error("Error adding document: ", error);
                 window.showToast("حدث خطأ أثناء الاتصال بقاعدة البيانات. تأكد من الإنترنت.", "error");
             } finally {
                 btn.innerHTML = originalContent;
@@ -489,20 +619,6 @@
         window.handlePasswordReset = function(event) {
             event.preventDefault(); window.closeModal('forgotPasswordModal'); window.showToast("تم إرسال رابط استعادة كلمة المرور لبريدك بنجاح."); event.target.reset();
         };
-
-        // التحقق من الحفظ التلقائي بعد التحميل
-        if(localStorage.getItem('medicalTheme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.querySelectorAll('.theme-toggle').forEach(btn => { btn.innerHTML = '<i class="fas fa-sun"></i> فاتح'; });
-        }
-        const savedPhone = localStorage.getItem('savedPhone');
-        const savedPass = localStorage.getItem('savedPass');
-        const rememberMe = localStorage.getItem('rememberMe');
-        if (savedPhone) document.getElementById('loginId').value = savedPhone;
-        if (savedPass && rememberMe === 'true') {
-            document.getElementById('loginPass').value = savedPass;
-            document.getElementById('rememberMe').checked = true;
-        }
     </script>
 </body>
 </html>
