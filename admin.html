@@ -85,42 +85,12 @@
         .modal-overlay.show-modal { display: flex; }
         .modal-content { background: var(--card-bg); width: 50vw; max-width: 600px; padding: 30px; border-radius: 20px; position: relative; border-bottom: 8px solid var(--main-blue); }
         @media (max-width: 768px) { .modal-content { width: 95vw; } }
-        .close-modal { position: absolute; left: 20px; top: 15px; font-size: 30px; cursor: pointer; color: var(--text-muted); }
+        .close-modal { position: absolute; left: 20px; top: 15px; font-size: 30px; cursor: pointer; color: var(--text-muted); z-index: 10;}
         
         /* فورم إضافة / تعديل عضو */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
-
-    <!-- دمج Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, where, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
-            authDomain: "medical-for-you-6.firebaseapp.com",
-            projectId: "medical-for-you-6",
-            storageBucket: "medical-for-you-6.firebasestorage.app",
-            messagingSenderId: "572890832303",
-            appId: "1:572890832303:web:09e920543adf3eb5ea635a",
-            measurementId: "G-PBYW0QL67G"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.onSnapshot = onSnapshot;
-        window.collection = collection;
-        window.doc = doc;
-        window.updateDoc = updateDoc;
-        window.deleteDoc = deleteDoc;
-        window.addDoc = addDoc;
-        window.serverTimestamp = serverTimestamp;
-        window.query = query;
-        window.where = where;
-    </script>
 </head>
 <body>
 
@@ -219,24 +189,23 @@
     <!-- =================================================== -->
     <!-- 1. نافذة إضافة عضو يدوياً (لـ CEO فقط) -->
     <!-- =================================================== -->
-    <div id="addUserModal" class="modal-overlay">
+    <div id="addUserModal" class="modal-overlay" onclick="closeModalOutside(event, 'addUserModal')">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('addUserModal')">&times;</span>
             <h2 style="color: var(--main-blue); text-align: center; margin-bottom: 20px;">إضافة عضو مباشر</h2>
-            <form id="addUserForm" onsubmit="submitAddUser(event)">
+            <!-- تم إضافة المعرف onsubmit ليعمل مع الدالة المحدثة -->
+            <form id="addUserForm" onsubmit="window.submitAddUser(event)">
                 <div class="form-grid">
                     <div class="floating-group">
                         <input type="text" id="addName" required placeholder="الاسم الرباعي">
                     </div>
                     <div class="floating-group">
-                        <!-- إضافة حقل الهاتف أو البريد كما طلبت -->
                         <input type="text" id="addPhone" required placeholder="رقم الهاتف أو البريد">
                     </div>
                     <div class="floating-group">
                         <input type="text" id="addDept" required placeholder="نوع العضوية / المكتب">
                     </div>
                     <div class="floating-group">
-                        <!-- إضافة حقل كلمة المرور كما طلبت -->
                         <input type="password" id="addPass" required placeholder="كلمة المرور المبدئية">
                     </div>
                 </div>
@@ -248,11 +217,12 @@
     <!-- =================================================== -->
     <!-- 2. نافذة تعديل بيانات العضو (تفتح عند الضغط على زر التعديل) -->
     <!-- =================================================== -->
-    <div id="editUserModal" class="modal-overlay">
+    <div id="editUserModal" class="modal-overlay" onclick="closeModalOutside(event, 'editUserModal')">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('editUserModal')">&times;</span>
             <h2 style="color: var(--main-blue); text-align: center; margin-bottom: 20px;">تعديل بيانات العضو</h2>
-            <form id="editUserForm" onsubmit="submitEditUser(event)">
+            <!-- تم إضافة المعرف onsubmit ليعمل مع الدالة المحدثة -->
+            <form id="editUserForm" onsubmit="window.submitEditUser(event)">
                 <input type="hidden" id="editDocId"> <!-- حقل مخفي لحفظ ID المستند -->
                 <div class="form-grid">
                     <div class="floating-group">
@@ -280,10 +250,38 @@
     <!-- حاوية الإشعارات -->
     <div id="toast-container" class="toast-container"></div>
 
-    <script>
-        let globalRole = null;
+    <!-- ========================================= -->
+    <!-- سكربت Firebase والدوال الأساسية (Global Scope) -->
+    <!-- ========================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, where, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-        // قاموس كلمات المرور للمكاتب
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a",
+            measurementId: "G-PBYW0QL67G"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // جعل جميع دوال Firebase والـ UI عالمية ليتعرف عليها الـ HTML مباشرة
+        window.db = db;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.serverTimestamp = serverTimestamp;
+        window.doc = doc;
+        window.updateDoc = updateDoc;
+        window.deleteDoc = deleteDoc;
+        
+        let globalRole = null;
+        let unsubscribe = null;
+
         const officePasswords = {
             "CEO": "096020",
             "مكتب_الامانة_العامة": "sec123",
@@ -308,11 +306,12 @@
             "مكتب_الموارد_البشرية": "مكتب الموارد البشرية"
         };
 
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
-        function openModal(id) { document.getElementById(id).classList.add('show-modal'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('show-modal'); }
-        
-        function showToast(message, type = 'success') {
+        window.toggleTheme = function() { document.body.classList.toggle('dark-mode'); };
+        window.openModal = function(id) { document.getElementById(id).classList.add('show-modal'); };
+        window.closeModal = function(id) { document.getElementById(id).classList.remove('show-modal'); };
+        window.closeModalOutside = function(event, id) { if(event.target.id === id) window.closeModal(id); };
+
+        window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
@@ -320,14 +319,13 @@
             toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
             container.appendChild(toast);
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 4000);
-        }
+        };
 
-        // تسجيل الدخول للمشرفين
-        function verifyAdminLogin(event) {
+        // دالة تسجيل الدخول الخاصة بلوحة التحكم
+        window.verifyAdminLogin = function(event) {
             event.preventDefault();
             const role = document.getElementById('adminRoleSelect').value;
             const pass = document.getElementById('adminPassInput').value;
-            
             const btn = event.target.querySelector('button');
             const orig = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التشفير...';
@@ -342,39 +340,36 @@
                     document.getElementById('navRoleDisplay').innerText = roleNamesAr[role];
                     document.getElementById('headerRoleName').innerText = roleNamesAr[role];
                     
-                    showToast(`تم فتح لوحة تحكم ${roleNamesAr[role]} بنجاح.`);
+                    window.showToast(`تم فتح لوحة تحكم ${roleNamesAr[role]} بنجاح.`);
 
-                    // إخفاء زر الإضافة إذا لم يكن CEO
                     if(globalRole !== "CEO") {
                         document.getElementById('addManualBtn').style.display = 'none';
                     } else {
                         document.getElementById('addManualBtn').style.display = 'inline-flex';
                     }
 
-                    fetchRequestsRealtime();
+                    window.fetchRequestsRealtime();
                 } else {
-                    showToast("كلمة المرور غير صحيحة لهذا المكتب!", "error");
+                    window.showToast("كلمة المرور غير صحيحة لهذا المكتب!", "error");
                 }
             }, 1000);
-        }
+        };
 
-        // جلب البيانات من Firebase بالاعتماد على الصلاحية
-        let unsubscribe = null;
-        function fetchRequestsRealtime() {
+        // جلب البيانات لحظياً
+        window.fetchRequestsRealtime = function() {
             const tbody = document.getElementById('requestsTableBody');
             const emptyState = document.getElementById('emptyStateMessage');
             
             let q;
-            // يعرض الطلبات الجديدة (pending)
             if (globalRole === "CEO") {
-                q = window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "pending"));
+                q = query(collection(db, "joinRequests"), where("status", "==", "pending"));
             } else {
-                q = window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "pending"), window.where("type", "==", globalRole));
+                q = query(collection(db, "joinRequests"), where("status", "==", "pending"), where("type", "==", globalRole));
             }
 
             if (unsubscribe) unsubscribe();
 
-            unsubscribe = window.onSnapshot(q, (snapshot) => {
+            unsubscribe = onSnapshot(q, (snapshot) => {
                 tbody.innerHTML = '';
                 document.getElementById('pendingCount').innerText = snapshot.docs.length;
                 
@@ -384,7 +379,6 @@
                     emptyState.style.display = 'none';
                     snapshot.forEach((docSnap) => {
                         const req = docSnap.data();
-                        // تجهيز المتغيرات الآمنة لزر التعديل
                         const safeName = req.name ? req.name.replace(/'/g, "\\'") : '';
                         const safePhone = req.phone ? req.phone.replace(/'/g, "\\'") : '';
                         const safeType = req.type ? req.type.replace(/'/g, "\\'") : '';
@@ -398,11 +392,10 @@
                             <td style="color: var(--main-blue); font-weight: bold;">${(req.type || 'عضو عادي').replace(/_/g, ' ')}</td>
                             <td><span class="badge pending">قيد الانتظار</span></td>
                             <td>
-                                <!-- زر التعديل تمت إضافته بجوار الحفظ والرفض -->
                                 <div class="action-btns">
-                                    <button class="btn-approve" onclick="approveRequest('${docSnap.id}', '${safeName}')" title="قبول"><i class="fas fa-check"></i></button>
-                                    <button class="btn-edit" onclick="openEditModal('${docSnap.id}', '${safeName}', '${safePhone}', '${safeType}', '${safePass}')" title="تعديل"><i class="fas fa-pen"></i></button>
-                                    <button class="btn-reject" onclick="rejectRequest('${docSnap.id}', '${safeName}')" title="رفض وحذف"><i class="fas fa-times"></i></button>
+                                    <button class="btn-approve" onclick="window.approveRequest('${docSnap.id}', '${safeName}')" title="قبول"><i class="fas fa-check"></i></button>
+                                    <button class="btn-edit" onclick="window.openEditModal('${docSnap.id}', '${safeName}', '${safePhone}', '${safeType}', '${safePass}')" title="تعديل"><i class="fas fa-pen"></i></button>
+                                    <button class="btn-reject" onclick="window.rejectRequest('${docSnap.id}', '${safeName}')" title="رفض وحذف"><i class="fas fa-times"></i></button>
                                 </div>
                             </td>
                         `;
@@ -410,58 +403,68 @@
                     });
                 }
             }, (error) => {
-                console.error("Error fetching data:", error);
-                showToast("خطأ في جلب البيانات من السيرفر.", "error");
+                window.showToast("خطأ في جلب البيانات من السيرفر.", "error");
             });
 
             // جلب عدد المقبولين
-            const qApproved = window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "approved"));
-            window.onSnapshot(qApproved, (snapshot) => {
+            const qApproved = query(collection(db, "joinRequests"), where("status", "==", "approved"));
+            onSnapshot(qApproved, (snapshot) => {
                 document.getElementById('approvedCount').innerText = snapshot.docs.length;
             });
-        }
+        };
 
-        // 1. قبول العضو (تحديث الحالة)
-        async function approveRequest(docId, name) {
+        // دالة الإضافة اليدوية - تم إصلاحها وربطها 
+        window.submitAddUser = async function(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
+            btn.style.pointerEvents = 'none';
+
+            const name = document.getElementById('addName').value;
+            const dept = document.getElementById('addDept').value;
+            const phone = document.getElementById('addPhone').value;
+            const pass = document.getElementById('addPass').value;
+            
             try {
-                const reqRef = window.doc(window.db, "joinRequests", docId);
-                await window.updateDoc(reqRef, { status: "approved" });
-                showToast(`تم قبول العضو (${name}) بنجاح.`);
+                await window.addDoc(window.collection(window.db, "joinRequests"), {
+                    name: name,
+                    type: dept,
+                    phone: phone,
+                    password: pass,
+                    isManuallyAdded: true, // مهم لإجبار العضو على تغيير البيانات لاحقاً
+                    status: 'approved',
+                    timestamp: window.serverTimestamp()
+                });
+                window.closeModal('addUserModal');
+                document.getElementById('addUserForm').reset();
+                window.showToast(`تمت إضافة العضو (${name}) وتفعيله فوراً.`);
             } catch (error) {
-                console.error("Error updating", error);
-                showToast("حدث خطأ أثناء الموافقة.", "error");
+                console.error(error);
+                window.showToast("فشلت عملية الإضافة. تأكد من اتصال الإنترنت.", "error");
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.style.pointerEvents = 'auto';
             }
-        }
+        };
 
-        // 2. رفض العضو (حذفه)
-        async function rejectRequest(docId, name) {
-            if(confirm(`هل أنت متأكد من رفض وحذف طلب (${name})؟`)) {
-                try {
-                    const reqRef = window.doc(window.db, "joinRequests", docId);
-                    await window.deleteDoc(reqRef);
-                    showToast(`تم حذف طلب (${name}) نهائياً.`, "error");
-                } catch (error) {
-                    console.error("Error deleting", error);
-                    showToast("حدث خطأ أثناء الحذف.", "error");
-                }
-            }
-        }
-
-        // ===============================================
-        // 3. فتح نافذة التعديل مع تعبئة البيانات مسبقاً
-        // ===============================================
-        function openEditModal(docId, name, phone, type, pass) {
+        // دالة التعديل
+        window.openEditModal = function(docId, name, phone, type, pass) {
             document.getElementById('editDocId').value = docId;
             document.getElementById('editName').value = name;
             document.getElementById('editPhone').value = phone;
             document.getElementById('editDept').value = type;
             document.getElementById('editPass').value = pass;
-            openModal('editUserModal');
-        }
+            window.openModal('editUserModal');
+        };
 
-        // إرسال التعديلات لـ Firebase
-        async function submitEditUser(event) {
+        window.submitEditUser = async function(event) {
             event.preventDefault();
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحديث...';
+            btn.style.pointerEvents = 'none';
+
             const docId = document.getElementById('editDocId').value;
             const name = document.getElementById('editName').value;
             const phone = document.getElementById('editPhone').value;
@@ -476,45 +479,43 @@
                     type: dept,
                     password: pass
                 });
-                closeModal('editUserModal');
-                showToast(`تم تحديث بيانات العضو (${name}) بنجاح.`);
+                window.closeModal('editUserModal');
+                window.showToast(`تم تحديث بيانات العضو (${name}) بنجاح.`);
             } catch (error) {
-                console.error("Edit Error: ", error);
-                showToast("فشلت عملية التحديث.", "error");
+                console.error(error);
+                window.showToast("فشلت عملية التحديث.", "error");
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.style.pointerEvents = 'auto';
             }
-        }
+        };
 
-        // 4. إضافة عضو يدوياً (للرئيس التنفيذي) مع الإجبار على تغيير الرمز السري عند الدخول
-        async function submitAddUser(event) {
-            event.preventDefault();
-            const name = document.getElementById('addName').value;
-            const dept = document.getElementById('addDept').value;
-            const phone = document.getElementById('addPhone').value;
-            const pass = document.getElementById('addPass').value;
-            
+        window.approveRequest = async function(docId, name) {
             try {
-                await window.addDoc(window.collection(window.db, "joinRequests"), {
-                    name: name,
-                    type: dept,
-                    phone: phone,      // تم إضافة الهاتف
-                    password: pass,    // تم إضافة الرمز السري المبدئي
-                    isManuallyAdded: true, // هذه الإشارة ستُجبر العضو على تغيير بياناته في index.html
-                    status: 'approved', // يضاف كمقبول مباشرة
-                    timestamp: window.serverTimestamp()
-                });
-                closeModal('addUserModal');
-                document.getElementById('addUserForm').reset();
-                showToast(`تمت إضافة العضو (${name}) وتفعيله فوراً.`);
+                const reqRef = window.doc(window.db, "joinRequests", docId);
+                await window.updateDoc(reqRef, { status: "approved" });
+                window.showToast(`تم قبول العضو (${name}) بنجاح.`);
             } catch (error) {
-                console.error("Add User Error: ", error);
-                showToast("فشلت عملية الإضافة.", "error");
+                window.showToast("حدث خطأ أثناء الموافقة.", "error");
             }
-        }
+        };
 
-        function logout() {
-            showToast("جاري تسجيل الخروج...", "error");
+        window.rejectRequest = async function(docId, name) {
+            if(confirm(`هل أنت متأكد من رفض وحذف طلب (${name})؟`)) {
+                try {
+                    const reqRef = window.doc(window.db, "joinRequests", docId);
+                    await window.deleteDoc(reqRef);
+                    window.showToast(`تم حذف طلب (${name}) نهائياً.`, "error");
+                } catch (error) {
+                    window.showToast("حدث خطأ أثناء الحذف.", "error");
+                }
+            }
+        };
+
+        window.logout = function() {
+            window.showToast("جاري تسجيل الخروج...", "error");
             setTimeout(() => window.location.reload(), 1000);
-        }
+        };
     </script>
 </body>
 </html>
