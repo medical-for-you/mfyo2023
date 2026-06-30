@@ -14,7 +14,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         html, body { overflow-x: hidden; width: 100%; height: 100%; background-color: var(--light-bg); color: var(--text-main); }
         
-        /* شاشة الدخول الإدارية (تغطي الشاشة بالكامل) */
+        /* شاشة الدخول الإدارية */
         #adminLoginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--light-bg); z-index: 9999999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease; }
         .admin-auth-card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-top: 8px solid var(--main-red); text-align: center; }
         body.dark-mode .admin-auth-card { border-color: #333; border-top-color: var(--main-red); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
@@ -41,18 +41,25 @@
         .dashboard-header h2 { color: var(--main-blue); font-size: 2rem; font-weight: 900; }
         body.dark-mode .dashboard-header h2 { color: #66b2ff; }
 
+        /* الإحصائيات مع تأثيرات النقر */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .stat-card { background: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--light-bg); border-right: 6px solid var(--main-blue); display: flex; align-items: center; justify-content: space-between; transition: 0.3s; }
+        .stat-card { background: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--light-bg); border-right: 6px solid var(--main-blue); display: flex; align-items: center; justify-content: space-between; transition: 0.3s; cursor: pointer; }
         body.dark-mode .stat-card { border-color: #333; }
         .stat-card.pending { border-right-color: var(--warning-color); }
         .stat-info h3 { font-size: 2rem; color: var(--text-main); font-weight: 900; margin: 0; line-height: 1; }
         .stat-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(0,68,148,0.1); color: var(--main-blue); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,68,148,0.2); }
+        .stat-card.active-view { border-width: 3px; border-style: dashed; transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,68,148,0.2); }
         
         .table-wrapper { background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--light-bg); overflow-x: auto; }
         body.dark-mode .table-wrapper { border-color: #333; }
-        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-add { background: linear-gradient(135deg, var(--success-color), #2ecc71); color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 900; cursor: pointer; display: none; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .btn-add { background: linear-gradient(135deg, var(--success-color), #2ecc71); color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 900; cursor: pointer; display: none; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); font-family: 'Cairo'; }
         .btn-add:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5); }
+        
+        /* فلتر القائمة */
+        .filter-select { padding: 8px 15px; border-radius: 20px; border: 2px solid var(--main-blue); font-family: 'Cairo'; font-weight: bold; background: var(--card-bg); color: var(--main-blue); outline: none; display: none; }
+        body.dark-mode .filter-select { background: var(--card-bg); border-color: #66b2ff; color: #66b2ff; }
 
         table { width: 100%; border-collapse: collapse; min-width: 900px; }
         thead { background: rgba(0,68,148,0.05); }
@@ -63,9 +70,9 @@
         body.dark-mode th { color: #66b2ff; }
         tr:hover { background-color: rgba(0,68,148,0.02); }
         
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; background: rgba(243, 156, 18, 0.1); color: var(--warning-color); border: 1px solid var(--warning-color); }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .badge.pending { background: rgba(243, 156, 18, 0.1); color: var(--warning-color); border: 1px solid var(--warning-color); }
         
-        /* أزرار الإجراءات (الآن تشمل التعديل) */
         .action-btns { display: flex; gap: 10px; }
         .btn-approve, .btn-reject, .btn-edit { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; font-size: 1.1rem; }
         .btn-approve { background: var(--success-color); box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); } .btn-approve:hover { transform: scale(1.1); }
@@ -74,7 +81,6 @@
 
         .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold; font-size: 1.2rem; display: none; }
         
-        /* النوافذ والتوست */
         .toast-container { position: fixed; bottom: 30px; left: 30px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast { background: var(--card-bg); color: var(--text-main); border-right: 5px solid var(--success-color); padding: 18px 25px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 15px; font-weight: bold; font-size: 1.1rem; animation: slideUpToast 0.5s ease-out forwards; border: 1px solid var(--light-bg); }
         body.dark-mode .toast { border-color: #333; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
@@ -87,16 +93,68 @@
         @media (max-width: 768px) { .modal-content { width: 95vw; } }
         .close-modal { position: absolute; left: 20px; top: 15px; font-size: 30px; cursor: pointer; color: var(--text-muted); z-index: 10;}
         
-        /* فورم إضافة / تعديل عضو */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+        
+        /* التجاوب السليم للهاتف */
+        @media (max-width: 768px) {
+            .admin-navbar { flex-direction: column; gap: 10px; padding: 15px; }
+            .nav-actions { gap: 10px; }
+            .admin-auth-card { padding: 30px 20px; width: 95vw; border-radius: 15px; }
+            .dashboard-container { padding: 20px 15px; }
+            .dashboard-header { flex-direction: column; gap: 15px; text-align: center; }
+            .dashboard-header h2 { font-size: 1.6rem; }
+            .table-header { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 15px; }
+            .stat-info h3 { font-size: 1.5rem; }
+            .stat-info p { font-size: 0.85rem; }
+            .stat-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+            
+            .modal-overlay { padding: 15px; align-items: flex-start; overflow-y: auto; }
+            .modal-content { width: 100%; max-height: none; margin: auto; padding: 20px 15px; }
+            .floating-group input, .floating-group select { padding: 12px 15px; font-size: 1rem; }
+            .btn-submit { font-size: 1.1rem; padding: 14px; }
+            
+            .toast-container { bottom: 15px; left: 10px; right: 10px; align-items: center; }
+            .toast { width: 100%; font-size: 0.95rem; padding: 12px 15px; }
+        }
     </style>
+
+    <!-- دمج Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, where, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a",
+            measurementId: "G-PBYW0QL67G"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // تصدير للـ Window
+        window.db = db;
+        window.onSnapshot = onSnapshot;
+        window.collection = collection;
+        window.doc = doc;
+        window.updateDoc = updateDoc;
+        window.deleteDoc = deleteDoc;
+        window.addDoc = addDoc;
+        window.serverTimestamp = serverTimestamp;
+        window.query = query;
+        window.where = where;
+    </script>
 </head>
 <body>
 
-    <!-- ========================================= -->
-    <!-- شاشة المصادقة الإدارية (تغطي المحتوى) -->
-    <!-- ========================================= -->
+    <!-- شاشة المصادقة الإدارية -->
     <div id="adminLoginOverlay">
         <div class="admin-auth-card">
             <h2>بوابة الإدارة المشفرة</h2>
@@ -141,30 +199,62 @@
             <h2>لوحة التحكم - <span style="color: var(--main-red);" id="headerRoleName"></span></h2>
         </div>
 
-        <!-- الإحصائيات -->
+        <!-- الإحصائيات (أصبحت قابلة للضغط للتنقل بين القوائم) -->
         <div class="stats-grid">
-            <div class="stat-card pending">
+            <div class="stat-card pending active-view" id="cardPending" onclick="switchView('pending')">
                 <div class="stat-info">
                     <h3 id="pendingCount">0</h3>
-                    <p>طلبات بانتظار الاعتماد</p>
+                    <p>الطلبات الجديدة</p>
                 </div>
                 <div class="stat-icon"><i class="fas fa-user-clock"></i></div>
             </div>
-            <div class="stat-card">
+            
+            <div class="stat-card" id="cardApproved" onclick="switchView('approved')">
                 <div class="stat-info">
                     <h3 id="approvedCount">0</h3>
-                    <p>إجمالي الأعضاء النشطين</p>
+                    <p>الأعضاء النشطين</p>
                 </div>
                 <div class="stat-icon" style="color: var(--success-color); background: rgba(39, 174, 96, 0.1);"><i class="fas fa-users"></i></div>
+            </div>
+            
+            <div class="stat-card" id="cardRemoved" style="border-right-color: var(--main-red);" onclick="switchView('removed')">
+                <div class="stat-info">
+                    <h3 id="removedCount">0</h3>
+                    <p>الأعضاء المستبعدين</p>
+                </div>
+                <div class="stat-icon" style="color: var(--main-red); background: rgba(211,47,47,0.1);"><i class="fas fa-user-times"></i></div>
+            </div>
+
+            <div class="stat-card" id="cardManual" style="border-right-color: #9b59b6;" onclick="switchView('manual')">
+                <div class="stat-info">
+                    <h3 id="manualCount">0</h3>
+                    <p>المضافين يدوياً</p>
+                </div>
+                <div class="stat-icon" style="color: #9b59b6; background: rgba(155, 89, 182, 0.1);"><i class="fas fa-user-edit"></i></div>
             </div>
         </div>
 
         <!-- جدول الطلبات -->
         <div class="table-wrapper">
             <div class="table-header">
-                <h3>طلبات الانضمام الحديثة لمكتبك</h3>
-                <!-- يظهر فقط للـ CEO -->
-                <button class="btn-add" id="addManualBtn" onclick="openModal('addUserModal')"><i class="fas fa-plus-circle"></i> إضافة عضو يدوياً</button>
+                <h3 id="tableTitle">الطلبات الجديدة</h3>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <!-- فلتر الفرز بالمكاتب -->
+                    <select id="deptFilter" class="filter-select" onchange="applyFilter()">
+                        <option value="all">عرض كل المكاتب</option>
+                        <option value="مكتب_الامانة_العامة">مكتب الأمانة العامة</option>
+                        <option value="المكتب_الاعلامي">المكتب الإعلامي</option>
+                        <option value="المكتب_المالي">المكتب المالي</option>
+                        <option value="مكتب_البرامج_والمشاريع">مكتب البرامج والمشاريع</option>
+                        <option value="مكتب_شؤون_العضوية">مكتب شؤون العضوية</option>
+                        <option value="مكتب_التقييم_والمتابعة">مكتب التقييم والمتابعة</option>
+                        <option value="المكتب_الاجتماعي">المكتب الاجتماعي</option>
+                        <option value="مكتب_الموارد_البشرية">مكتب الموارد البشرية</option>
+                        <option value="عضو_عادي">عضو عادي</option>
+                    </select>
+                    
+                    <button class="btn-add" id="addManualBtn" onclick="openModal('addUserModal')"><i class="fas fa-plus-circle"></i> إضافة عضو يدوياً</button>
+                </div>
             </div>
             
             <table>
@@ -182,18 +272,15 @@
                     <!-- جلب تلقائي للبيانات -->
                 </tbody>
             </table>
-            <div class="empty-state" id="emptyStateMessage">لا توجد طلبات انضمام معلقة في مكتبك حالياً.</div>
+            <div class="empty-state" id="emptyStateMessage">لا توجد بيانات متاحة في هذه القائمة حالياً.</div>
         </div>
     </div>
 
-    <!-- =================================================== -->
-    <!-- 1. نافذة إضافة عضو يدوياً (لـ CEO فقط) -->
-    <!-- =================================================== -->
+    <!-- 1. نافذة إضافة عضو يدوياً -->
     <div id="addUserModal" class="modal-overlay" onclick="closeModalOutside(event, 'addUserModal')">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('addUserModal')">&times;</span>
             <h2 style="color: var(--main-blue); text-align: center; margin-bottom: 20px;">إضافة عضو مباشر</h2>
-            <!-- تم إضافة المعرف onsubmit ليعمل مع الدالة المحدثة -->
             <form id="addUserForm" onsubmit="window.submitAddUser(event)">
                 <div class="form-grid">
                     <div class="floating-group">
@@ -203,7 +290,15 @@
                         <input type="text" id="addPhone" required placeholder="رقم الهاتف أو البريد">
                     </div>
                     <div class="floating-group">
-                        <input type="text" id="addDept" required placeholder="نوع العضوية / المكتب">
+                        <select id="addDept" required>
+                            <option value="" disabled selected>تحديد المكتب/العضوية</option>
+                            <option value="عضو_عادي">عضو عادي</option>
+                            <option value="مكتب_الاعلامي">المكتب الإعلامي</option>
+                            <option value="مكتب_الامانة_العامة">مكتب الأمانة العامة</option>
+                            <option value="المكتب_المالي">المكتب المالي</option>
+                            <option value="مكتب_البرامج_والمشاريع">مكتب البرامج والمشاريع</option>
+                            <option value="مكتب_الموارد_البشرية">مكتب الموارد البشرية</option>
+                        </select>
                     </div>
                     <div class="floating-group">
                         <input type="password" id="addPass" required placeholder="كلمة المرور المبدئية">
@@ -214,16 +309,13 @@
         </div>
     </div>
 
-    <!-- =================================================== -->
-    <!-- 2. نافذة تعديل بيانات العضو (تفتح عند الضغط على زر التعديل) -->
-    <!-- =================================================== -->
+    <!-- 2. نافذة تعديل بيانات العضو -->
     <div id="editUserModal" class="modal-overlay" onclick="closeModalOutside(event, 'editUserModal')">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('editUserModal')">&times;</span>
             <h2 style="color: var(--main-blue); text-align: center; margin-bottom: 20px;">تعديل بيانات العضو</h2>
-            <!-- تم إضافة المعرف onsubmit ليعمل مع الدالة المحدثة -->
             <form id="editUserForm" onsubmit="window.submitEditUser(event)">
-                <input type="hidden" id="editDocId"> <!-- حقل مخفي لحفظ ID المستند -->
+                <input type="hidden" id="editDocId"> 
                 <div class="form-grid">
                     <div class="floating-group">
                         <label style="position:static; display:block; color:var(--text-muted); font-size:0.9rem;">الاسم الرباعي</label>
@@ -247,39 +339,13 @@
         </div>
     </div>
 
-    <!-- حاوية الإشعارات -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- ========================================= -->
-    <!-- سكربت Firebase والدوال الأساسية (Global Scope) -->
-    <!-- ========================================= -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, query, where, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
-            authDomain: "medical-for-you-6.firebaseapp.com",
-            projectId: "medical-for-you-6",
-            storageBucket: "medical-for-you-6.firebasestorage.app",
-            messagingSenderId: "572890832303",
-            appId: "1:572890832303:web:09e920543adf3eb5ea635a",
-            measurementId: "G-PBYW0QL67G"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // جعل جميع دوال Firebase والـ UI عالمية ليتعرف عليها الـ HTML مباشرة
-        window.db = db;
-        window.collection = collection;
-        window.addDoc = addDoc;
-        window.serverTimestamp = serverTimestamp;
-        window.doc = doc;
-        window.updateDoc = updateDoc;
-        window.deleteDoc = deleteDoc;
-        
+    <script>
+        // تعريف المتغيرات العالمية للحالة
         let globalRole = null;
+        let currentViewMode = 'pending'; // pending, approved, removed, manual
+        let currentFilter = 'all';
         let unsubscribe = null;
 
         const officePasswords = {
@@ -321,7 +387,6 @@
             setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 4000);
         };
 
-        // دالة تسجيل الدخول الخاصة بلوحة التحكم
         window.verifyAdminLogin = function(event) {
             event.preventDefault();
             const role = document.getElementById('adminRoleSelect').value;
@@ -344,35 +409,80 @@
 
                     if(globalRole !== "CEO") {
                         document.getElementById('addManualBtn').style.display = 'none';
+                        document.getElementById('deptFilter').style.display = 'none';
                     } else {
                         document.getElementById('addManualBtn').style.display = 'inline-flex';
+                        document.getElementById('deptFilter').style.display = 'inline-block';
                     }
 
-                    window.fetchRequestsRealtime();
+                    window.switchView('pending');
+                    window.updateGlobalCounters();
                 } else {
                     window.showToast("كلمة المرور غير صحيحة لهذا المكتب!", "error");
                 }
             }, 1000);
         };
 
-        // جلب البيانات لحظياً
+        // دالة تغيير التبويب (القائمة)
+        window.switchView = function(view) {
+            currentViewMode = view;
+            
+            document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active-view'));
+            
+            const titles = {
+                'pending': 'الطلبات الجديدة (قيد الانتظار)',
+                'approved': 'قائمة الأعضاء النشطين',
+                'removed': 'قائمة الأعضاء المستبعدين والمخالفين',
+                'manual': 'الأعضاء المضافين يدوياً من قِبل الإدارة'
+            };
+            
+            document.getElementById('tableTitle').innerText = titles[view];
+            
+            if(view === 'pending') document.getElementById('cardPending').classList.add('active-view');
+            if(view === 'approved') document.getElementById('cardApproved').classList.add('active-view');
+            if(view === 'removed') document.getElementById('cardRemoved').classList.add('active-view');
+            if(view === 'manual') document.getElementById('cardManual').classList.add('active-view');
+
+            window.fetchRequestsRealtime();
+        };
+
+        // دالة تطبيق الفلتر
+        window.applyFilter = function() {
+            currentFilter = document.getElementById('deptFilter').value;
+            window.fetchRequestsRealtime();
+        };
+
+        // جلب البيانات مع الفلترة والتصنيف
         window.fetchRequestsRealtime = function() {
             const tbody = document.getElementById('requestsTableBody');
             const emptyState = document.getElementById('emptyStateMessage');
             
-            let q;
-            if (globalRole === "CEO") {
-                q = query(collection(db, "joinRequests"), where("status", "==", "pending"));
-            } else {
-                q = query(collection(db, "joinRequests"), where("status", "==", "pending"), where("type", "==", globalRole));
+            let constraints = [];
+            
+            // 1. تحديد حالة القائمة
+            if (currentViewMode === 'pending') constraints.push(window.where("status", "==", "pending"));
+            else if (currentViewMode === 'approved') constraints.push(window.where("status", "==", "approved"));
+            else if (currentViewMode === 'removed') constraints.push(window.where("status", "==", "removed"));
+            else if (currentViewMode === 'manual') {
+                constraints.push(window.where("status", "==", "approved"));
+                constraints.push(window.where("isManuallyAdded", "==", true));
             }
+
+            // 2. الفلترة حسب الصلاحية أو المنسدلة
+            if (globalRole !== "CEO") {
+                constraints.push(window.where("type", "==", globalRole));
+            } else {
+                if (currentFilter !== 'all') {
+                    constraints.push(window.where("type", "==", currentFilter));
+                }
+            }
+
+            const q = window.query(window.collection(window.db, "joinRequests"), ...constraints);
 
             if (unsubscribe) unsubscribe();
 
-            unsubscribe = onSnapshot(q, (snapshot) => {
+            unsubscribe = window.onSnapshot(q, (snapshot) => {
                 tbody.innerHTML = '';
-                document.getElementById('pendingCount').innerText = snapshot.docs.length;
-                
                 if (snapshot.empty) {
                     emptyState.style.display = 'block';
                 } else {
@@ -384,18 +494,42 @@
                         const safeType = req.type ? req.type.replace(/'/g, "\\'") : '';
                         const safePass = req.password ? req.password.replace(/'/g, "\\'") : '';
 
+                        // تجهيز أزرار الإجراءات حسب الشاشة المفتوحة
+                        let actionButtons = '';
+                        if (currentViewMode === 'pending') {
+                            actionButtons = `
+                                <button class="btn-approve" onclick="window.approveRequest('${docSnap.id}', '${safeName}')" title="قبول"><i class="fas fa-check"></i></button>
+                                <button class="btn-edit" onclick="window.openEditModal('${docSnap.id}', '${safeName}', '${safePhone}', '${safeType}', '${safePass}')" title="تعديل"><i class="fas fa-pen"></i></button>
+                                <button class="btn-reject" onclick="window.deleteForever('${docSnap.id}', '${safeName}')" title="حذف نهائي"><i class="fas fa-times"></i></button>
+                            `;
+                        } else if (currentViewMode === 'approved' || currentViewMode === 'manual') {
+                            actionButtons = `
+                                <button class="btn-edit" onclick="window.openEditModal('${docSnap.id}', '${safeName}', '${safePhone}', '${safeType}', '${safePass}')" title="تعديل"><i class="fas fa-pen"></i></button>
+                                <button class="btn-reject" style="background:var(--warning-color);" onclick="window.removeMember('${docSnap.id}', '${safeName}')" title="إبعاد العضو للمخالفة"><i class="fas fa-user-minus"></i></button>
+                            `;
+                        } else if (currentViewMode === 'removed') {
+                            actionButtons = `
+                                <button class="btn-approve" onclick="window.approveRequest('${docSnap.id}', '${safeName}')" title="استرجاع العضو"><i class="fas fa-undo"></i></button>
+                                <button class="btn-reject" onclick="window.deleteForever('${docSnap.id}', '${safeName}')" title="حذف نهائي من النظام"><i class="fas fa-trash-alt"></i></button>
+                            `;
+                        }
+
+                        // تجهيز البادج (الشارة)
+                        let badgeHtml = '';
+                        if (currentViewMode === 'pending') badgeHtml = `<span class="badge pending">قيد الانتظار</span>`;
+                        else if (currentViewMode === 'removed') badgeHtml = `<span class="badge" style="background:rgba(211,47,47,0.1); color:#d32f2f; border:1px solid #d32f2f;">مستبعد</span>`;
+                        else badgeHtml = `<span class="badge" style="background:rgba(39,174,96,0.1); color:#27ae60; border:1px solid #27ae60;">نشط</span>`;
+
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td style="font-weight: 800;">${req.name || 'بدون اسم'}</td>
                             <td style="direction: ltr;">${req.phone || req.email || '---'}</td>
                             <td>${req.profession || '---'}</td>
                             <td style="color: var(--main-blue); font-weight: bold;">${(req.type || 'عضو عادي').replace(/_/g, ' ')}</td>
-                            <td><span class="badge pending">قيد الانتظار</span></td>
+                            <td>${badgeHtml}</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="btn-approve" onclick="window.approveRequest('${docSnap.id}', '${safeName}')" title="قبول"><i class="fas fa-check"></i></button>
-                                    <button class="btn-edit" onclick="window.openEditModal('${docSnap.id}', '${safeName}', '${safePhone}', '${safeType}', '${safePass}')" title="تعديل"><i class="fas fa-pen"></i></button>
-                                    <button class="btn-reject" onclick="window.rejectRequest('${docSnap.id}', '${safeName}')" title="رفض وحذف"><i class="fas fa-times"></i></button>
+                                    ${actionButtons}
                                 </div>
                             </td>
                         `;
@@ -405,50 +539,52 @@
             }, (error) => {
                 window.showToast("خطأ في جلب البيانات من السيرفر.", "error");
             });
+        };
 
-            // جلب عدد المقبولين
-            const qApproved = query(collection(db, "joinRequests"), where("status", "==", "approved"));
-            onSnapshot(qApproved, (snapshot) => {
-                document.getElementById('approvedCount').innerText = snapshot.docs.length;
+        // تحديث أرقام العدادات العلوية بشكل مستمر
+        window.updateGlobalCounters = function() {
+            let roleFilter = (globalRole === 'CEO') ? [] : [window.where("type", "==", globalRole)];
+            
+            window.onSnapshot(window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "pending"), ...roleFilter), snap => {
+                document.getElementById('pendingCount').innerText = snap.docs.length;
+            });
+            window.onSnapshot(window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "approved"), ...roleFilter), snap => {
+                document.getElementById('approvedCount').innerText = snap.docs.length;
+            });
+            window.onSnapshot(window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "removed"), ...roleFilter), snap => {
+                document.getElementById('removedCount').innerText = snap.docs.length;
+            });
+            window.onSnapshot(window.query(window.collection(window.db, "joinRequests"), window.where("status", "==", "approved"), window.where("isManuallyAdded", "==", true), ...roleFilter), snap => {
+                document.getElementById('manualCount').innerText = snap.docs.length;
             });
         };
 
-        // دالة الإضافة اليدوية - تم إصلاحها وربطها 
-        window.submitAddUser = async function(event) {
-            event.preventDefault();
-            const btn = event.target.querySelector('button[type="submit"]');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
-            btn.style.pointerEvents = 'none';
-
-            const name = document.getElementById('addName').value;
-            const dept = document.getElementById('addDept').value;
-            const phone = document.getElementById('addPhone').value;
-            const pass = document.getElementById('addPass').value;
-            
+        // إجراءات الأزرار (قبول، إبعاد، حذف، تعديل، إضافة)
+        window.approveRequest = async function(docId, name) {
             try {
-                await window.addDoc(window.collection(window.db, "joinRequests"), {
-                    name: name,
-                    type: dept,
-                    phone: phone,
-                    password: pass,
-                    isManuallyAdded: true, // مهم لإجبار العضو على تغيير البيانات لاحقاً
-                    status: 'approved',
-                    timestamp: window.serverTimestamp()
-                });
-                window.closeModal('addUserModal');
-                document.getElementById('addUserForm').reset();
-                window.showToast(`تمت إضافة العضو (${name}) وتفعيله فوراً.`);
-            } catch (error) {
-                console.error(error);
-                window.showToast("فشلت عملية الإضافة. تأكد من اتصال الإنترنت.", "error");
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.style.pointerEvents = 'auto';
+                await window.updateDoc(window.doc(window.db, "joinRequests", docId), { status: "approved" });
+                window.showToast(`تم تغيير حالة العضو (${name}) إلى نشط.`);
+            } catch (error) { window.showToast("حدث خطأ.", "error"); }
+        };
+
+        window.removeMember = async function(docId, name) {
+            if(confirm(`هل أنت متأكد من إبعاد العضو (${name})؟ سيتم نقله لقائمة المستبعدين.`)) {
+                try {
+                    await window.updateDoc(window.doc(window.db, "joinRequests", docId), { status: "removed" });
+                    window.showToast(`تم إبعاد العضو (${name}) بنجاح.`, "error");
+                } catch (error) { window.showToast("حدث خطأ.", "error"); }
             }
         };
 
-        // دالة التعديل
+        window.deleteForever = async function(docId, name) {
+            if(confirm(`تحذير: هل أنت متأكد من الحذف النهائي للطلب (${name})؟ لا يمكن التراجع.`)) {
+                try {
+                    await window.deleteDoc(window.doc(window.db, "joinRequests", docId));
+                    window.showToast(`تم حذف (${name}) نهائياً.`, "error");
+                } catch (error) { window.showToast("حدث خطأ أثناء الحذف.", "error"); }
+            }
+        };
+
         window.openEditModal = function(docId, name, phone, type, pass) {
             document.getElementById('editDocId').value = docId;
             document.getElementById('editName').value = name;
@@ -461,55 +597,45 @@
         window.submitEditUser = async function(event) {
             event.preventDefault();
             const btn = event.target.querySelector('button[type="submit"]');
-            const originalContent = btn.innerHTML;
+            const orig = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحديث...';
             btn.style.pointerEvents = 'none';
 
-            const docId = document.getElementById('editDocId').value;
-            const name = document.getElementById('editName').value;
-            const phone = document.getElementById('editPhone').value;
-            const dept = document.getElementById('editDept').value;
-            const pass = document.getElementById('editPass').value;
-            
             try {
-                const reqRef = window.doc(window.db, "joinRequests", docId);
-                await window.updateDoc(reqRef, {
-                    name: name,
-                    phone: phone,
-                    type: dept,
-                    password: pass
+                await window.updateDoc(window.doc(window.db, "joinRequests", document.getElementById('editDocId').value), {
+                    name: document.getElementById('editName').value,
+                    phone: document.getElementById('editPhone').value,
+                    type: document.getElementById('editDept').value,
+                    password: document.getElementById('editPass').value
                 });
                 window.closeModal('editUserModal');
-                window.showToast(`تم تحديث بيانات العضو (${name}) بنجاح.`);
-            } catch (error) {
-                console.error(error);
-                window.showToast("فشلت عملية التحديث.", "error");
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.style.pointerEvents = 'auto';
-            }
+                window.showToast(`تم تحديث البيانات بنجاح.`);
+            } catch (error) { window.showToast("فشلت عملية التحديث.", "error"); }
+            finally { btn.innerHTML = orig; btn.style.pointerEvents = 'auto'; }
         };
 
-        window.approveRequest = async function(docId, name) {
+        window.submitAddUser = async function(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
+            btn.style.pointerEvents = 'none';
+            
             try {
-                const reqRef = window.doc(window.db, "joinRequests", docId);
-                await window.updateDoc(reqRef, { status: "approved" });
-                window.showToast(`تم قبول العضو (${name}) بنجاح.`);
-            } catch (error) {
-                window.showToast("حدث خطأ أثناء الموافقة.", "error");
-            }
-        };
-
-        window.rejectRequest = async function(docId, name) {
-            if(confirm(`هل أنت متأكد من رفض وحذف طلب (${name})؟`)) {
-                try {
-                    const reqRef = window.doc(window.db, "joinRequests", docId);
-                    await window.deleteDoc(reqRef);
-                    window.showToast(`تم حذف طلب (${name}) نهائياً.`, "error");
-                } catch (error) {
-                    window.showToast("حدث خطأ أثناء الحذف.", "error");
-                }
-            }
+                await window.addDoc(window.collection(window.db, "joinRequests"), {
+                    name: document.getElementById('addName').value,
+                    type: document.getElementById('addDept').value,
+                    phone: document.getElementById('addPhone').value,
+                    password: document.getElementById('addPass').value,
+                    isManuallyAdded: true,
+                    status: 'approved',
+                    timestamp: window.serverTimestamp()
+                });
+                window.closeModal('addUserModal');
+                document.getElementById('addUserForm').reset();
+                window.showToast(`تمت الإضافة بنجاح.`);
+            } catch (error) { window.showToast("فشلت الإضافة. تأكد من الإنترنت.", "error"); }
+            finally { btn.innerHTML = orig; btn.style.pointerEvents = 'auto'; }
         };
 
         window.logout = function() {
