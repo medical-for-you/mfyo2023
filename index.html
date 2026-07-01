@@ -31,8 +31,9 @@
             --text-muted: #aaaaaa;
         }
 
+        /* تعديل جوهري هنا لحل مشكلة التداخل في الهاتف واللابتوب */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        html, body { overflow-x: hidden; width: 100%; height: 100%; }
+        html, body { overflow-x: hidden; width: 100%; min-height: 100vh; } 
         
         body { 
             background: var(--light-bg); color: var(--text-main); 
@@ -58,9 +59,11 @@
         /* ========================================= */
         /* واجهة الدخول (الخلفية والبطاقة) */
         /* ========================================= */
-        .auth-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; position: relative; overflow: hidden; background: linear-gradient(-45deg, rgba(0, 68, 148, 0.9), rgba(0, 34, 68, 0.95)), url('https://images.unsplash.com/photo-1551076805-e1869043e560?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; background-blend-mode: overlay; }
+        /* إزالة overflow: hidden واستبدالها لتسمح بالتمرير الطبيعي لتجنب اختفاء اللوجو */
+        .auth-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; position: relative; background: linear-gradient(-45deg, rgba(0, 68, 148, 0.9), rgba(0, 34, 68, 0.95)), url('https://images.unsplash.com/photo-1551076805-e1869043e560?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; background-blend-mode: overlay; overflow-y: auto; }
         
-        .auth-card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 50px 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; z-index: 10; animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 8px solid var(--main-blue); }
+        /* إضافة margin: auto لتوسيط ذكي يمنع القص من الأعلى */
+        .auth-card { margin: auto; background: var(--card-bg); width: 100%; max-width: 450px; padding: 50px 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; z-index: 10; animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 8px solid var(--main-blue); }
         body.dark-mode .auth-card { box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-color: #333; border-top-color: var(--main-blue); }
         @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -73,7 +76,9 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: contain; /* تعديل لإظهار الصورة كاملة غير مقصوصة */
+            background-color: #ffffff;
+            padding: 5px;
             margin: 0 auto 15px auto;
             display: block;
             border: 4px solid var(--main-blue);
@@ -149,7 +154,7 @@
         .remember-me-group input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--main-blue); }
 
         /* التعديل الجذري للفوتر ليكون صغيراً ومناسباً */
-        footer { background: #111; color: #aaa; text-align: center; padding: 12px 10px; border-top: 5px solid var(--main-blue); width: 100%; z-index: 1000; margin-top: auto; }
+        footer { background: #111; color: #aaa; text-align: center; padding: 12px 10px; border-top: 5px solid var(--main-blue); width: 100%; z-index: 1000; margin-top: auto; flex-shrink: 0; }
         footer p { font-size: 0.95rem !important; margin: 0; }
         .dev-btn-footer { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 15px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 8px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-family: 'Cairo'; font-size: 0.85rem; }
         .dev-btn-footer:hover { background: var(--main-blue); border-color: var(--main-blue); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
@@ -157,7 +162,7 @@
         /* النوافذ (Modals) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease; justify-content: center; align-items: center; z-index: 200000; display: none; }
         .modal-overlay.show-modal { display: flex; opacity: 1; }
-        .modal-content { background: var(--card-bg); width: 50vw; max-width: 600px; padding: 35px; border-radius: 20px; position: relative; border-bottom: 8px solid var(--main-red); box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); transition: var(--transition); max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: var(--card-bg); width: 50vw; max-width: 600px; padding: 35px; border-radius: 20px; position: relative; border-bottom: 8px solid var(--main-red); box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); transition: var(--transition); max-height: 90vh; overflow-y: auto; margin: auto; }
         .modal-overlay.show-modal .modal-content { transform: translateY(0); }
         .close-modal { position: absolute; left: 20px; top: 15px; font-size: 28px; cursor: pointer; color: var(--text-muted); transition: 0.3s; z-index: 10; }
         .close-modal:hover { color: var(--main-red); }
@@ -187,29 +192,42 @@
         .btn-submit:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
 
         /* ========================================= */
-        /* التجاوب الدقيق والمعدل مع الهاتف */
+        /* التجاوب الدقيق والمعدل جذرياً مع الهاتف */
         /* ========================================= */
         @media (max-width: 768px) {
-            .navbar { flex-direction: column; gap: 10px; padding: 10px; }
-            .nav-actions { gap: 10px; }
-            .auth-card { padding: 30px 20px; width: 95vw; margin: 15px; border-radius: 15px; }
-            .auth-header h2 { font-size: 1.4rem; }
-            .auth-main-title { font-size: 1.6rem; }
-            .auth-main-logo { width: 100px; height: 100px; }
-            .floating-group { margin-bottom: 15px; }
-            .floating-group input, .floating-group select { padding: 14px 15px; font-size: 1rem; }
-            .floating-group label { font-size: 0.95rem; right: 15px; }
-            .btn-submit { font-size: 1.1rem; padding: 14px; }
+            .navbar { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px 15px; }
+            .nav-actions { width: 100%; justify-content: center; }
             
-            /* حل تداخل النافذة */
-            .modal-overlay { padding: 10px; align-items: flex-start; overflow-y: auto; }
+            /* تعديل المسافات والأحجام لمنع الخنق في الموبايل */
+            .auth-wrapper { padding: 15px 10px; }
+            .auth-card { padding: 25px 15px; width: 100%; margin: 0 auto; border-radius: 15px; }
+            
+            .auth-header h2 { font-size: 1.3rem; margin-bottom: 3px; }
+            .auth-header p { font-size: 0.85rem; margin-bottom: 20px; }
+            .auth-main-title { font-size: 1.4rem; margin-bottom: 10px; }
+            .auth-main-logo { width: 80px; height: 80px; margin-bottom: 10px; border-width: 3px; }
+            
+            .floating-group { margin-bottom: 12px; }
+            .floating-group input, .floating-group select { padding: 12px 15px; font-size: 0.95rem; border-width: 1px; }
+            .floating-group label { font-size: 0.85rem; right: 15px; }
+            
+            .btn-submit { font-size: 1.05rem; padding: 12px; margin-top: 5px; }
+            .auth-footer { margin-top: 15px; gap: 10px; }
+            .auth-link { font-size: 0.9rem; }
+            
+            /* حل تداخل النوافذ المنبثقة */
+            .modal-overlay { padding: 15px; align-items: flex-start; overflow-y: auto; }
             .modal-content { width: 100%; padding: 20px 15px; max-height: none; margin: auto 0; }
-            .modal-header h3 { font-size: 1.4rem; }
-            .modal-header p { font-size: 0.9rem; }
+            .modal-header h3 { font-size: 1.3rem; }
+            .modal-header p { font-size: 0.85rem; }
             .reg-grid { grid-template-columns: 1fr; gap: 10px; }
             
-            .toast-container { bottom: 20px; left: 10px; right: 10px; align-items: center; }
-            .toast { width: 100%; font-size: 0.95rem; padding: 12px 15px; }
+            .toast-container { bottom: 15px; left: 10px; right: 10px; align-items: center; }
+            .toast { width: 100%; font-size: 0.9rem; padding: 10px 15px; }
+            
+            footer { padding: 8px 10px; }
+            footer p { font-size: 0.8rem !important; }
+            .dev-btn-footer { font-size: 0.75rem; padding: 5px 12px; margin-top: 5px; }
         }
     </style>
 </head>
