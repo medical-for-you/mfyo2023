@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ميديكال فور يو | الأنشطة والبرامج</title>
     
-    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -87,7 +86,7 @@
         .project-img-wrapper { width: 100%; height: 250px; background: var(--light-bg); border-bottom: 5px solid var(--main-blue); overflow: hidden; position: relative; }
         .project-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         .project-card:hover .project-img-wrapper img { transform: scale(1.08); }
-        .project-badge { position: absolute; top: 15px; right: 15px; background: var(--main-red); color: white; padding: 5px 15px; border-radius: 30px; font-weight: 900; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .project-badge { position: absolute; top: 15px; right: 15px; background: var(--main-red); color: white; padding: 5px 15px; border-radius: 30px; font-weight: 900; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 10; }
 
         .project-content { padding: 30px; text-align: right; display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1; }
         .project-content h3 { color: var(--main-blue); font-weight: 900; font-size: 1.5rem; margin-bottom: 15px; }
@@ -171,42 +170,55 @@
         .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 15px 25px; color: var(--text-main); font-weight: 800; transition: 0.3s; }
         .quick-menu li a:hover { color: var(--main-red); padding-right: 35px; background: rgba(211,47,47,0.05); }
         .quick-menu li a i { width: 25px; text-align: center; color: var(--main-blue); font-size: 1.3rem; transition: 0.3s; }
+        .quick-menu li a:hover i { transform: scale(1.2); color: var(--main-red); }
 
-        /* نافذة المبرمج */
-        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); margin-left: auto; margin-right: auto;}
-        .dev-contact-info { text-align: right; margin-top: 20px; background: rgba(0,68,148,0.05); padding: 20px; border-radius: 15px; border: 2px dashed var(--main-blue); }
-        .dev-contact-info p { margin: 10px 0; font-weight: bold; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
-        .dev-contact-info a { color: var(--main-blue); }
+        /* الانضغاط عند اللمس للهواتف */
+        .btn:active, .service-card:active, .quick-access-btn:active, .read-more-btn:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
 
-        /* الفوتر */
-        footer { background: #111; color: #aaa; text-align: center; padding: 40px 20px; border-top: 5px solid var(--main-blue); }
-        .copyright-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
-        .copyright-btn:hover { background: var(--main-blue); border-color: var(--main-blue); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
-
-        .btn-register:active, .project-card:active, .announcement-card:active, .quick-access-btn:active, .read-more-btn:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
-
-        /* التجاوب مع الهاتف */
+        /* ========================================= */
+        /* التجاوب مع شاشات الجوال */
+        /* ========================================= */
         @media (max-width: 768px) {
             .navbar { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { overflow-x: auto; width: 100%; justify-content: flex-start; padding-bottom: 5px; flex-wrap: nowrap; }
             .nav-links li { flex: 0 0 auto; }
-            .page-header h1 { font-size: 2.2rem; }
+            .page-header h1 { font-size: 2.5rem; }
+            
             .projects-grid { grid-template-columns: 1fr; }
             .announcement-card { flex-direction: column; text-align: center; border-right: 1px solid var(--card-bg); border-top: 8px solid var(--main-red); }
             .announcement-card:hover { transform: translateY(-10px); }
             .announcement-date { width: 100%; padding: 20px; flex-direction: row; gap: 15px; align-items: baseline; }
             .announcement-info { padding: 20px; display: flex; flex-direction: column; align-items: center; }
-            .modal-content { width: 95vw; padding: 25px; } /* توافق النوافذ مع الهاتف */
-            .toast-container { bottom: 20px; left: 20px; right: 20px; }
-            .quick-access-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; }
+            
+            .quick-access-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px; }
             .quick-menu { bottom: 90px; right: 20px; width: calc(100vw - 40px); }
             .scroll-btn { bottom: 20px; left: 20px; }
         }
+        
+        .dev-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease; justify-content: center; align-items: center; }
+        .dev-modal.show-modal { display: flex; opacity: 1; }
+        .dev-content { background: var(--card-bg); width: 90%; max-width: 450px; padding: 40px 30px; border-radius: 25px; text-align: center; position: relative; border-bottom: 8px solid var(--main-blue); box-shadow: 0 25px 50px rgba(0,0,0,0.4); transform: translateY(-50px); transition: var(--transition); }
+        .dev-modal.show-modal .dev-content { transform: translateY(0); }
+        .close-dev { position: absolute; left: 25px; top: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .close-dev:hover { color: var(--main-red); transform: rotate(90deg) scale(1.2); }
+        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; padding: 5px; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); margin-left: auto; margin-right: auto;}
+        
+        /* أيقونات المطور */
+        .social-icons-dev { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+        .social-icons-dev a { color: var(--text-main); font-size: 1.8rem; transition: 0.3s; display: inline-block; }
+        .social-icons-dev a:hover { transform: scale(1.2); }
+        .social-icons-dev a.fa-whatsapp:hover { color: #25d366; }
+        .social-icons-dev a.fa-facebook:hover { color: #1877f2; }
+        .social-icons-dev a.fa-telegram:hover { color: #0088cc; }
+
+        /* الفوتر */
+        footer { background: #111; color: #aaa; text-align: center; padding: 40px 20px; border-top: 5px solid var(--main-blue); }
+        .copyright-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .copyright-btn:hover { background: var(--main-blue); border-color: var(--main-blue); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر -->
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-heartbeat"></i>
@@ -214,150 +226,80 @@
         </div>
         <ul class="nav-links">
             <li><a href="home.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="structure.html"><i class="fas fa-sitemap"></i> الهيكل الإداري</a></li>
-            <!-- الزر النشط (Active) بلون أحمر ليعرف المستخدم موقعه -->
-            <li><a href="activities.html" class="active-nav" style="color: var(--main-red);"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
-            <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية</a></li>
-            <li><a href="membership.html"><i class="fas fa-id-card"></i> العضوية</a></li>
-            <li><button class="nav-dev-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
-            <li><button class="nav-dev-btn" onclick="openGenericModal('devModal')"><i class="fas fa-code"></i> المطور</button></li>
+            <li><a href="structure.html"><i class="fas fa-sitemap"></i> البوابات</a></li>
+            <li><a href="activities.html" class="active-nav" style="color: var(--main-red);"><i class="fas fa-briefcase-medical"></i> الأنشطة</a></li>
+            <li><a href="rules.html"><i class="fas fa-file-contract"></i> اللوائح</a></li>
+            <li><button class="nav-dev-btn theme-toggle" onclick="window.toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
+            <li><button class="nav-dev-btn" onclick="window.openDevModal()"><i class="fas fa-code"></i> المطور</button></li>
         </ul>
     </nav>
 
-    <!-- الترويسة الداخلية (Hero) -->
     <header class="page-header">
         <div class="pulse-icon"><i class="fas fa-briefcase-medical"></i></div>
         <h1>الأنشطة والبرامج</h1>
         <p>توثيق لمسيرتنا المشرقة في خدمة المجتمع، واستعراض لأهم البرامج المستقبلية والمشاريع الطبية التي تنفذها منظمة ميديكال فور يو.</p>
     </header>
 
-    <!-- قسم الأنشطة والمشاريع المنجزة -->
-    <section class="section" id="completed-projects">
+    <div id="toast-container" class="toast-container"></div>
+
+    <section class="section">
         <div class="container">
             <h2 class="section-title">أحدث المشاريع المنجزة</h2>
-            
-            <div class="projects-grid">
-                
-                <!-- مشروع 1 -->
+            <div class="projects-grid" id="dynamic-completed-projects">
                 <div class="project-card fade-element">
                     <div class="project-img-wrapper">
                         <span class="project-badge">مكتمل</span>
                         <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="القافلة الطبية">
                     </div>
                     <div class="project-content">
-                        <h3>القافلة الطبية الشاملة (الولاية الشمالية)</h3>
+                        <h3>القافلة الطبية الشاملة</h3>
                         <div class="project-meta">
                             <span><i class="fas fa-calendar-alt"></i> أبريل 2026</span>
                             <span><i class="fas fa-map-marker-alt"></i> القرى الطرفية</span>
                         </div>
                         <div class="project-text">
-                            <p>نظمت منظمة ميديكال فور يو قافلة طبية ضخمة استهدفت المناطق الطرفية، بمشاركة أكثر من 50 طبيباً وممرضاً من أعضاء المنظمة.</p>
-                            <p>شملت القافلة عيادات مجانية في تخصصات الباطنية، الأطفال، والنساء والتوليد، بالإضافة إلى صيدلية مجانية وفرت أدوية لأكثر من 1500 مريض، ومعمل تحاليل متكامل عمل على مدار 3 أيام متواصلة. وقد أشاد المجلس الاستشاري للمنظمة بالنجاح الباهر الذي حققه الفريق الميداني.</p>
+                            <p>نظمت منظمة ميديكال فور يو قافلة طبية ضخمة استهدفت المناطق الطرفية، بمشاركة أكثر من 50 طبيباً وممرضاً.</p>
                         </div>
-                        <button class="read-more-btn" onclick="toggleReadMore(this)">قراءة المزيد <i class="fas fa-chevron-down"></i></button>
+                        <button class="read-more-btn" onclick="window.toggleReadMore(this)">قراءة المزيد <i class="fas fa-chevron-down"></i></button>
                     </div>
                 </div>
-
-                <!-- مشروع 2 -->
-                <div class="project-card fade-element">
-                    <div class="project-img-wrapper">
-                        <span class="project-badge" style="background-color: var(--main-blue);">تدريب مستمر</span>
-                        <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="دورة الإسعافات">
-                    </div>
-                    <div class="project-content">
-                        <h3>مشروع تدريب الكوادر (BLS & CPR)</h3>
-                        <div class="project-meta">
-                            <span><i class="fas fa-calendar-alt"></i> مايو 2026</span>
-                            <span><i class="fas fa-hospital-user"></i> أكاديمية المنظمة</span>
-                        </div>
-                        <div class="project-text">
-                            <p>انطلاق المرحلة الأولى من مشروع الإنعاش القلبي الرئوي الأساسي للكوادر الطبية المساعدة بالشراكة مع كبرى المستشفيات.</p>
-                            <p>تم تخريج الدفعة الأولى التي ضمت 120 متدرباً بنجاح. يهدف هذا المشروع الطموح في مرحلته الثانية إلى تدريب الكوادر على توحيد بروتوكولات التدخل السريع وفق المعايير الطبية العالمية لضمان جاهزية أقسام الطوارئ لإنقاذ الأرواح في اللحظات الحرجة.</p>
-                        </div>
-                        <button class="read-more-btn" onclick="toggleReadMore(this)">قراءة المزيد <i class="fas fa-chevron-down"></i></button>
-                    </div>
-                </div>
-
-                <!-- مشروع 3 -->
-                <div class="project-card fade-element">
-                    <div class="project-img-wrapper">
-                        <span class="project-badge" style="background-color: #27ae60;">حملة توعوية</span>
-                        <img src="https://images.unsplash.com/photo-1584982751601-97d883f51524?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="مكافحة العدوى">
-                    </div>
-                    <div class="project-content">
-                        <h3>حملة "مستشفى آمن" لمكافحة العدوى</h3>
-                        <div class="project-meta">
-                            <span><i class="fas fa-calendar-alt"></i> يونيو 2026</span>
-                            <span><i class="fas fa-shield-virus"></i> المستشفيات الحكومية</span>
-                        </div>
-                        <div class="project-text">
-                            <p>حملة ميدانية توعوية قادها المكتب التنفيذي للمنظمة لتعزيز الوعي بأساسيات مكافحة العدوى داخل الأقسام الحساسة.</p>
-                            <p>تم خلال الحملة توزيع أكثر من 3000 ملصق إرشادي، وتنظيم ورش عمل مصغرة للكوادر الطبية وعمال النظافة لتعريفهم بالطرق الصحيحة للتخلص من النفايات الطبية الحادة، وكيفية التعامل مع حالات العزل لضمان بيئة صحية خالية من العدوى المكتسبة (Nosocomial Infections).</p>
-                        </div>
-                        <button class="read-more-btn" onclick="toggleReadMore(this)">قراءة المزيد <i class="fas fa-chevron-down"></i></button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
 
-    <!-- قسم البرامج المستقبلية (Upcoming Events) -->
-    <section class="upcoming-section" id="upcoming-events">
+    <section class="upcoming-section">
         <div class="container">
             <h2 class="section-title">خطة البرامج المستقبلية</h2>
-            
-            <!-- فعالية 1 -->
-            <div class="announcement-card fade-element">
-                <div class="announcement-date">
-                    <span class="day">15</span>
-                    <span class="month">يوليو 2026</span>
-                </div>
-                <div class="announcement-info">
-                    <h3>المؤتمر الطبي السنوي للمنظمة</h3>
-                    <p>أكبر تجمع طبي تنظمه "ميديكال فور يو" لمناقشة أحدث بروتوكولات الرعاية الصحية بمشاركة خبراء من المجلس الاستشاري. يتخلل المؤتمر أوراق عمل علمية ومعرض مصاحب للابتكارات الطبية الشابة.</p>
-                    <!-- استبدال Alert بوظيفة فتح نافذة منبثقة لتسجيل الحضور -->
-                    <button class="btn-register" onclick="openEventModal('المؤتمر الطبي السنوي للمنظمة')">سجل رغبة الحضور <i class="fas fa-bell"></i></button>
-                </div>
-            </div>
-
-            <!-- فعالية 2 -->
-            <div class="announcement-card fade-element" style="border-right-color: var(--main-blue);">
-                <div class="announcement-date" style="background-color: var(--main-blue);">
-                    <span class="day">05</span>
-                    <span class="month">أغسطس 2026</span>
-                </div>
-                <div class="announcement-info">
-                    <h3 style="color: var(--main-red);">أسبوع التبرع بالدم (قطرة حياة)</h3>
-                    <p>بالتنسيق مع بنك الدم المركزي، نطلق حملتنا الكبرى لتوفير فصائل الدم النادرة تحسباً للطوارئ. ندعو كافة أعضاء المنظمة والجمهور للمشاركة في هذا العمل الإنساني العظيم الذي ينقذ الأرواح.</p>
-                    <!-- استبدال Alert بوظيفة فتح استمارة التطوع -->
-                    <button class="btn-register" style="background: var(--main-red);" onclick="openVolunteerModal('أسبوع التبرع بالدم (قطرة حياة)')">التطوع في الحملة <i class="fas fa-heart"></i></button>
+            <div id="dynamic-upcoming-events">
+                <div class="announcement-card fade-element">
+                    <div class="announcement-date">
+                        <span class="day">15</span>
+                        <span class="month">يوليو 2026</span>
+                    </div>
+                    <div class="announcement-info">
+                        <h3>المؤتمر الطبي السنوي</h3>
+                        <p>أكبر تجمع طبي تنظمه المنظمة لمناقشة أحدث بروتوكولات الرعاية الصحية.</p>
+                        <button class="btn-register" onclick="window.openEventModal('المؤتمر الطبي السنوي')">سجل رغبة الحضور <i class="fas fa-bell"></i></button>
+                    </div>
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- الفوتر -->
     <footer>
         <div class="container">
             <p style="font-size: 1.2rem; font-weight: 900; color: white; letter-spacing: 1px;">جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
-            <button class="copyright-btn" onclick="openGenericModal('devModal')">
+            <button class="copyright-btn" onclick="window.openDevModal()">
                 <i class="fas fa-code"></i> التطوير بواسطة CLOUD ART
             </button>
         </div>
     </footer>
 
-    <!-- ========================================= -->
-    <!-- النوافذ المنبثقة التفاعلية (Modals) -->
-    <!-- ========================================= -->
-
-    <!-- 1. نافذة تسجيل الحضور للفعاليات -->
-    <div id="eventModal" class="modal-overlay" onclick="closeModalOutside(event, 'eventModal')">
+    <div id="eventModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'eventModal')">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('eventModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('eventModal')">&times;</span>
             <h3 style="color: var(--main-blue); margin-bottom: 20px; font-weight: 900; font-size: 1.6rem; text-align: center;">تأكيد رغبة الحضور</h3>
-            <form id="eventForm" onsubmit="handleEventSubmit(event)">
+            <form id="eventForm" onsubmit="window.handleEventSubmit(event)">
                 <div class="form-group">
                     <label>الفعالية المختارة:</label>
                     <input type="text" id="eventNameInput" readonly style="background: var(--light-bg); color: var(--main-red); font-weight: bold;">
@@ -375,12 +317,11 @@
         </div>
     </div>
 
-    <!-- 2. نافذة التطوع في الحملات -->
-    <div id="volunteerModal" class="modal-overlay" onclick="closeModalOutside(event, 'volunteerModal')">
+    <div id="volunteerModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'volunteerModal')">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('volunteerModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('volunteerModal')">&times;</span>
             <h3 style="color: var(--main-red); margin-bottom: 20px; font-weight: 900; font-size: 1.6rem; text-align: center;">استمارة التطوع والمشاركة</h3>
-            <form id="volunteerForm" onsubmit="handleVolunteerSubmit(event)">
+            <form id="volunteerForm" onsubmit="window.handleVolunteerSubmit(event)">
                 <div class="form-group">
                     <label>اسم الحملة:</label>
                     <input type="text" id="volunteerNameInput" readonly style="background: var(--light-bg); color: var(--main-blue); font-weight: bold;">
@@ -394,14 +335,8 @@
                     <select required>
                         <option value="">-- اختر الفصيلة --</option>
                         <option value="O+">O+</option>
-                        <option value="O-">O-</option>
                         <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="تنظيمي">متطوع في التنظيم فقط</option>
+                        <option value="تنظيمي">متطوع تنظيمي فقط</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -413,55 +348,140 @@
         </div>
     </div>
 
-    <!-- 3. نافذة المطور (Cloud Art Modal) -->
-    <div id="devModal" class="modal-overlay" onclick="closeModalOutside(event, 'devModal')">
-        <div class="modal-content" style="text-align: center;">
-            <span class="close-modal" onclick="closeModal('devModal')">&times;</span>
-            <div class="dev-img">Cloud<br>Art</div>
+    <div id="devModal" class="dev-modal" onclick="window.closeDevModal(event)">
+        <div class="dev-content" id="devContent">
+            <span class="close-dev" onclick="window.closeDevModal(event, true)">&times;</span>
+            <div style="display: flex; justify-content: center;">
+                <div class="dev-img">Cloud<br>Art</div>
+            </div>
             <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تصميم وتطوير: CLOUD ART</h3>
-            <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: bold;">حلول برمجية متطورة للأنظمة الطبية</p>
-            <div class="dev-contact-info">
-                <p><i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i> واتساب: <a href="https://wa.me/249127825486" style="direction: ltr; font-weight: bold;">0127825486</a></p>
-                <p><i class="fas fa-phone-alt" style="color: var(--main-blue); font-size: 1.3rem;"></i> مكالمات: <a href="tel:0964278052" style="direction: ltr; font-weight: bold;">0964278052</a></p>
+            <p style="color: var(--text-main); font-size: 1.2rem; font-weight: bold; margin-bottom: 5px;">م. الرشيد أبشر <br> (Alrasheed Abshar)</p>
+            <p style="color: var(--text-muted); font-size: 1rem; font-weight: bold; margin-bottom: 15px;">مطور ويب وتطبيقات هواتف ذكية متكاملة</p>
+            <div class="social-icons-dev">
+                <a href="https://wa.me/249127825486" target="_blank" class="fab fa-whatsapp" title="تواصل عبر واتساب"></a>
+                <a href="https://t.me/AlrasheedAbshar" target="_blank" class="fab fa-telegram" title="تواصل عبر تليجرام"></a>
+                <a href="https://www.facebook.com/alrasheedabshar" target="_blank" class="fab fa-facebook" title="تواصل عبر فيسبوك"></a>
             </div>
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--light-bg);">
             <p style="font-size: 0.95rem; color: var(--text-muted); font-weight: bold;">صُنع بكل فخر لدعم القطاع الصحي والمجتمعي</p>
         </div>
     </div>
 
-    <!-- حاوية التنبيهات الذكية (Toasts Container) -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <!-- الأزرار العائمة (Menu & Scroll) -->
     <button class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات"><i class="fas fa-th-large" style="pointer-events: none;"></i></button>
     <button class="scroll-btn" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="أعلى الصفحة"><i class="fas fa-chevron-up"></i></button>
 
-    <!-- القائمة العائمة السريعة (مفعلة الروابط) -->
     <div id="quickMenu" class="quick-menu">
         <ul>
             <li><a href="home.html"><i class="fas fa-home"></i> الشاشة الرئيسية</a></li>
             <li><a href="structure.html"><i class="fas fa-sitemap"></i> الهيكل الإداري</a></li>
-            <li><a href="activities.html" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
+            <li><a href="activities.html"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
             <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية الطبية</a></li>
             <li><a href="membership.html"><i class="fas fa-id-card"></i> استمارة العضوية</a></li>
-            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+            <li><a href="activities_data_entry.html" style="color: #9b59b6; background: rgba(155,89,182,0.05);"><i class="fas fa-database"></i> تحديث الأنشطة (للمدير)</a></li>
+            <li><a href="admin.html" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-cogs"></i> لوحة الإدارة (Admin)</a></li>
+            <li><a href="index.html" onclick="alert('تسجيل الخروج')"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
         </ul>
     </div>
 
-    <!-- ========================================= -->
-    <!-- سكربت الجافاسكريبت (التفاعلات والوظائف) -->
-    <!-- ========================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 1. جلب المشاريع المنجزة (Completed)
+        onSnapshot(collection(db, "activities_completed"), (snapshot) => {
+            if (!snapshot.empty) {
+                const container = document.getElementById('dynamic-completed-projects');
+                container.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    container.innerHTML += `
+                        <div class="project-card fade-element visible">
+                            <div class="project-img-wrapper">
+                                <span class="project-badge" style="background-color: ${data.statusColor || 'var(--main-red)'};">${data.status}</span>
+                                <img src="${data.img}" alt="${data.title}">
+                            </div>
+                            <div class="project-content">
+                                <h3>${data.title}</h3>
+                                <div class="project-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> ${data.date}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${data.location}</span>
+                                </div>
+                                <div class="project-text">
+                                    <p>${data.desc1}</p>
+                                    <p>${data.desc2 || ''}</p>
+                                </div>
+                                <button class="read-more-btn" onclick="window.toggleReadMore(this)">قراءة المزيد <i class="fas fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        // 2. جلب البرامج المستقبلية (Upcoming)
+        onSnapshot(collection(db, "activities_upcoming"), (snapshot) => {
+            if (!snapshot.empty) {
+                const container = document.getElementById('dynamic-upcoming-events');
+                container.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    // تحديد لون البطاقة واسم الدالة التي يتم استدعاؤها
+                    let cardBorder = data.btnType === 'volunteer' ? 'var(--main-blue)' : 'var(--main-red)';
+                    let dateBg = data.btnType === 'volunteer' ? 'var(--main-blue)' : 'var(--main-red)';
+                    let titleColor = data.btnType === 'volunteer' ? 'var(--main-red)' : 'var(--main-blue)';
+                    let btnColor = data.btnType === 'volunteer' ? 'var(--main-red)' : '';
+                    let actionFunc = data.btnType === 'volunteer' ? `window.openVolunteerModal('${data.title}')` : `window.openEventModal('${data.title}')`;
+                    
+                    container.innerHTML += `
+                        <div class="announcement-card fade-element visible" style="border-right-color: ${cardBorder};">
+                            <div class="announcement-date" style="background-color: ${dateBg};">
+                                <span class="day">${data.day}</span>
+                                <span class="month">${data.monthYear}</span>
+                            </div>
+                            <div class="announcement-info">
+                                <h3 style="color: ${titleColor};">${data.title}</h3>
+                                <p>${data.desc}</p>
+                                <button class="btn-register" style="background: ${btnColor};" onclick="${actionFunc}">${data.btnText} <i class="fas fa-chevron-left"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        // 3. جلب الإشعارات الذكية (Smart Toasts)
+        onSnapshot(collection(db, "activities_toasts"), (snapshot) => {
+            if (!snapshot.empty) {
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    setTimeout(() => {
+                        if(window.createToast) window.createToast(data.text, data.duration * 1000);
+                    }, data.delay * 1000);
+                });
+            }
+        });
+    </script>
+
     <script>
-        // 1. نظام الوضع الليلي (Dark Mode)
-        function toggleTheme() {
+        window.toggleTheme = function() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('medicalTheme', isDark ? 'dark' : 'light');
-            
             document.querySelectorAll('.theme-toggle').forEach(btn => {
                 btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
             });
-        }
+        };
 
         window.onload = () => {
             if(localStorage.getItem('medicalTheme') === 'dark') {
@@ -472,76 +492,62 @@
             }
         };
 
-        // 2. التحكم في جميع النوافذ المنبثقة (Modals)
-        function openGenericModal(modalId) {
-            document.getElementById(modalId).classList.add('show-modal');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('show-modal');
-        }
-
-        function closeModalOutside(event, modalId) {
+        window.openGenericModal = function(modalId) { document.getElementById(modalId).classList.add('show-modal'); };
+        window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('show-modal'); };
+        window.closeModalOutside = function(event, modalId) {
             const modal = document.getElementById(modalId);
-            if (event.target === modal) {
-                closeModal(modalId);
-            }
-        }
+            if (event.target === modal) window.closeModal(modalId);
+        };
 
-        // دوال مخصصة لفتح النماذج وسحب الاسم
-        function openEventModal(eventName) {
+        window.openEventModal = function(eventName) {
             document.getElementById('eventNameInput').value = eventName;
-            openGenericModal('eventModal');
-        }
-
-        function openVolunteerModal(campaignName) {
+            window.openGenericModal('eventModal');
+        };
+        window.openVolunteerModal = function(campaignName) {
             document.getElementById('volunteerNameInput').value = campaignName;
-            openGenericModal('volunteerModal');
-        }
+            window.openGenericModal('volunteerModal');
+        };
+        window.openDevModal = function() { window.openGenericModal('devModal'); };
+        window.closeDevModal = function(e, forceClose = false) {
+            if (forceClose || e.target.classList.contains('dev-modal')) window.closeModal('devModal');
+        };
 
-        // 3. نظام الإشعارات الذكي (Toasts)
-        function showToast(message) {
+        window.showToast = function(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `<i class="fas fa-check-circle"></i> <span>${message}</span>`;
-            
             container.appendChild(toast);
-            
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(100%)';
                 setTimeout(() => toast.remove(), 500);
             }, 4000);
-        }
+        };
 
-        // 4. معالجة إرسال النماذج بدون Alert
-        function handleEventSubmit(event) {
+        window.handleEventSubmit = function(event) {
             event.preventDefault();
             const eventName = document.getElementById('eventNameInput').value;
-            closeModal('eventModal');
-            showToast(`تم تسجيل رغبة حضورك في فعالية: ${eventName} بنجاح!`);
+            window.closeModal('eventModal');
+            window.showToast(`تم تسجيل رغبة حضورك في فعالية: ${eventName} بنجاح!`);
             document.getElementById('eventForm').reset();
-        }
+        };
 
-        function handleVolunteerSubmit(event) {
+        window.handleVolunteerSubmit = function(event) {
             event.preventDefault();
             const campaignName = document.getElementById('volunteerNameInput').value;
-            closeModal('volunteerModal');
-            showToast(`شكراً لك! تم استلام بيانات تطوعك لحملة: ${campaignName} بنجاح.`);
+            window.closeModal('volunteerModal');
+            window.showToast(`شكراً لك! تم استلام بيانات تطوعك لحملة: ${campaignName} بنجاح.`);
             document.getElementById('volunteerForm').reset();
-        }
+        };
 
-        // 5. القائمة العائمة (Quick Menu)
         const quickMenu = document.getElementById('quickMenu');
         const quickToggleBtn = document.getElementById('quickToggleBtn');
-
         quickToggleBtn.addEventListener('click', function(e) {
             e.preventDefault(); e.stopPropagation();
             quickMenu.classList.toggle('active');
             this.classList.toggle('active-btn');
         });
-
         document.addEventListener('click', function(e) {
             if (quickMenu.classList.contains('active') && !quickMenu.contains(e.target) && !quickToggleBtn.contains(e.target)) {
                 quickMenu.classList.remove('active');
@@ -549,20 +555,17 @@
             }
         });
 
-        // 6. زر طي وفتح النصوص (Read More)
-        function toggleReadMore(btn) {
+        window.toggleReadMore = function(btn) {
             const textContainer = btn.previousElementSibling;
             textContainer.classList.toggle('expanded');
             btn.classList.toggle('expanded');
-            
             if (textContainer.classList.contains('expanded')) {
                 btn.innerHTML = 'عرض أقل <i class="fas fa-chevron-up"></i>';
             } else {
                 btn.innerHTML = 'قراءة المزيد <i class="fas fa-chevron-down"></i>';
             }
-        }
+        };
 
-        // 7. تأثيرات الظهور عند التمرير
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -571,20 +574,26 @@
                 }
             });
         }, { threshold: 0.1 });
-        
-        document.querySelectorAll('.fade-element').forEach((el) => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.fade-element').forEach((el) => { observer.observe(el); });
 
-        // 8. زر الصعود للأعلى
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTopBtn.style.display = 'flex';
-            } else {
-                scrollTopBtn.style.display = 'none';
-            }
+            if (window.scrollY > 300) { scrollTopBtn.style.display = 'flex'; } 
+            else { scrollTopBtn.style.display = 'none'; }
         });
+
+        // دالة إنشاء الإشعارات الذكية المتغيرة الزمن (تُستدعى من Firebase)
+        window.createToast = function(message, durationMs = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-info-circle" style="color: var(--main-red);"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 1000);
+            }, durationMs);
+        }
     </script>
 </body>
 </html>

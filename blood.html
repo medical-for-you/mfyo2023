@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>بنك الدم التفاعلي | ميديكال فور يو</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========================================= */
+        /* المتغيرات (هوية ميديكال فور يو) */
+        /* ========================================= */
+        :root {
+            --main-blue: #004494;
+            --main-blue-hover: #003377;
+            --main-red: #d32f2f;
+            --main-red-hover: #b71c1c;
+            --light-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #888888;
+            --blood-red: #c0392b; 
+            --bright-red: #e74c3c;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body.dark-mode {
+            --light-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f4f7f6;
+            --text-muted: #aaaaaa;
+        }
+
+        body { background-color: var(--light-bg); color: var(--text-main); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 90px; transition: background-color 0.4s ease; }
+        * { box-sizing: border-box; }
+        
+        /* الهيدر والقائمة (تأثير زجاجي) */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); flex-wrap: wrap; gap: 15px; }
+        body.dark-mode .navbar { background: rgba(30, 30, 30, 0.95); border-bottom: 1px solid #333; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--main-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        body.dark-mode .logo { color: #66b2ff; }
+        .logo span { color: var(--main-red); }
+        .logo i { color: var(--main-red); animation: pulse 1.5s infinite; }
+        
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center; }
+        .nav-links li a { text-decoration: none; color: var(--text-main); font-weight: 700; transition: 0.3s; display: flex; align-items: center; gap: 6px; font-size: 1.05rem; }
+        .nav-links li a:hover, .nav-links li a.active-nav { color: var(--main-red); transform: scale(1.05); }
+
+        .nav-dev-btn { background: rgba(211, 47, 47, 0.1); color: var(--main-red) !important; border: 1px solid var(--main-red); padding: 8px 18px; border-radius: 10px; font-weight: 900; transition: 0.3s; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: 'Cairo'; }
+        .nav-dev-btn:hover { background: var(--main-red); color: white !important; box-shadow: 0 4px 15px rgba(211,47,47,0.4); transform: translateY(-2px); }
+
+        /* الترويسة */
+        .blood-header { background: linear-gradient(-45deg, var(--main-blue), var(--main-red), #900C3F, #C70039); background-size: 300% 300%; animation: flowBlood 10s ease infinite; color: white; padding: 50px 20px; text-align: center; border-radius: 0 0 40px 40px; box-shadow: 0 10px 25px rgba(192, 57, 43, 0.2); margin-bottom: 30px; }
+        @keyframes flowBlood { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .blood-header h1 { margin: 0 0 10px 0; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); font-weight: 900; }
+        .blood-header p { margin: 0; font-size: 1.1rem; opacity: 0.9; font-weight: bold; }
+        
+        .blood-type-badge { background: var(--main-red); color: white; padding: 8px 20px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3); }
+        
+        /* كروت بنك الدم */
+        .donor-card { background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border-right: 8px solid var(--main-blue); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; transition: var(--transition); flex-wrap: wrap; gap: 15px; border-left: 1px solid var(--light-bg); border-top: 1px solid var(--light-bg); border-bottom: 1px solid var(--light-bg); }
+        body.dark-mode .donor-card { border-color: #333; border-right-color: var(--main-blue); }
+        .donor-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 68, 148, 0.15); border-right-width: 12px; }
+        
+        .donor-info h3 { margin: 0 0 10px 0; color: var(--text-main); font-weight: 900; font-size: 1.4rem; }
+        .donor-meta { color: var(--text-muted); font-size: 0.95rem; display: flex; gap: 10px; flex-wrap: wrap; font-weight: bold; }
+        
+        .btn-call-blood { background: var(--success-color); color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); font-size: 1.1rem; }
+        .btn-call-blood:active { transform: scale(0.95); }
+        
+        /* الفلاتر */
+        .blood-tabs { display: flex; gap: 12px; margin: 30px 0; overflow-x: auto; padding: 10px 5px; scrollbar-width: thin; scrollbar-color: var(--main-red) #f0f0f0; }
+        .blood-tabs::-webkit-scrollbar { height: 6px; }
+        .blood-tabs::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 10px; }
+        .blood-tabs::-webkit-scrollbar-thumb { background: var(--main-red); border-radius: 10px; }
+
+        .tab-btn { padding: 10px 25px; border: 2px solid var(--main-red); border-radius: 25px; background: var(--card-bg); color: var(--main-red); cursor: pointer; white-space: nowrap; font-weight: bold; transition: 0.3s; font-family: 'Cairo'; font-size: 1.1rem; }
+        .tab-btn.active { background: var(--main-red); color: white; box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4); transform: translateY(-2px); }
+        .tab-btn:active { transform: scale(0.95); }
+
+        /* النوافذ المنبثقة */
+        .modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg); margin: 5% auto; padding: 40px; border-radius: 25px; width: 90%; max-width: 500px; position: relative; animation: slideDown 0.4s ease; border-top: 8px solid var(--main-red); box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto; }
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: var(--light-bg); border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--main-red); border-radius: 10px; }
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .close-btn { position: absolute; left: 20px; top: 15px; font-size: 32px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
+        .close-btn:hover { color: var(--main-red); transform: rotate(90deg); }
+        
+        .form-input { padding: 15px; border-radius: 12px; border: 2px solid var(--light-bg); font-family: 'Cairo'; font-size: 1rem; width: 100%; box-sizing: border-box; margin-bottom: 15px; transition: 0.3s; font-weight: bold; background: var(--light-bg); color: var(--text-main); }
+        body.dark-mode .form-input { border-color: #333; }
+        .form-input:focus { border-color: var(--main-red); background: var(--card-bg); outline: none; box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1); }
+
+        /* الأزرار الرئيسية */
+        .btn-update { background: linear-gradient(135deg, var(--main-blue), #0066cc); color: white; border: none; padding: 18px; border-radius: 12px; font-family: 'Cairo'; font-weight: 900; font-size: 1.2rem; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 68, 148, 0.3); transition: 0.3s; position: relative; overflow: hidden; }
+        .btn-update:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 68, 148, 0.4); background: var(--main-red); }
+        .btn-update:active { transform: scale(0.95); }
+        .btn-primary { position: relative; overflow: hidden; animation: pulseRed 2s infinite alternate; }
+        .btn-primary::after, .btn-update::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: shine 3.5s infinite; }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        @keyframes pulseRed { 0% { box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4); } 100% { box-shadow: 0 8px 25px rgba(211, 47, 47, 0.8); } }
+
+        /* الإشعارات الذكية (Toasts) */
+        .toast-container { position: fixed; top: 120px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--card-bg); color: var(--text-main); border-right: 5px solid var(--main-red); padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 15px; font-weight: bold; animation: slideIn 0.5s ease-out forwards; transition: opacity 0.5s; border: 1px solid var(--light-bg); }
+        body.dark-mode .toast { border-color: #333; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* الفوتر ومساحة Cloud Art */
+        footer { background: #111; color: #aaa; text-align: center; padding: 30px 20px; border-top: 5px solid var(--main-blue); margin-top: 50px; font-family: 'Cairo'; }
+        .copyright-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-family: 'Cairo'; }
+        .copyright-btn:hover { background: var(--main-blue); border-color: var(--main-blue); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
+
+        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; padding: 5px; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); margin: 0 auto 15px auto;}
+        .social-icons-dev { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+        .social-icons-dev a { color: var(--text-main); font-size: 1.8rem; transition: 0.3s; display: inline-block; }
+        .social-icons-dev a:hover { transform: scale(1.2); }
+        .social-icons-dev a.fa-whatsapp:hover { color: #25d366; }
+        .social-icons-dev a.fa-facebook:hover { color: #1877f2; }
+        .social-icons-dev a.fa-telegram:hover { color: #0088cc; }
+
+        /* الأزرار العائمة */
+        .quick-access-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--main-blue), var(--main-red)); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; z-index: 100000; box-shadow: 0 10px 25px rgba(192, 57, 43, 0.4); transition: 0.3s; -webkit-tap-highlight-color: transparent; border: none; animation: pulseRed 2s infinite alternate; }
+        .quick-access-btn:active { transform: scale(0.95); }
+        
+        .quick-menu { display: none; position: fixed; bottom: 110px; right: 30px; background: var(--card-bg); border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); width: 280px; z-index: 99999; border: 1px solid var(--light-bg); overflow-y: auto; max-height: 70vh; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .quick-menu::-webkit-scrollbar { width: 5px; }
+        .quick-menu::-webkit-scrollbar-thumb { background: var(--main-red); border-radius: 10px; }
+        
+        .quick-menu ul { list-style: none; margin: 0; padding: 10px 0; }
+        .quick-menu li { border-bottom: 1px solid var(--light-bg); }
+        .quick-menu li a { display: flex; align-items: center; gap: 15px; padding: 12px 20px; text-decoration: none; color: var(--text-main); font-weight: 800; transition: 0.3s; }
+        .quick-menu li a i { width: 25px; text-align: center; color: var(--main-blue); font-size: 1.2rem; }
+        .quick-menu li a:hover { background: rgba(211,47,47,0.05); color: var(--main-red); padding-right: 30px; }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 10px; padding: 15px; }
+            .blood-header { padding: 40px 15px; border-radius: 0 0 30px 30px; }
+            .blood-header h1 { font-size: 1.8rem; }
+            .donor-card { flex-direction: column; text-align: center; border-right: none; border-top: 8px solid var(--main-blue); }
+            body.dark-mode .donor-card { border-top-color: var(--main-blue); }
+            .donor-card:hover { border-top-width: 12px; border-right-width: 0; }
+            .donor-meta { justify-content: center; }
+            .donor-card div:last-child { width: 100%; justify-content: center; margin-top: 10px; }
+            .modal-content { width: 95vw; padding: 25px; }
+            .toast-container { left: 10px; right: 10px; top: 180px; align-items: center; }
+            .toast { width: 100%; font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="home.html" class="logo"><i class="fas fa-heart-pulse"></i> منظمة ميديكال <span>فور يو</span></a>
+        <ul class="nav-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="blood.html" class="active-nav" style="color: var(--main-red);"><i class="fas fa-droplet"></i> بنك الدم</a></li>
+            <li><button class="nav-dev-btn theme-toggle" onclick="window.toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
+            <li><button class="nav-dev-btn" onclick="window.openDevModal()"><i class="fas fa-code"></i> المطور</button></li>
+        </ul>
+    </nav>
+
+    <header class="blood-header">
+        <h1><i class="fas fa-tint"></i> بنك الدم التفاعلي للمنظمة</h1>
+        <p>قطرة دم تساوي حياة.. ابحث عن متبرع أو سجل كمتبرع الآن.</p>
+    </header>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container" style="max-width: 900px; margin: auto;">
+            <div class="blood-tabs">
+                <button class="tab-btn active" onclick="window.filterBlood('الكل')">الكل</button>
+                <button class="tab-btn" onclick="window.filterBlood('O+')">O+</button>
+                <button class="tab-btn" onclick="window.filterBlood('O-')">O-</button>
+                <button class="tab-btn" onclick="window.filterBlood('A+')">A+</button>
+                <button class="tab-btn" onclick="window.filterBlood('A-')">A-</button>
+                <button class="tab-btn" onclick="window.filterBlood('B+')">B+</button>
+                <button class="tab-btn" onclick="window.filterBlood('B-')">B-</button>
+                <button class="tab-btn" onclick="window.filterBlood('AB+')">AB+</button>
+                <button class="tab-btn" onclick="window.filterBlood('AB-')">AB-</button>
+            </div>
+
+            <div class="donor-list" id="bloodGrid">
+                <div style="text-align: center; padding: 50px;"><i class="fas fa-spinner fa-spin fa-2x" style="color: var(--main-red)"></i> <br><br>جاري مزامنة بيانات بنك الدم...</div>
+            </div>
+
+            <div style="margin-top: 50px; text-align: center;">
+                <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--main-red), #900000); border: none; padding: 18px 45px; color: white; border-radius: 50px; cursor: pointer; font-family: Cairo; font-weight: bold; font-size: 1.2rem;" onclick="document.getElementById('bloodModal').style.display='block'">
+                    <i class="fas fa-plus-circle"></i> سجل كمتبرع أو اطلب دم
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- نافذة التسجيل لبنك الدم (تحفظ البيانات مباشرة في Firestore بدلاً من Formspree) -->
+    <div id="bloodModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('bloodModal').style.display='none'">&times;</span>
+            <h2 style="color: var(--main-red); text-align: center; margin-top: 0; font-weight: 900;"><i class="fas fa-hand-holding-medical"></i> إضافة بيانات لبنك الدم</h2>
+            <form id="bloodForm" onsubmit="window.submitBloodForm(event)">
+                <select id="bType" class="form-input" required onchange="document.getElementById('bottlesContainer').style.display = this.value === 'مريض محتاج' ? 'block' : 'none';">
+                    <option value="" disabled selected>-- نوع الإضافة --</option>
+                    <option value="متبرع متاح">أنا متبرع (متاح للاتصال)</option>
+                    <option value="مريض محتاج">أنا مريض (أحتاج تبرع عاجل)</option>
+                </select>
+                
+                <div id="bottlesContainer" style="display: none;">
+                    <input type="number" id="bBottles" placeholder="عدد القزازات المطلوبة (مثال: 2)" class="form-input" min="1">
+                </div>
+
+                <input type="text" id="bName" placeholder="الاسم" class="form-input" required>
+                <select id="bBloodGroup" class="form-input" required>
+                    <option value="" disabled selected>-- فصيلة الدم --</option>
+                    <option value="O+">O+</option><option value="O-">O-</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+                <input type="tel" id="bPhone" placeholder="رقم الهاتف" class="form-input" required>
+                <input type="text" id="bLocation" placeholder="المدينة والمستشفى (مثال: عطبرة - التخصصي)" class="form-input" required>
+                <button type="submit" class="btn-update" style="width:100%; background: var(--main-red);"><i class="fas fa-paper-plane"></i> نشر في البنك</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <p style="font-size: 1.2rem; font-weight: 900; color: white; letter-spacing: 1px;">جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
+            <button class="copyright-btn" onclick="window.openDevModal()">
+                <i class="fas fa-code"></i> التطوير بواسطة CLOUD ART
+            </button>
+        </div>
+    </footer>
+
+    <!-- نافذة المطور (Cloud Art Modal) -->
+    <div id="devModal" class="modal" onclick="window.closeDevModal(event)">
+        <div class="modal-content" style="text-align: center; border-top-color: var(--main-blue);">
+            <span class="close-btn" onclick="window.closeDevModal(event, true)">&times;</span>
+            <div class="dev-img">Cloud<br>Art</div>
+            <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تصميم وتطوير: CLOUD ART</h3>
+            <p style="color: var(--text-main); font-size: 1.2rem; font-weight: bold; margin-bottom: 5px;">م. الرشيد أبشر <br> (Alrasheed Abshar)</p>
+            <p style="color: var(--text-muted); font-size: 1rem; font-weight: bold; margin-bottom: 15px;">مطور ويب وتطبيقات هواتف ذكية متكاملة</p>
+            <div class="social-icons-dev">
+                <a href="https://wa.me/249127825486" target="_blank" class="fab fa-whatsapp" title="تواصل عبر واتساب"></a>
+                <a href="https://t.me/AlrasheedAbshar" target="_blank" class="fab fa-telegram" title="تواصل عبر تليجرام"></a>
+                <a href="https://www.facebook.com/alrasheedabshar" target="_blank" class="fab fa-facebook" title="تواصل عبر فيسبوك"></a>
+            </div>
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--light-bg);">
+            <p style="font-size: 0.95rem; color: var(--text-muted); font-weight: bold;">صُنع بكل فخر لدعم القطاع الصحي والمجتمعي</p>
+        </div>
+    </div>
+
+    <!-- الأزرار العائمة -->
+    <button class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات"><i class="fas fa-th-large" style="pointer-events: none;"></i></button>
+    <div id="quickMenu" class="quick-menu">
+        <ul>
+            <li><a href="home.html"><i class="fas fa-home"></i> الشاشة الرئيسية</a></li>
+            <li><a href="structure.html"><i class="fas fa-sitemap"></i> الهيكل الإداري</a></li>
+            <li><a href="activities.html"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
+            <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية الطبية</a></li>
+            <li><a href="membership.html"><i class="fas fa-id-card"></i> استمارة العضوية</a></li>
+            <li><a href="blood.html" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-droplet"></i> بنك الدم التفاعلي</a></li>
+            <li><a href="blood_data_entry.html" style="color: #9b59b6; background: rgba(155,89,182,0.05);"><i class="fas fa-database"></i> إدارة بنك الدم (للمدير)</a></li>
+            <li><a href="admin.html"><i class="fas fa-cogs"></i> لوحة الإدارة (Admin)</a></li>
+            <li><a href="index.html" onclick="alert('تسجيل الخروج')"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+        </ul>
+    </div>
+
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allBloodData = [];
+
+        // 1. جلب بيانات بنك الدم
+        onSnapshot(collection(db, "blood_bank"), (snapshot) => {
+            const grid = document.getElementById('bloodGrid');
+            grid.innerHTML = '';
+            allBloodData = [];
+            
+            if (snapshot.empty) { 
+                grid.innerHTML = "<div style='text-align:center; padding:40px; font-weight:bold; color:var(--text-muted);'>لا توجد بيانات مسجلة حالياً. كن أول المتبرعين!</div>"; 
+                return; 
+            }
+            
+            snapshot.forEach(doc => {
+                const b = doc.data();
+                allBloodData.push(b);
+            });
+
+            window.filterBlood('الكل'); // رسم الكروت بناءً على الفلتر النشط
+        });
+
+        window.renderCard = function(b) {
+            const grid = document.getElementById('bloodGrid');
+            const isUrgent = b.status === 'urgent';
+            const reqBottles = b.bottles || '';
+            const bottlesBadgeHtml = (isUrgent && reqBottles) ? `<span class="blood-type-badge" style="background: #2c3e50;"><i class="fas fa-vial"></i> ${reqBottles} قزازة</span>` : '';
+            
+            const cardHtml = `
+                <div class="donor-card fade-element visible" style="border-color: ${isUrgent ? '#f39c12' : 'var(--main-blue)'}; background: ${isUrgent ? '#fffcf9' : 'var(--card-bg)'}">
+                    <div class="donor-info" style="flex: 1; min-width: 250px;">
+                        <h3 style="color: ${isUrgent ? '#d35400' : 'var(--text-main)'}">${isUrgent ? '<i class="fas fa-exclamation-triangle"></i> عاجل: ' : ''}${b.name}</h3>
+                        <div class="donor-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> ${b.location}</span> | 
+                            <span><i class="fas fa-clock"></i> ${b.timeNote || 'متاح للاتصال'}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1; justify-content: flex-end; margin-top: 10px;">
+                        <div style="display: flex; gap: 10px;">
+                            <span class="blood-type-badge" style="background: ${isUrgent ? '#f39c12' : 'var(--main-red)'}">${b.bloodGroup}</span>
+                            ${bottlesBadgeHtml}
+                        </div>
+                        <a href="tel:${b.phone}" class="btn-call-blood" style="background: ${isUrgent ? '#e67e22' : 'var(--success-color)'}; flex: 1; min-width: 200px; justify-content: center; padding: 15px; font-size: 1.3rem;"><i class="fas fa-phone-volume fa-lg"></i> ${isUrgent ? 'تبرع الآن' : 'اتصل'}</a>
+                    </div>
+                </div>`;
+            grid.innerHTML += cardHtml;
+        };
+
+        window.filterBlood = function(type) {
+            const grid = document.getElementById('bloodGrid');
+            grid.innerHTML = '';
+            const filteredData = allBloodData.filter(b => type === 'الكل' || b.bloodGroup === type);
+            
+            if (filteredData.length === 0) {
+                grid.innerHTML = `<div style="text-align:center; padding:40px; font-weight:bold; color:var(--text-muted);">لا يوجد نتائج متطابقة للفصيلة ${type} حالياً.</div>`;
+            } else {
+                filteredData.forEach(window.renderCard);
+            }
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText === type);
+            });
+        };
+
+        // 2. إرسال فورم إضافة متبرع/مريض (بدون Formspree)
+        window.submitBloodForm = async function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.style.pointerEvents = 'none';
+
+            const type = document.getElementById('bType').value;
+            const data = {
+                name: document.getElementById('bName').value,
+                bloodGroup: document.getElementById('bBloodGroup').value,
+                phone: document.getElementById('bPhone').value,
+                location: document.getElementById('bLocation').value,
+                status: type === 'مريض محتاج' ? 'urgent' : 'available',
+                bottles: type === 'مريض محتاج' ? document.getElementById('bBottles').value : '',
+                timeNote: type === 'مريض محتاج' ? 'يحتاج تبرع عاجل' : 'متاح للاتصال',
+                timestamp: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, "blood_bank"), data);
+                document.getElementById('bloodModal').style.display='none';
+                document.getElementById('bloodForm').reset();
+                window.showToast("تم إضافة طلبك لبنك الدم بنجاح!");
+            } catch(err) {
+                window.showToast("حدث خطأ أثناء الاتصال.", "error");
+            } finally {
+                btn.innerHTML = original;
+                btn.style.pointerEvents = 'auto';
+            }
+        };
+
+        // 3. الإشعارات الذكية المبرمجة
+        onSnapshot(collection(db, "blood_toasts"), (snapshot) => {
+            if (!snapshot.empty) {
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    setTimeout(() => {
+                        if(window.createToast) window.createToast(data.text, data.duration * 1000);
+                    }, data.delay * 1000);
+                });
+            }
+        });
+    </script>
+
+    <!-- تفاعلات الـ UI -->
+    <script>
+        window.toggleTheme = function() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('medicalTheme', isDark ? 'dark' : 'light');
+            document.querySelectorAll('.theme-toggle').forEach(btn => {
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
+            });
+        };
+
+        window.onload = () => {
+            if(localStorage.getItem('medicalTheme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.theme-toggle').forEach(btn => { btn.innerHTML = '<i class="fas fa-sun"></i> فاتح'; });
+            }
+        };
+
+        window.openDevModal = function() { document.getElementById('devModal').style.display='block'; };
+        window.closeDevModal = function(e, force = false) { if(force || e.target.id === 'devModal') document.getElementById('devModal').style.display='none'; };
+
+        const quickMenu = document.getElementById('quickMenu');
+        const quickToggleBtn = document.getElementById('quickToggleBtn');
+        quickToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            quickMenu.style.display = quickMenu.style.display === 'block' ? 'none' : 'block';
+            this.classList.toggle('active-btn');
+        });
+        document.addEventListener('click', function(e) {
+            if (quickMenu.style.display === 'block' && !quickMenu.contains(e.target) && !quickToggleBtn.contains(e.target)) {
+                quickMenu.style.display = 'none';
+                quickToggleBtn.classList.remove('active-btn');
+            }
+        });
+
+        window.showToast = function(message, type='success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success-color);"></i> <span>${message}</span>`;
+            if(type==='error') toast.innerHTML = `<i class="fas fa-exclamation-circle" style="color: var(--main-red);"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(100%)'; setTimeout(() => toast.remove(), 500); }, 4000);
+        };
+
+        window.createToast = function(message, durationMs = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-tint" style="color: var(--main-red);"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 1000); }, durationMs);
+        };
+    </script>
+</body>
+</html>

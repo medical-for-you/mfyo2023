@@ -190,10 +190,14 @@
         .close-dev { position: absolute; left: 25px; top: 20px; font-size: 30px; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
         .close-dev:hover { color: var(--main-red); transform: rotate(90deg) scale(1.2); }
         
-        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; padding: 5px; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); }
-        .dev-contact-info { text-align: right; margin-top: 20px; background: rgba(0,68,148,0.05); padding: 20px; border-radius: 15px; border: 2px dashed var(--main-blue); }
-        .dev-contact-info p { margin: 10px 0; font-weight: bold; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
-        .dev-contact-info a { color: var(--main-blue); }
+        .dev-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--main-blue); margin-bottom: 15px; background: white; padding: 5px; box-shadow: 0 10px 20px rgba(0,68,148,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--main-blue); margin: 0 auto; }
+        
+        .social-icons-dev { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+        .social-icons-dev a { color: var(--text-main); font-size: 1.8rem; transition: 0.3s; display: inline-block; }
+        .social-icons-dev a:hover { transform: scale(1.2); }
+        .social-icons-dev a.fa-whatsapp:hover { color: #25d366; }
+        .social-icons-dev a.fa-facebook:hover { color: #1877f2; }
+        .social-icons-dev a.fa-telegram:hover { color: #0088cc; }
 
         /* ========================================= */
         /* الأزرار العائمة المحصنة (القائمة والصعود) */
@@ -315,6 +319,12 @@
                     <p>بوابة التسجيل في الكورسات التدريبية المتخصصة وطلب دورات جديدة.</p>
                 </a>
 
+                 <a href="blood.html" class="service-card red-card fade-element">
+                <div class="icon-box red-icon"><i class="fas fa-tint"></i></div>
+                <h3>بنك الدم التفاعلي</h3>
+                <p>ابحث عن متبرعين بالدم أو سجل كمتبرع لإنقاذ حياة المرضى في الطوارئ.</p>
+            </a>
+                
                 <a href="membership.html" class="service-card orange-card fade-element">
                     <div class="icon-box"><i class="fas fa-id-card"></i></div>
                     <h3>إدارة العضوية</h3>
@@ -436,11 +446,13 @@
             </div>
             
             <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تصميم وتطوير: CLOUD ART</h3>
-            <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: bold;">حلول برمجية متطورة للأنظمة الطبية</p>
+            <p style="color: var(--text-main); font-size: 1.2rem; font-weight: bold; margin-bottom: 5px;">م. الرشيد أبشر <br> (Alrasheed Abshar)</p>
+            <p style="color: var(--text-muted); font-size: 1rem; font-weight: bold; margin-bottom: 15px;">مطور ويب وتطبيقات هواتف ذكية متكاملة</p>
             
-            <div class="dev-contact-info">
-                <p><i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i> واتساب: <a href="https://wa.me/249127825486" style="direction: ltr; font-weight: bold;">0127825486</a></p>
-                <p><i class="fas fa-phone-alt" style="color: var(--main-blue); font-size: 1.3rem;"></i> مكالمات: <a href="tel:0964278052" style="direction: ltr; font-weight: bold;">0964278052</a></p>
+            <div class="social-icons-dev">
+                <a href="https://wa.me/249127825486" target="_blank" class="fab fa-whatsapp" title="تواصل عبر واتساب"></a>
+                <a href="https://t.me/AlrasheedAbshar" target="_blank" class="fab fa-telegram" title="تواصل عبر تليجرام"></a>
+                <a href="https://www.facebook.com/alrasheedabshar" target="_blank" class="fab fa-facebook" title="تواصل عبر فيسبوك"></a>
             </div>
 
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--light-bg);">
@@ -461,7 +473,7 @@
             <li><a href="membership.html"><i class="fas fa-id-card"></i> استمارة العضوية</a></li>
             <li><a href="data_entry.html" style="color: #9b59b6; background: rgba(155,89,182,0.05);"><i class="fas fa-database"></i> إدخال البيانات (للمدير)</a></li>
             <li><a href="admin.html" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-cogs"></i> لوحة الإدارة (Admin)</a></li>
-            <li><a href="index.html" onclick="alert('تسجيل الخروج')"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+            <li><a href="javascript:void(0)" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
         </ul>
     </div>
 
@@ -541,6 +553,18 @@
                             </div>
                         </div>
                     `;
+                });
+            }
+        });
+
+        // 5. جلب الإشعارات الذكية (Smart Toasts)
+        onSnapshot(collection(db, "home_toasts"), (snapshot) => {
+            if (!snapshot.empty) {
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    setTimeout(() => {
+                        if(window.createToast) window.createToast(data.text, data.duration * 1000);
+                    }, data.delay * 1000);
                 });
             }
         });
@@ -635,20 +659,34 @@
             else { scrollTopBtn.style.display = 'none'; }
         });
 
-        function createToast(message) {
+        // دالة إنشاء الإشعارات الذكية للواجهة
+        window.createToast = function(message, durationMs = 5000) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `<i class="fas fa-info-circle" style="color: var(--main-red);"></i> <span>${message}</span>`;
             container.appendChild(toast);
+            
             setTimeout(() => {
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 1000);
-            }, 5000);
+            }, durationMs);
         }
 
-        setTimeout(() => createToast("مرحباً بك في البوابة الرقمية لمنظمة ميديكال فور يو!"), 2000);
-        setTimeout(() => createToast("لا تنسَ مراجعة شروط العضوية الجديدة في قسم اللوائح."), 8000);
+        // دالة تسجيل الخروج الاحترافية (تفريغ البيانات وتوجيه المستخدم)
+        window.handleLogout = function() {
+            window.createToast("جاري تسجيل الخروج وأمان البيانات...", 2000);
+            
+            // تنظيف أي بيانات حساسة من المتصفح لضمان الأمان
+            localStorage.removeItem('savedPhone');
+            localStorage.removeItem('savedPass');
+            localStorage.setItem('rememberMe', 'false');
+
+            // تحويل لشاشة الدخول بعد ثانية ونصف
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        }
     </script>
 </body>
 </html>

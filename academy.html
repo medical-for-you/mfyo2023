@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ميديكال فور يو | الأكاديمية الطبية</title>
     
-    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -161,7 +160,7 @@
         .copyright-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
         .copyright-btn:hover { background: var(--main-blue); border-color: var(--main-blue); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,68,148,0.4); }
 
-        .btn-register:active, .quick-access-btn:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
+        .btn-register:active, .quick-access-btn:active, .tab-btn:active { transform: scale(0.95) !important; transition: transform 0.1s ease; }
 
         /* التجاوب مع الهاتف */
         @media (max-width: 768px) {
@@ -171,16 +170,15 @@
             .page-header h1 { font-size: 2.2rem; }
             .courses-grid { grid-template-columns: 1fr; }
             .modal-content { width: 95vw; padding: 25px; }
-            .quick-access-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; }
-            .quick-menu { bottom: 90px; right: 20px; width: calc(100vw - 40px); }
-            .scroll-btn { bottom: 90px; left: 20px; }
             .toast-container { bottom: 20px; left: 20px; right: 20px; }
+            .quick-access-btn { bottom: 20px; right: 20px; width: 60px; height: 60px; font-size: 24px; }
+            .quick-menu { bottom: 90px; right: 20px; width: calc(100vw - 40px); }
+            .scroll-btn { bottom: 20px; left: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر والربط الحقيقي بين الشاشات -->
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-heartbeat"></i>
@@ -188,31 +186,26 @@
         </div>
         <ul class="nav-links">
             <li><a href="home.html"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="structure.html"><i class="fas fa-sitemap"></i> الهيكل</a></li>
-            <li><a href="activities.html"><i class="fas fa-handshake"></i> الأنشطة</a></li>
-            <!-- الزر النشط للشاشة الحالية -->
+            <li><a href="structure.html"><i class="fas fa-sitemap"></i> البوابات</a></li>
+            <li><a href="activities.html"><i class="fas fa-briefcase-medical"></i> الأنشطة</a></li>
             <li><a href="academy.html" class="active-nav" style="color: #9b59b6;"><i class="fas fa-graduation-cap"></i> الأكاديمية</a></li>
             <li><a href="membership.html"><i class="fas fa-id-card"></i> العضوية</a></li>
-            <li><button class="nav-dev-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
-            <li><button class="nav-dev-btn" onclick="openModal('devModal')"><i class="fas fa-code"></i> المطور</button></li>
+            <li><button class="nav-dev-btn theme-toggle" onclick="window.toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
+            <li><button class="nav-dev-btn" onclick="window.openDevModal()"><i class="fas fa-code"></i> المطور</button></li>
         </ul>
     </nav>
 
-    <!-- الترويسة الداخلية (Hero) -->
     <header class="page-header">
         <div class="pulse-icon"><i class="fas fa-user-graduate"></i></div>
         <h1>الأكاديمية الطبية</h1>
         <p>نصنع قادة الرعاية الصحية من خلال برامج تدريبية متطورة، كورسات معتمدة، وورش عمل تخصصية ترفع من كفاءة الكوادر الطبية.</p>
     </header>
 
-    <!-- قسم الكورسات المتاحة -->
     <section class="section">
         <div class="container">
             <h2 class="section-title">الكورسات والدورات المتاحة</h2>
             
-            <div class="courses-grid">
-                
-                <!-- كورس 1 -->
+            <div class="courses-grid" id="dynamic-courses">
                 <div class="course-card fade-element">
                     <div class="course-img">
                         <span class="course-status">متاح للتسجيل</span>
@@ -226,12 +219,10 @@
                             <span><i class="fas fa-map-marker-alt"></i> المكان: مركز التدريب الرئيسي</span>
                             <span><i class="fas fa-certificate"></i> الشهادة: معتمدة من المنظمة</span>
                         </div>
-                        <!-- زر حقيقي يفتح نافذة التسجيل ويمرر اسم الكورس -->
-                        <button class="btn-register" onclick="openCourseModal('الإنعاش القلبي الرئوي الأساسي (BLS)')">احجز مقعدك الآن <i class="fas fa-arrow-left"></i></button>
+                        <button class="btn-register" onclick="window.openCourseModal('الإنعاش القلبي الرئوي الأساسي (BLS)')">احجز مقعدك الآن <i class="fas fa-arrow-left"></i></button>
                     </div>
                 </div>
 
-                <!-- كورس 2 -->
                 <div class="course-card fade-element">
                     <div class="course-img">
                         <span class="course-status">متاح للتسجيل</span>
@@ -245,11 +236,10 @@
                             <span><i class="fas fa-map-marker-alt"></i> المكان: قاعة المؤتمرات الكبرى</span>
                             <span><i class="fas fa-certificate"></i> الشهادة: معتمدة + ساعات تدريبية</span>
                         </div>
-                        <button class="btn-register" onclick="openCourseModal('أساسيات مكافحة العدوى بالمستشفيات')">احجز مقعدك الآن <i class="fas fa-arrow-left"></i></button>
+                        <button class="btn-register" onclick="window.openCourseModal('أساسيات مكافحة العدوى بالمستشفيات')">احجز مقعدك الآن <i class="fas fa-arrow-left"></i></button>
                     </div>
                 </div>
 
-                <!-- كورس 3 (قريباً) -->
                 <div class="course-card fade-element">
                     <div class="course-img">
                         <span class="course-status soon">قريباً</span>
@@ -262,22 +252,19 @@
                             <span><i class="fas fa-calendar-alt"></i> المتوقع: منتصف الشهر القادم</span>
                         </div>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">دورة متقدمة في كيفية إدارة أقسام الطوارئ والتعامل مع الإصابات الجماعية.</p>
-                        <!-- زر حقيقي يفتح نافذة لتسجيل الرغبة المبكرة -->
-                        <button class="btn-register" style="background: var(--text-muted); box-shadow: none;" onclick="openCourseModal('إدارة الطوارئ والكوارث الطبية (تسجيل مبكر)')">إشعار عند البدء <i class="fas fa-bell"></i></button>
+                        <button class="btn-register" style="background: var(--text-muted); box-shadow: none;" onclick="window.openCourseModal('إدارة الطوارئ والكوارث الطبية (تسجيل مبكر)')">إشعار عند البدء <i class="fas fa-bell"></i></button>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- قسم طلب دورة جديدة (نموذج حقيقي) -->
     <section class="request-course-section fade-element">
         <div class="container">
             <h2 class="section-title">لم تجد دورتك؟ اطلبها الآن</h2>
             
             <div class="request-container">
-                <form id="requestCourseForm" onsubmit="handleCourseRequest(event)">
+                <form id="requestCourseForm" onsubmit="window.handleCourseRequest(event)">
                     <div class="form-group">
                         <label>اسم الدورة / الكورس المقترح:</label>
                         <input type="text" id="reqCourseName" placeholder="مثال: دورة متقدمة في العناية المكثفة (ICU)" required>
@@ -285,7 +272,7 @@
                     
                     <div class="form-group">
                         <label>الفئة المستهدفة:</label>
-                        <select required>
+                        <select id="reqCourseTarget" required>
                             <option value="">-- اختر الفئة --</option>
                             <option value="doctors">الأطباء</option>
                             <option value="nurses">التمريض</option>
@@ -295,38 +282,30 @@
                     
                     <div class="form-group">
                         <label>أسباب طلب الدورة (اختياري):</label>
-                        <textarea rows="4" placeholder="لماذا تعتقد أن هذه الدورة مهمة للكوادر حالياً؟"></textarea>
+                        <textarea id="reqCourseReason" rows="4" placeholder="لماذا تعتقد أن هذه الدورة مهمة للكوادر حالياً؟"></textarea>
                     </div>
                     
-                    <!-- زر إرسال حقيقي يقوم بتفريغ الفورم وعرض Toast -->
                     <button type="submit" class="btn-register" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">إرسال الطلب لإدارة الأكاديمية <i class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- الفوتر -->
     <footer>
         <div class="container">
             <p style="font-size: 1.2rem; font-weight: 900; color: white; letter-spacing: 1px;">جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
-            <button class="copyright-btn" onclick="openModal('devModal')">
+            <button class="copyright-btn" onclick="window.openDevModal()">
                 <i class="fas fa-code"></i> التطوير بواسطة CLOUD ART
             </button>
         </div>
     </footer>
 
-    <!-- ========================================= -->
-    <!-- النوافذ المنبثقة الحقيقية (Modals) -->
-    <!-- ========================================= -->
-
-    <!-- 1. نافذة التسجيل في الكورس -->
-    <div id="courseModal" class="modal-overlay" onclick="closeModalOutside(event, 'courseModal')">
+    <div id="courseModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'courseModal')">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('courseModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('courseModal')">&times;</span>
             <h3 style="color: var(--main-blue); margin-bottom: 20px; font-weight: 900; font-size: 1.6rem; text-align: center;">استمارة حجز مقعد</h3>
             
-            <form id="courseRegistrationForm" onsubmit="handleCourseRegistration(event)">
-                <!-- حقل للقراءة فقط يأخذ اسم الكورس المختار برمجياً -->
+            <form id="courseRegistrationForm" onsubmit="window.handleCourseRegistration(event)">
                 <div class="form-group">
                     <label>الدورة المختارة:</label>
                     <input type="text" id="selectedCourseName" readonly style="background: var(--light-bg); color: var(--main-red); font-weight: bold;">
@@ -334,12 +313,12 @@
                 
                 <div class="form-group">
                     <label>الاسم الرباعي:</label>
-                    <input type="text" placeholder="أدخل اسمك كاملاً كما سيطبع في الشهادة" required>
+                    <input type="text" id="regFullName" placeholder="أدخل اسمك كاملاً كما سيطبع في الشهادة" required>
                 </div>
                 
                 <div class="form-group">
                     <label>رقم الهاتف (واتساب):</label>
-                    <input type="tel" placeholder="0123456789" required>
+                    <input type="tel" id="regPhone" placeholder="0123456789" required>
                 </div>
 
                 <button type="submit" class="btn-register">تأكيد الحجز <i class="fas fa-check-circle"></i></button>
@@ -347,10 +326,9 @@
         </div>
     </div>
 
-    <!-- 2. نافذة المطور (Cloud Art Modal) -->
-    <div id="devModal" class="modal-overlay" onclick="closeModalOutside(event, 'devModal')">
+    <div id="devModal" class="modal-overlay" onclick="window.closeModalOutside(event, 'devModal')">
         <div class="modal-content" style="text-align: center;">
-            <span class="close-modal" onclick="closeModal('devModal')">&times;</span>
+            <span class="close-modal" onclick="window.closeModal('devModal')">&times;</span>
             <div class="dev-img">Cloud<br>Art</div>
             <h3 style="color: var(--main-blue); margin-bottom: 5px; font-weight: 900; font-size: 1.6rem;">تصميم وتطوير: CLOUD ART</h3>
             <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: bold;">حلول برمجية متطورة للأنظمة الطبية</p>
@@ -363,14 +341,11 @@
         </div>
     </div>
 
-    <!-- حاوية التنبيهات (Toasts) -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- الأزرار العائمة (Menu & Scroll) -->
     <button class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات"><i class="fas fa-th-large" style="pointer-events: none;"></i></button>
     <button class="scroll-btn" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="أعلى الصفحة"><i class="fas fa-chevron-up"></i></button>
 
-    <!-- القائمة العائمة السريعة (مربوطة حقيقياً) -->
     <div id="quickMenu" class="quick-menu">
         <ul>
             <li><a href="home.html"><i class="fas fa-home"></i> الشاشة الرئيسية</a></li>
@@ -378,16 +353,82 @@
             <li><a href="activities.html"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
             <li><a href="academy.html" style="color: #9b59b6; background: rgba(155,89,182,0.05);"><i class="fas fa-graduation-cap"></i> الأكاديمية الطبية</a></li>
             <li><a href="membership.html"><i class="fas fa-id-card"></i> استمارة العضوية</a></li>
-            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+            <li><a href="academy_data_entry.html" style="color: #e67e22; background: rgba(230,126,34,0.05);"><i class="fas fa-database"></i> إدارة الأكاديمية (للمدير)</a></li>
+            <li><a href="admin.html"><i class="fas fa-cogs"></i> لوحة الإدارة (Admin)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.handleLogout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
         </ul>
     </div>
 
-    <!-- ========================================= -->
-    <!-- سكربت الجافاسكريبت (التفاعلات الحقيقية) -->
-    <!-- ========================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // جعل وظيفة الإضافة متاحة للنموذج
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.db = db;
+        window.serverTimestamp = serverTimestamp;
+
+        // 1. جلب الكورسات
+        onSnapshot(collection(db, "academy_courses"), (snapshot) => {
+            if (!snapshot.empty) {
+                const container = document.getElementById('dynamic-courses');
+                container.innerHTML = ''; // مسح المحتوى الثابت
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let statusClass = data.status === 'قريباً' ? 'course-status soon' : 'course-status';
+                    let btnHtml = data.status === 'قريباً' 
+                        ? `<button class="btn-register" style="background: var(--text-muted); box-shadow: none;" onclick="window.openCourseModal('${data.title} (تسجيل مبكر)')">إشعار عند البدء <i class="fas fa-bell"></i></button>`
+                        : `<button class="btn-register" onclick="window.openCourseModal('${data.title}')">احجز مقعدك الآن <i class="fas fa-arrow-left"></i></button>`;
+
+                    container.innerHTML += `
+                        <div class="course-card fade-element visible">
+                            <div class="course-img">
+                                <span class="${statusClass}">${data.status}</span>
+                                <img src="${data.img}" alt="${data.title}">
+                            </div>
+                            <div class="course-content">
+                                <h3>${data.title}</h3>
+                                <div class="course-details">
+                                    <span><i class="fas fa-user-md"></i> المحاضر: ${data.instructor}</span>
+                                    <span><i class="fas fa-clock"></i> المدة: ${data.duration}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> المكان: ${data.location}</span>
+                                    <span><i class="fas fa-certificate"></i> الشهادة: ${data.certificate}</span>
+                                </div>
+                                ${btnHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        // 2. جلب الإشعارات الذكية (Smart Toasts)
+        onSnapshot(collection(db, "academy_toasts"), (snapshot) => {
+            if (!snapshot.empty) {
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    setTimeout(() => {
+                        if(window.showSmartToast) window.showSmartToast(data.text, data.duration * 1000);
+                    }, data.delay * 1000);
+                });
+            }
+        });
+    </script>
+
     <script>
-        // 1. نظام الوضع الليلي (Dark Mode)
-        function toggleTheme() {
+        window.toggleTheme = function() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('medicalTheme', isDark ? 'dark' : 'light');
@@ -395,7 +436,7 @@
             document.querySelectorAll('.theme-toggle').forEach(btn => {
                 btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
             });
-        }
+        };
 
         window.onload = () => {
             if(localStorage.getItem('medicalTheme') === 'dark') {
@@ -406,30 +447,21 @@
             }
         };
 
-        // 2. إدارة النوافذ المنبثقة (Modals) بطريقة احترافية
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('show-modal');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('show-modal');
-        }
-
-        function closeModalOutside(event, modalId) {
+        window.openGenericModal = function(modalId) { document.getElementById(modalId).classList.add('show-modal'); };
+        window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('show-modal'); };
+        window.closeModalOutside = function(event, modalId) {
             const modal = document.getElementById(modalId);
-            if (event.target === modal) {
-                closeModal(modalId);
-            }
-        }
+            if (event.target === modal) window.closeModal(modalId);
+        };
 
-        // دالة مخصصة لفتح نافذة الكورس ووضع اسم الكورس تلقائياً في الفورم
-        function openCourseModal(courseName) {
+        window.openCourseModal = function(courseName) {
             document.getElementById('selectedCourseName').value = courseName;
-            openModal('courseModal');
-        }
+            window.openGenericModal('courseModal');
+        };
 
-        // 3. نظام الإشعارات المنبثقة (Toasts) بديل الـ Alert
-        function showToast(message) {
+        window.openDevModal = function() { window.openGenericModal('devModal'); };
+
+        window.showToast = function(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = 'toast';
@@ -437,34 +469,77 @@
             
             container.appendChild(toast);
             
-            // إخفاء التنبيه بعد 4 ثواني
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(100%)';
                 setTimeout(() => toast.remove(), 500);
             }, 4000);
-        }
+        };
 
-        // 4. معالجة إرسال الفورم (بدون استخدام Alert)
-        function handleCourseRegistration(event) {
-            event.preventDefault(); // منع إعادة تحميل الصفحة
-            const course = document.getElementById('selectedCourseName').value;
+        window.showSmartToast = function(message, durationMs = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-graduation-cap" style="color: var(--main-blue);"></i> <span>${message}</span>`;
             
-            closeModal('courseModal'); // إغلاق النافذة
-            showToast(`تم استلام طلب حجزك في دورة: ${course} بنجاح! سيتم التواصل معك قريباً.`);
+            container.appendChild(toast);
             
-            document.getElementById('courseRegistrationForm').reset(); // تفريغ الحقول
-        }
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(100%)';
+                setTimeout(() => toast.remove(), 500);
+            }, durationMs);
+        };
 
-        function handleCourseRequest(event) {
+        // إرسال البيانات لقاعدة البيانات: نموذج حجز الكورس
+        window.handleCourseRegistration = async function(event) {
             event.preventDefault();
-            const reqCourse = document.getElementById('reqCourseName').value;
-            
-            showToast(`تم إرسال مقترح دورة (${reqCourse}) للإدارة بنجاح. شكراً لتفاعلك!`);
-            document.getElementById('requestCourseForm').reset();
-        }
+            const btn = event.target.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحجز...';
+            btn.style.pointerEvents = 'none';
 
-        // 5. القائمة العائمة (Quick Menu)
+            try {
+                await window.addDoc(window.collection(window.db, "academy_registrations"), {
+                    course: document.getElementById('selectedCourseName').value,
+                    name: document.getElementById('regFullName').value,
+                    phone: document.getElementById('regPhone').value,
+                    timestamp: window.serverTimestamp()
+                });
+                window.closeModal('courseModal');
+                window.showToast(`تم استلام طلب حجزك بنجاح! سيتم التواصل معك قريباً.`);
+                document.getElementById('courseRegistrationForm').reset();
+            } catch(e) {
+                window.showToast("خطأ في الاتصال بقاعدة البيانات.", "error");
+            } finally {
+                btn.innerHTML = orig; btn.style.pointerEvents = 'auto';
+            }
+        };
+
+        // إرسال البيانات لقاعدة البيانات: طلب دورة جديدة
+        window.handleCourseRequest = async function(event) {
+            event.preventDefault();
+            const btn = event.target.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                await window.addDoc(window.collection(window.db, "academy_requests"), {
+                    courseName: document.getElementById('reqCourseName').value,
+                    targetAudience: document.getElementById('reqCourseTarget').value,
+                    reason: document.getElementById('reqCourseReason').value,
+                    timestamp: window.serverTimestamp()
+                });
+                window.showToast(`تم إرسال مقترح دورة للإدارة بنجاح. شكراً لتفاعلك!`);
+                document.getElementById('requestCourseForm').reset();
+            } catch(e) {
+                window.showToast("خطأ في الاتصال بقاعدة البيانات.", "error");
+            } finally {
+                btn.innerHTML = orig; btn.style.pointerEvents = 'auto';
+            }
+        };
+
         const quickMenu = document.getElementById('quickMenu');
         const quickToggleBtn = document.getElementById('quickToggleBtn');
 
@@ -481,7 +556,6 @@
             }
         });
 
-        // 6. تأثيرات الظهور عند التمرير (Intersection Observer)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -495,15 +569,19 @@
             observer.observe(el);
         });
 
-        // 7. زر الصعود للأعلى
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTopBtn.style.display = 'flex';
-            } else {
-                scrollTopBtn.style.display = 'none';
-            }
+            if (window.scrollY > 300) { scrollTopBtn.style.display = 'flex'; } 
+            else { scrollTopBtn.style.display = 'none'; }
         });
+
+        window.handleLogout = function() {
+            window.showToast("جاري تسجيل الخروج وأمان البيانات...", 2000);
+            localStorage.removeItem('savedPhone');
+            localStorage.removeItem('savedPass');
+            localStorage.setItem('rememberMe', 'false');
+            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+        }
     </script>
 </body>
 </html>

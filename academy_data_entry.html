@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ميديكال فور يو | لوحة التحكم - الأكاديمية</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --main-blue: #004494; --main-red: #d32f2f; --light-bg: #f4f7f6; --card-bg: #ffffff; --text-main: #333333; --text-muted: #888888; --success-color: #27ae60; --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        body.dark-mode { --light-bg: #121212; --card-bg: #1e1e1e; --text-main: #f4f7f6; --text-muted: #aaaaaa; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        html, body { overflow-x: hidden; width: 100%; min-height: 100vh; background-color: var(--light-bg); color: var(--text-main); }
+        
+        #adminLoginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--light-bg); z-index: 9999999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease; }
+        .admin-auth-card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-top: 8px solid #9b59b6; text-align: center; }
+        body.dark-mode .admin-auth-card { border-color: #333; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        .admin-auth-card h2 { color: #9b59b6; margin-bottom: 20px; font-weight: 900; }
+        
+        .floating-group { position: relative; margin-bottom: 20px; text-align: right; }
+        .floating-group input, .floating-group select, .floating-group textarea { width: 100%; padding: 15px; border: 2px solid var(--light-bg); border-radius: 10px; background: transparent; font-size: 1rem; color: var(--text-main); font-family: 'Cairo'; outline: none; }
+        body.dark-mode .floating-group input, body.dark-mode .floating-group select, body.dark-mode .floating-group textarea { border-color: #333; }
+        .floating-group input:focus, .floating-group select:focus, .floating-group textarea:focus { border-color: #9b59b6; background: var(--card-bg); }
+        .btn-submit { width: 100%; padding: 15px; border-radius: 50px; font-weight: 900; cursor: pointer; border: none; font-size: 1.2rem; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; margin-top: 10px; transition: 0.3s; }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(155, 89, 182, 0.4); }
+
+        .admin-navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 3%; background: linear-gradient(135deg, #2c3e50, #1a252f); color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 900; color: #9b59b6; }
+        .nav-actions { display: flex; gap: 10px; }
+        .btn-action { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 8px; font-weight: 900; transition: 0.3s; cursor: pointer; }
+        .btn-action:hover { background: var(--main-red); border-color: var(--main-red); transform: translateY(-2px); }
+
+        .dashboard-container { padding: 40px 3%; max-width: 1400px; margin: auto; }
+        .section-selector { background: var(--card-bg); padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px; border: 1px solid var(--light-bg); }
+        body.dark-mode .section-selector { border-color: #333; }
+        .section-selector select { padding: 12px 20px; font-size: 1.1rem; border-radius: 10px; border: 2px solid #9b59b6; font-family: 'Cairo'; font-weight: bold; background: var(--light-bg); color: var(--text-main); flex-grow: 1; outline: none; }
+
+        .form-card { background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--light-bg); border-top: 5px solid #9b59b6; margin-bottom: 40px; }
+        body.dark-mode .form-card { border-color: #333; border-top-color: #9b59b6; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: 1 / -1; }
+        @media(max-width: 768px){ .form-grid { grid-template-columns: 1fr; } }
+
+        .table-wrapper { background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--light-bg); overflow-x: auto; }
+        body.dark-mode .table-wrapper { border-color: #333; }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        thead { background: rgba(155, 89, 182, 0.1); }
+        th, td { padding: 15px; text-align: right; border-bottom: 1px solid var(--light-bg); }
+        body.dark-mode th, body.dark-mode td { border-bottom-color: #333; }
+        th { color: #9b59b6; font-weight: 900; }
+        
+        .action-btns { display: flex; gap: 10px; }
+        .btn-edit, .btn-reject { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; font-size: 1.1rem; }
+        .btn-edit { background: var(--main-blue); } .btn-edit:hover { transform: scale(1.1); }
+        .btn-reject { background: var(--main-red); } .btn-reject:hover { transform: scale(1.1); }
+
+        .toast-container { position: fixed; bottom: 30px; left: 30px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--card-bg); color: var(--text-main); border-right: 5px solid var(--success-color); padding: 15px 25px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 15px; font-weight: bold; animation: slideUpToast 0.5s ease-out forwards; }
+        body.dark-mode .toast { border-color: #333; }
+        @keyframes slideUpToast { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .dynamic-section { display: none; }
+        .dynamic-section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    </style>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db; window.collection = collection; window.addDoc = addDoc; window.doc = doc; window.updateDoc = updateDoc; window.deleteDoc = deleteDoc; window.onSnapshot = onSnapshot; window.serverTimestamp = serverTimestamp;
+    </script>
+</head>
+<body>
+
+    <div id="adminLoginOverlay">
+        <div class="admin-auth-card">
+            <h2><i class="fas fa-graduation-cap"></i> إدارة الأكاديمية</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px;">مخصصة لمدراء المكاتب لتحديث الكورسات والدورات</p>
+            <form onsubmit="verifyAdminLogin(event)">
+                <div class="floating-group">
+                    <select id="adminRoleSelect" required>
+                        <option value="CEO">الرئيس التنفيذي (CEO)</option>
+                        <option value="مكتب_البرامج_والمشاريع">مكتب البرامج والمشاريع</option>
+                        <option value="المكتب_الاعلامي">المكتب الإعلامي</option>
+                    </select>
+                </div>
+                <div class="floating-group">
+                    <input type="password" id="adminPassInput" required placeholder="كلمة المرور المشفرة">
+                </div>
+                <button type="submit" class="btn-submit">تأكيد الدخول <i class="fas fa-lock"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <nav class="admin-navbar">
+        <div class="logo"><i class="fas fa-graduation-cap"></i> لوحة تحكم الأكاديمية</div>
+        <div class="nav-actions">
+            <span id="navRoleDisplay" style="font-weight: bold;"></span>
+            <button class="btn-action" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            <button class="btn-action" style="background: var(--main-red); border-color: var(--main-red);" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        
+        <div class="section-selector">
+            <label style="font-weight: bold; color: #9b59b6;"><i class="fas fa-filter"></i> القسم المراد إدارته:</label>
+            <select id="sectionSelector" onchange="switchSection()">
+                <option value="sec_courses">إدارة الكورسات والدورات</option>
+                <option value="sec_registrations">طلبات الحجز الواردة</option>
+                <option value="sec_requests">الدورات المقترحة من الأعضاء</option>
+                <option value="sec_toasts">الإشعارات الذكية (Toasts)</option>
+            </select>
+        </div>
+
+        <div id="sec_courses" class="dynamic-section active">
+            <div class="form-card">
+                <h3 style="color: #9b59b6; margin-bottom: 20px;">إضافة/تعديل كورس طبي</h3>
+                <form onsubmit="saveCourse(event)">
+                    <input type="hidden" id="cId">
+                    <div class="form-grid">
+                        <div class="floating-group full-width">
+                            <input type="text" id="cTitle" required placeholder="عنوان الدورة (مثال: الإنعاش القلبي)">
+                        </div>
+                        <div class="floating-group full-width">
+                            <input type="url" id="cImg" required placeholder="رابط صورة الكورس (URL)">
+                        </div>
+                        <div class="floating-group">
+                            <select id="cStatus" required>
+                                <option value="متاح للتسجيل">متاح للتسجيل</option>
+                                <option value="قريباً">قريباً (تسجيل مبكر)</option>
+                            </select>
+                        </div>
+                        <div class="floating-group">
+                            <input type="text" id="cInstructor" required placeholder="اسم المحاضر">
+                        </div>
+                        <div class="floating-group">
+                            <input type="text" id="cDuration" required placeholder="مدة الدورة (مثال: 3 أيام)">
+                        </div>
+                        <div class="floating-group">
+                            <input type="text" id="cLocation" required placeholder="مكان الدورة">
+                        </div>
+                        <div class="floating-group full-width">
+                            <input type="text" id="cCert" required placeholder="تفاصيل الشهادة (مثال: معتمدة من المنظمة)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit" style="width: auto; padding: 10px 30px;">حفظ الدورة <i class="fas fa-save"></i></button>
+                </form>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>صورة</th><th>العنوان</th><th>المحاضر</th><th>الحالة</th><th style="width: 100px;">إجراءات</th></tr></thead>
+                    <tbody id="coursesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec_registrations" class="dynamic-section">
+            <div class="table-wrapper">
+                <h3 style="color: #9b59b6; margin-bottom: 20px;">حجوزات الكورسات الواردة</h3>
+                <table>
+                    <thead><tr><th>اسم الكورس</th><th>اسم المتقدم</th><th>الهاتف</th><th style="width: 80px;">إجراءات</th></tr></thead>
+                    <tbody id="registrationsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec_requests" class="dynamic-section">
+            <div class="table-wrapper">
+                <h3 style="color: #9b59b6; margin-bottom: 20px;">الدورات المقترحة من الأعضاء</h3>
+                <table>
+                    <thead><tr><th>اسم الدورة المقترحة</th><th>الفئة المستهدفة</th><th>الأسباب</th><th style="width: 80px;">إجراءات</th></tr></thead>
+                    <tbody id="requestsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec_toasts" class="dynamic-section">
+            <div class="form-card">
+                <h3 style="color: #9b59b6; margin-bottom: 20px;">إضافة إشعار ذكي لشاشة الأكاديمية (Toasts)</h3>
+                <form onsubmit="saveToast(event)">
+                    <input type="hidden" id="toastId">
+                    <div class="form-grid">
+                        <div class="floating-group full-width">
+                            <input type="text" id="toastText" required placeholder="نص الإشعار">
+                        </div>
+                        <div class="floating-group">
+                            <label style="position:static; display:block; margin-bottom:5px;">التأخير قبل الظهور (ثواني)</label>
+                            <input type="number" id="toastDelay" required placeholder="مثال: 2">
+                        </div>
+                        <div class="floating-group">
+                            <label style="position:static; display:block; margin-bottom:5px;">مدة البقاء (ثواني)</label>
+                            <input type="number" id="toastDuration" required placeholder="مثال: 5">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit" style="width: auto; padding: 10px 30px;">حفظ الإشعار <i class="fas fa-save"></i></button>
+                </form>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>نص الإشعار</th><th>زمن التأخير</th><th>مدة العرض</th><th style="width: 100px;">إجراءات</th></tr></thead>
+                    <tbody id="toastsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        const officePasswords = { "CEO": "096020", "مكتب_البرامج_والمشاريع": "prog123", "المكتب_الاعلامي": "media123" };
+        let unsubCourses, unsubRegs, unsubReqs, unsubToast;
+
+        window.toggleTheme = function() { document.body.classList.toggle('dark-mode'); };
+        window.showToast = function(msg, type='success') {
+            const container = document.getElementById('toast-container');
+            const t = document.createElement('div'); t.className = `toast ${type}`;
+            t.innerHTML = `<i class="fas ${type=='success'?'fa-check-circle':'fa-exclamation-circle'}"></i><span>${msg}</span>`;
+            container.appendChild(t); setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),500); }, 3000);
+        };
+
+        window.verifyAdminLogin = function(e) {
+            e.preventDefault();
+            const role = document.getElementById('adminRoleSelect').value;
+            const pass = document.getElementById('adminPassInput').value;
+            if (officePasswords[role] === pass) {
+                document.getElementById('adminLoginOverlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('adminLoginOverlay').style.display = 'none', 500);
+                document.getElementById('navRoleDisplay').innerText = role;
+                window.showToast("تم الدخول بنجاح.");
+                loadAllData();
+            } else {
+                window.showToast("كلمة المرور غير صحيحة", "error");
+            }
+        };
+
+        window.switchSection = function() {
+            document.querySelectorAll('.dynamic-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(document.getElementById('sectionSelector').value).classList.add('active');
+        };
+
+        function loadAllData() {
+            // جلب الكورسات
+            if(unsubCourses) unsubCourses();
+            unsubCourses = window.onSnapshot(window.collection(window.db, "academy_courses"), snap => {
+                let html = '';
+                snap.forEach(d => {
+                    const dt = d.data();
+                    const t = dt.title.replace(/'/g, "\\'"); const i = dt.img.replace(/'/g, "\\'");
+                    const st = dt.status.replace(/'/g, "\\'"); const inst = dt.instructor.replace(/'/g, "\\'");
+                    const dur = dt.duration.replace(/'/g, "\\'"); const loc = dt.location.replace(/'/g, "\\'");
+                    const cert = dt.certificate.replace(/'/g, "\\'");
+                    
+                    html += `<tr>
+                    <td><img src="${dt.img}" style="width:50px; height:50px; border-radius:8px; object-fit:cover;"></td>
+                    <td>${dt.title}</td><td>${dt.instructor}</td><td>${dt.status}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button type="button" class="btn-edit" onclick="window.editCourse('${d.id}', '${t}', '${i}', '${st}', '${inst}', '${dur}', '${loc}', '${cert}')"><i class="fas fa-pen"></i></button>
+                            <button type="button" class="btn-reject" onclick="window.delDoc('academy_courses', '${d.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td></tr>`;
+                });
+                document.getElementById('coursesTableBody').innerHTML = html;
+            });
+
+            // جلب طلبات الحجز
+            if(unsubRegs) unsubRegs();
+            unsubRegs = window.onSnapshot(window.collection(window.db, "academy_registrations"), snap => {
+                let html = '';
+                snap.forEach(d => {
+                    const dt = d.data();
+                    html += `<tr><td>${dt.course}</td><td>${dt.name}</td><td style="direction:ltr;">${dt.phone}</td>
+                    <td><button type="button" class="btn-reject" onclick="window.delDoc('academy_registrations', '${d.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+                });
+                document.getElementById('registrationsTableBody').innerHTML = html;
+            });
+
+            // جلب الدورات المقترحة
+            if(unsubReqs) unsubReqs();
+            unsubReqs = window.onSnapshot(window.collection(window.db, "academy_requests"), snap => {
+                let html = '';
+                snap.forEach(d => {
+                    const dt = d.data();
+                    let target = dt.targetAudience === 'doctors' ? 'الأطباء' : (dt.targetAudience === 'nurses' ? 'التمريض' : 'الكل');
+                    html += `<tr><td>${dt.courseName}</td><td>${target}</td><td>${dt.reason || '---'}</td>
+                    <td><button type="button" class="btn-reject" onclick="window.delDoc('academy_requests', '${d.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+                });
+                document.getElementById('requestsTableBody').innerHTML = html;
+            });
+
+            // جلب الإشعارات
+            if(unsubToast) unsubToast();
+            unsubToast = window.onSnapshot(window.collection(window.db, "academy_toasts"), snap => {
+                let html = '';
+                snap.forEach(d => {
+                    const dt = d.data();
+                    const text = dt.text.replace(/'/g, "\\'");
+                    html += `<tr><td>${dt.text}</td><td>${dt.delay} ث</td><td>${dt.duration} ث</td>
+                    <td>
+                        <div class="action-btns">
+                            <button type="button" class="btn-edit" onclick="window.editToast('${d.id}', '${text}', ${dt.delay}, ${dt.duration})"><i class="fas fa-pen"></i></button>
+                            <button type="button" class="btn-reject" onclick="window.delDoc('academy_toasts', '${d.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td></tr>`;
+                });
+                document.getElementById('toastsTableBody').innerHTML = html;
+            });
+        }
+
+        window.delDoc = async function(col, id) {
+            if(confirm("تأكيد الحذف؟")){
+                await window.deleteDoc(window.doc(window.db, col, id));
+                window.showToast("تم الحذف بنجاح");
+            }
+        };
+
+        // --- Courses CRUD ---
+        window.saveCourse = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('cId').value;
+            const data = { 
+                title: document.getElementById('cTitle').value, img: document.getElementById('cImg').value,
+                status: document.getElementById('cStatus').value, instructor: document.getElementById('cInstructor').value,
+                duration: document.getElementById('cDuration').value, location: document.getElementById('cLocation').value,
+                certificate: document.getElementById('cCert').value
+            };
+            if(id) { await window.updateDoc(window.doc(window.db, "academy_courses", id), data); window.showToast("تم التعديل"); } 
+            else { data.timestamp = window.serverTimestamp(); await window.addDoc(window.collection(window.db, "academy_courses"), data); window.showToast("تمت الإضافة"); }
+            e.target.reset(); document.getElementById('cId').value = '';
+        };
+        window.editCourse = function(id, t, i, st, inst, dur, loc, cert) { 
+            document.getElementById('cId').value=id; document.getElementById('cTitle').value=t; document.getElementById('cImg').value=i; 
+            document.getElementById('cStatus').value=st; document.getElementById('cInstructor').value=inst; document.getElementById('cDuration').value=dur; 
+            document.getElementById('cLocation').value=loc; document.getElementById('cCert').value=cert;
+        };
+
+        // --- Toasts CRUD ---
+        window.saveToast = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('toastId').value;
+            const data = { text: document.getElementById('toastText').value, delay: Number(document.getElementById('toastDelay').value), duration: Number(document.getElementById('toastDuration').value) };
+            if(id) { await window.updateDoc(window.doc(window.db, "academy_toasts", id), data); window.showToast("تم التعديل"); } 
+            else { data.ts = window.serverTimestamp(); await window.addDoc(window.collection(window.db, "academy_toasts"), data); window.showToast("تمت الإضافة"); }
+            e.target.reset(); document.getElementById('toastId').value = '';
+        };
+        window.editToast = function(id, text, delay, duration) { 
+            document.getElementById('toastId').value = id; document.getElementById('toastText').value = text; document.getElementById('toastDelay').value = delay; document.getElementById('toastDuration').value = duration; 
+        };
+    </script>
+</body>
+</html>
