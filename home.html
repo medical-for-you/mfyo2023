@@ -6,7 +6,6 @@
     <title>ميديكال فور يو | البوابة الرئيسية</title>
     <link rel="icon" href="logo.jpeg" type="image/png">
     
-    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -137,11 +136,11 @@
         /* ========================================= */
         .project-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: 0.4s ease; border: 1px solid var(--light-bg); display: flex; flex-direction: column; }
         .project-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: var(--main-blue); }
-        .project-img-wrapper { width: 100%; background: var(--light-bg); border-bottom: 5px solid var(--main-blue); overflow: hidden; display: flex; justify-content: center; }
-        .project-img-wrapper img { width: 100%; max-height: 400px; object-fit: cover; transition: transform 0.5s ease; }
+        .project-img-wrapper { width: 100%; background: var(--light-bg); border-bottom: 5px solid var(--main-blue); overflow: hidden; display: flex; justify-content: center; height: 250px;}
+        .project-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .project-card:hover .project-img-wrapper img { transform: scale(1.05); }
         
-        .project-content { padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .project-content { padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; flex-grow: 1; }
         .project-content h3 { color: var(--main-red); font-weight: 900; font-size: 1.6rem; margin-bottom: 15px; }
         
         /* تأثير Read More والتدرج اللوني */
@@ -245,7 +244,6 @@
 </head>
 <body>
 
-    <!-- الهيدر والقائمة العلوية -->
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-heartbeat"></i>
@@ -253,15 +251,14 @@
         </div>
         <ul class="nav-links">
             <li><a href="#"><i class="fas fa-home"></i> الرئيسية</a></li>
-            <li><a href="#services"><i class="fas fa-sitemap"></i> البوابات</a></li>
-            <li><a href="#projects"><i class="fas fa-briefcase-medical"></i> الأنشطة</a></li>
+            <li><a href="structure.html"><i class="fas fa-sitemap"></i> البوابات</a></li>
+            <li><a href="activities.html"><i class="fas fa-briefcase-medical"></i> الأنشطة</a></li>
             <li><a href="#faq"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</a></li>
             <li><button class="nav-dev-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i> داكن</button></li>
             <li><button class="nav-dev-btn" onclick="openDevModal()"><i class="fas fa-code"></i> المطور</button></li>
         </ul>
     </nav>
 
-    <!-- الواجهة الرئيسية (Hero) -->
     <header class="hero">
         <div class="hero-content">
             <div class="heart-beat-icon"><i class="fas fa-hand-holding-medical"></i></div>
@@ -274,12 +271,11 @@
         </div>
     </header>
 
-    <!-- شريط الأخبار -->
     <div class="notification-bar">
         <div class="container">
             <div class="ticker-wrapper">
                 <span class="ticker-title"><i class="fas fa-bullhorn"></i> عاجل:</span>
-                <marquee direction="right" scrollamount="6" style="display: flex; align-items: center; padding-top: 5px; font-weight: bold;">
+                <marquee id="marquee-news" direction="right" scrollamount="6" style="display: flex; align-items: center; padding-top: 5px; font-weight: bold;">
                     • ترقبوا انطلاق دورة مكافحة العدوى المتقدمة قريباً بمقر المنظمة. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
                     • تم فتح باب التقديم لعضوية المنظمة للكوادر الطبية الجديدة. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     • اجتماع الجمعية العمومية والمجلس الاستشاري بنهاية الشهر الجاري.
@@ -288,17 +284,14 @@
         </div>
     </div>
 
-    <!-- حاوية التنبيهات المنبثقة التلقائية -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- الإحصائيات -->
     <div class="stats-bar">
-        <div class="stat-item"><i class="fas fa-users"></i> <span>+2000 عضو</span></div>
-        <div class="stat-item"><i class="fas fa-project-diagram"></i> <span>+45 مشروع</span></div>
-        <div class="stat-item"><i class="fas fa-chalkboard-teacher"></i> <span>+120 دورة</span></div>
+        <div class="stat-item"><i class="fas fa-users"></i> <span id="stat-members">+2000 عضو</span></div>
+        <div class="stat-item"><i class="fas fa-project-diagram"></i> <span id="stat-projects">+45 مشروع</span></div>
+        <div class="stat-item"><i class="fas fa-chalkboard-teacher"></i> <span id="stat-courses">+120 دورة</span></div>
     </div>
 
-    <!-- قسم بوابات النظام (البطاقات) -->
     <section class="section" id="services">
         <div class="container">
             <h2 class="section-title">بوابات النظام الأساسية</h2>
@@ -328,13 +321,13 @@
                     <p>بوابة الانضمام للمنظمة وإدارة ملفات الأعضاء وتقييم الكوادر.</p>
                 </a>
 
-                <div class="service-card fade-element" style="border-right-color: #1abc9c;" onclick="alert('فتح شاشة: اللوائح')">
+                <div class="service-card fade-element" style="border-right-color: #1abc9c;" onclick="window.location.href='rules.html'">
                     <div class="icon-box" style="color: #1abc9c; background: rgba(26,188,156,0.1);"><i class="fas fa-file-contract"></i></div>
                     <h3>اللوائح والقوانين</h3>
                     <p>النظام الأساسي، ميثاق الشرف الطبي، وسياسات العمل داخل المنظمة.</p>
                 </div>
                 
-                <div class="service-card fade-element" style="border-right-color: #34495e;" onclick="alert('فتح شاشة: لوحة الإدارة')">
+                <div class="service-card fade-element" style="border-right-color: #34495e;" onclick="window.location.href='admin.html'">
                     <div class="icon-box" style="color: #34495e; background: rgba(52,73,94,0.1);"><i class="fas fa-cogs"></i></div>
                     <h3>لوحة التحكم</h3>
                     <p>دخول خاص للأمناء والإدارة لاعتماد الطلبات وتحديث بيانات الموقع.</p>
@@ -344,15 +337,13 @@
         </div>
     </section>
 
-    <!-- قسم المشاريع والأحداث (مع طي النص) -->
     <section id="projects" class="section">
         <div class="container">
             <h2 class="section-title">أحدث مشاريعنا الطبية</h2>
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+            <div class="grid" id="dynamic-projects" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 
                 <div class="project-card fade-element">
                     <div class="project-img-wrapper">
-                        <!-- صورة مؤقتة معبرة عن القوافل الطبية -->
                         <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="القافلة الطبية">
                     </div>
                     <div class="project-content">
@@ -383,11 +374,10 @@
         </div>
     </section>
 
-    <!-- الأسئلة الشائعة -->
     <section id="faq" class="section">
         <div class="container">
             <h2 class="section-title">الأسئلة الشائعة</h2>
-            <div class="accordion">
+            <div class="accordion" id="dynamic-faq">
                 
                 <div class="faq-item fade-element">
                     <button class="faq-question">كيف يمكنني التسجيل للحصول على عضوية المنظمة؟ <i class="fas fa-plus"></i></button>
@@ -414,7 +404,6 @@
         </div>
     </section>
 
-    <!-- تواصل معنا -->
     <section id="contact" class="section">
         <div class="container">
             <h2 class="section-title">راسل الإدارة</h2>
@@ -429,7 +418,6 @@
         </div>
     </section>
 
-    <!-- الفوتر ومساحة CLOUD ART -->
     <footer>
         <div class="container">
             <p style="font-size: 1.2rem; font-weight: 900; color: white; letter-spacing: 1px;">جميع الحقوق والنشر محفوظة &copy; 2026 - تطبيق وصفة | ميديكال فور يو</p>
@@ -439,7 +427,6 @@
         </div>
     </footer>
 
-    <!-- نافذة المطور (Cloud Art Modal) - 50% Size -->
     <div id="devModal" class="dev-modal" onclick="closeDevModal(event)">
         <div class="dev-content" id="devContent">
             <span class="close-dev" onclick="closeDevModal(event, true)">&times;</span>
@@ -461,12 +448,10 @@
         </div>
     </div>
 
-    <!-- الأزرار العائمة (Menu & Scroll) -->
     <button class="quick-access-btn" id="quickToggleBtn" title="كل الشاشات"><i class="fas fa-th-large" style="pointer-events: none;"></i></button>
     
     <button class="scroll-btn" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="أعلى الصفحة"><i class="fas fa-chevron-up"></i></button>
 
-    <!-- القائمة العائمة السريعة -->
     <div id="quickMenu" class="quick-menu">
         <ul>
             <li><a href="home.html"><i class="fas fa-home"></i> الشاشة الرئيسية</a></li>
@@ -474,29 +459,103 @@
             <li><a href="activities.html"><i class="fas fa-handshake"></i> الأنشطة والبرامج</a></li>
             <li><a href="academy.html"><i class="fas fa-graduation-cap"></i> الأكاديمية الطبية</a></li>
             <li><a href="membership.html"><i class="fas fa-id-card"></i> استمارة العضوية</a></li>
-            <li><a href="#" onclick="alert('لوحة التحكم')" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-cogs"></i> لوحة الإدارة (Admin)</a></li>
-            <li><a href="#" onclick="alert('تسجيل الخروج')"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+            <li><a href="data_entry.html" style="color: #9b59b6; background: rgba(155,89,182,0.05);"><i class="fas fa-database"></i> إدخال البيانات (للمدير)</a></li>
+            <li><a href="admin.html" style="color: var(--main-red); background: rgba(211,47,47,0.05);"><i class="fas fa-cogs"></i> لوحة الإدارة (Admin)</a></li>
+            <li><a href="index.html" onclick="alert('تسجيل الخروج')"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
         </ul>
     </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-    <!-- ========================================= -->
-    <!-- سكربت الجافاسكريبت (التفاعلات والوظائف) -->
-    <!-- ========================================= -->
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtGcjtKZG2raucvyDAdcDWeUbAgKvQZ5w",
+            authDomain: "medical-for-you-6.firebaseapp.com",
+            projectId: "medical-for-you-6",
+            storageBucket: "medical-for-you-6.firebasestorage.app",
+            messagingSenderId: "572890832303",
+            appId: "1:572890832303:web:09e920543adf3eb5ea635a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 1. جلب الأخبار العاجلة
+        onSnapshot(collection(db, "home_news"), (snapshot) => {
+            if (!snapshot.empty) {
+                let newsHtml = '';
+                snapshot.forEach(doc => { newsHtml += `• ${doc.data().text} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `; });
+                document.getElementById('marquee-news').innerHTML = newsHtml;
+            }
+        });
+
+        // 2. جلب الإحصائيات
+        onSnapshot(doc(db, "home_stats", "main_stats"), (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                if(data.members) document.getElementById('stat-members').innerText = data.members;
+                if(data.projects) document.getElementById('stat-projects').innerText = data.projects;
+                if(data.courses) document.getElementById('stat-courses').innerText = data.courses;
+            }
+        });
+
+        // 3. جلب المشاريع
+        onSnapshot(collection(db, "home_projects"), (snapshot) => {
+            if (!snapshot.empty) {
+                const container = document.getElementById('dynamic-projects');
+                container.innerHTML = ''; // مسح القديم
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    container.innerHTML += `
+                        <div class="project-card fade-element visible">
+                            <div class="project-img-wrapper">
+                                <img src="${data.img}" alt="مشروع">
+                            </div>
+                            <div class="project-content">
+                                <h3>${data.title}</h3>
+                                <div class="project-text">
+                                    <p>${data.desc1}</p>
+                                    <p>${data.desc2 || ''}</p>
+                                </div>
+                                <button class="read-more-btn" onclick="toggleReadMore(this)">قراءة المزيد <i class="fas fa-chevron-down"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        // 4. جلب الأسئلة الشائعة
+        onSnapshot(collection(db, "home_faqs"), (snapshot) => {
+            if (!snapshot.empty) {
+                const container = document.getElementById('dynamic-faq');
+                container.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    container.innerHTML += `
+                        <div class="faq-item fade-element visible">
+                            <button class="faq-question" onclick="toggleFaq(this)">${data.question} <i class="fas fa-plus"></i></button>
+                            <div class="faq-answer">
+                                <p>${data.answer}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+    </script>
+
     <script>
-        // 1. نظام الوضع الليلي (Dark Mode)
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('medicalTheme', isDark ? 'dark' : 'light');
-            
-            // تحديث نصوص أزرار الثيم
             document.querySelectorAll('.theme-toggle').forEach(btn => {
                 btn.innerHTML = isDark ? '<i class="fas fa-sun"></i> فاتح' : '<i class="fas fa-moon"></i> داكن';
             });
         }
 
-        // تطبيق الوضع عند التحميل
         window.onload = () => {
             if(localStorage.getItem('medicalTheme') === 'dark') {
                 document.body.classList.add('dark-mode');
@@ -506,7 +565,6 @@
             }
         };
 
-        // 2. زر القائمة العائمة السريعة
         const quickMenu = document.getElementById('quickMenu');
         const quickToggleBtn = document.getElementById('quickToggleBtn');
 
@@ -516,7 +574,6 @@
             this.classList.toggle('active-btn');
         });
 
-        // 3. إغلاق القوائم والنوافذ عند النقر خارجها
         document.addEventListener('click', function(e) {
             if (quickMenu.classList.contains('active') && !quickMenu.contains(e.target) && !quickToggleBtn.contains(e.target)) {
                 quickMenu.classList.remove('active');
@@ -524,27 +581,28 @@
             }
         });
 
-        // 4. وظيفة الأسئلة الشائعة (Accordion)
+        // تم تحويل Accordion لدالة عالمية ليتم استدعاؤها مع البيانات المجلوبة من Firebase
+        window.toggleFaq = function(button) {
+            const answer = button.nextElementSibling;
+            button.classList.toggle('active');
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                answer.style.padding = "0 25px";
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                answer.style.padding = "15px 25px";
+            }
+        }
+
+        // الأكورديون القديم
         document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const answer = button.nextElementSibling;
-                button.classList.toggle('active');
-                if (answer.style.maxHeight) {
-                    answer.style.maxHeight = null;
-                    answer.style.padding = "0 25px";
-                } else {
-                    answer.style.maxHeight = answer.scrollHeight + "px";
-                    answer.style.padding = "15px 25px";
-                }
-            });
+            button.addEventListener('click', () => window.toggleFaq(button));
         });
 
-        // 5. زر طي وفتح النصوص (Read More)
-        function toggleReadMore(btn) {
+        window.toggleReadMore = function(btn) {
             const textContainer = btn.previousElementSibling;
             textContainer.classList.toggle('expanded');
             btn.classList.toggle('expanded');
-            
             if (textContainer.classList.contains('expanded')) {
                 btn.innerHTML = 'عرض أقل <i class="fas fa-chevron-up"></i>';
             } else {
@@ -552,22 +610,12 @@
             }
         }
 
-        // 6. التحكم في نافذة المطور (Dev Modal)
         const devModal = document.getElementById('devModal');
-        const devContent = document.getElementById('devContent');
-
-        function openDevModal() {
-            devModal.classList.add('show-modal');
-        }
-
+        function openDevModal() { devModal.classList.add('show-modal'); }
         function closeDevModal(e, forceClose = false) {
-            // إغلاق إذا تم الضغط على زر X أو تم الضغط خارج الكارد (على الخلفية السوداء)
-            if (forceClose || e.target === devModal) {
-                devModal.classList.remove('show-modal');
-            }
+            if (forceClose || e.target === devModal) { devModal.classList.remove('show-modal'); }
         }
 
-        // 7. تأثيرات الظهور عند التمرير (Intersection Observer)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -581,23 +629,17 @@
             observer.observe(el);
         });
 
-        // 8. زر الصعود للأعلى (يظهر عند النزول)
         const scrollTopBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTopBtn.style.display = 'flex';
-            } else {
-                scrollTopBtn.style.display = 'none';
-            }
+            if (window.scrollY > 300) { scrollTopBtn.style.display = 'flex'; } 
+            else { scrollTopBtn.style.display = 'none'; }
         });
 
-        // 9. نظام الإشعارات المنبثقة التلقائية (Toasts)
         function createToast(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `<i class="fas fa-info-circle" style="color: var(--main-red);"></i> <span>${message}</span>`;
-            
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -605,23 +647,8 @@
             }, 5000);
         }
 
-        // محاكاة تنبيهات ترحيبية وإخبارية تظهر بعد ثوانٍ من دخول الموقع
         setTimeout(() => createToast("مرحباً بك في البوابة الرقمية لمنظمة ميديكال فور يو!"), 2000);
         setTimeout(() => createToast("لا تنسَ مراجعة شروط العضوية الجديدة في قسم اللوائح."), 8000);
-        setTimeout(() => createToast("متاح الآن: التسجيل في دورة BLS للكوادر الطبية."), 15000);
-
-        // 10. (مستقبلاً) هيكل ربط Firebase
-        /*
-        import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, onValue } from "firebase/database";
-        const firebaseConfig = { ... };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        
-        onValue(ref(db, 'news'), (snapshot) => {
-            // كود تحديث شريط الأخبار العاجلة ديناميكياً
-        });
-        */
     </script>
 </body>
 </html>
